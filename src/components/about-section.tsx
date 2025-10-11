@@ -58,10 +58,17 @@ const AboutSection = () => {
     'ROI Marketing',
   ];
 
+  const principles = [
+    'Audience-first storytelling',
+    'Premium craft & polish',
+    'Always-on measurement',
+    'Partnership over vendor mindset',
+  ];
+
   return (
     <section
       id="about"
-      className="section-padding relative overflow-hidden bg-gradient-to-b from-[#f5f5f7] via-white to-[#f5f5f7]"
+      className="section-padding section-shell relative overflow-hidden bg-gradient-to-b from-[#f5f5f7] via-white to-[#f5f5f7]"
     >
       <div className="absolute right-0 top-1/4 h-96 w-96 rounded-full bg-primary/12 blur-3xl"></div>
 
@@ -84,6 +91,18 @@ const AboutSection = () => {
             <p className="mb-12 text-base leading-relaxed text-foreground/65 md:text-lg">
               From eye-catching hoardings and creative photoshoots to result-driven ads and paid campaigns, we cover it all. Our B2B strategies and workshops build stronger connections, while our focus on ROI marketing ensures every effort delivers real growth.
             </p>
+
+            <div className="mb-12 flex flex-wrap gap-3">
+              {principles.map((principle) => (
+                <span
+                  key={principle}
+                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(209,209,214,0.6)] bg-white/90 px-5 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-foreground/55 shadow-[0_12px_26px_rgba(15,23,42,0.08)]"
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-secondary/50" />
+                  {principle}
+                </span>
+              ))}
+            </div>
 
             <div className="grid grid-cols-2 gap-8 text-center sm:text-left">
               {stats.map((stat) => (

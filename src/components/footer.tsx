@@ -124,6 +124,13 @@ const Footer = () => {
               <span className="h-2 w-2 animate-pulse rounded-full bg-[#32d74b]" />
               <span>All systems operational</span>
             </div>
+            <Link
+              href="#top"
+              className="inline-flex items-center gap-2 rounded-full border border-[rgba(209,209,214,0.45)] bg-white/80 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-foreground/60 transition-transform duration-300 hover:-translate-y-0.5"
+            >
+              Back to top
+              <ArrowUpRight className="h-3.5 w-3.5" />
+            </Link>
           </div>
         </div>
       </div>

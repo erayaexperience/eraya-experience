@@ -11,6 +11,7 @@ import {
   Zap
 } from 'lucide-react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import Heading from './ui/heading';
@@ -66,6 +67,21 @@ const ServicesSection = () => {
     }
   ];
 
+  const servicePromises = [
+    {
+      title: 'Strategy pods',
+      description: 'A dedicated squad calibrates to your KPIs and market realities before we touch execution.',
+    },
+    {
+      title: 'Human + AI craft',
+      description: 'We pair AI-assisted tooling with senior editors to keep storytelling premium and on-brand.',
+    },
+    {
+      title: 'Live visibility',
+      description: 'Transparent dashboards, weekly syncs, and responsive tweaks keep momentum measurable.',
+    },
+  ];
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -105,7 +121,7 @@ const ServicesSection = () => {
   };
 
   return (
-    <section id="services" className="section-padding relative overflow-hidden" ref={ref}>
+    <section id="services" className="section-padding section-shell relative overflow-hidden" ref={ref}>
       <div
         className="pointer-events-none absolute inset-0"
         style={{
@@ -135,6 +151,27 @@ const ServicesSection = () => {
             className="mx-auto max-w-3xl"
             subtitle="Strategy, craft, and production shaped by Apple's Human Interface principles."
           />
+        </motion.div>
+
+        <motion.div
+          className="mx-auto mb-16 grid w-full gap-4 rounded-[30px] border border-[rgba(209,209,214,0.45)] bg-white/85 p-6 shadow-[0_22px_48px_rgba(15,23,42,0.08)] backdrop-blur-lg md:grid-cols-3 md:p-8"
+          initial={{ opacity: 0, y: 40 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+          transition={{ delay: 0.3, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {servicePromises.map((promise, index) => (
+            <div key={promise.title} className="relative pr-0 md:pr-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-foreground/50">
+                {promise.title}
+              </p>
+              <p className="mt-3 text-sm leading-relaxed text-foreground/60">
+                {promise.description}
+              </p>
+              {index < servicePromises.length - 1 && (
+                <span className="absolute -right-3 top-1/2 hidden h-9 w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-foreground/10 to-transparent md:block" />
+              )}
+            </div>
+          ))}
         </motion.div>
 
         <motion.div
@@ -188,14 +225,26 @@ const ServicesSection = () => {
                   </p>
                 </div>
 
-                <ul className="mt-4 space-y-2">
-                  {service.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center text-sm text-foreground/60">
-                      <span className="mr-3 inline-block h-1.5 w-1.5 rounded-full bg-primary/40" />
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
+                <div className="mt-6 space-y-4">
+                  <ul className="space-y-2">
+                    {service.features.map((feature, featureIndex) => (
+                      <li key={featureIndex} className="flex items-center text-sm text-foreground/60">
+                        <span className="mr-3 inline-block h-1.5 w-1.5 rounded-full bg-primary/40" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="flex items-center justify-between border-t border-white/60 pt-4 text-xs uppercase tracking-[0.22em] text-foreground/40">
+                    <span>Service {String(index + 1).padStart(2, '0')}</span>
+                    <Link
+                      href="#contact"
+                      className="inline-flex items-center gap-2 text-[11px] font-semibold tracking-[0.2em] text-secondary/80 transition-transform duration-300 hover:translate-x-1"
+                    >
+                      Plan this
+                      <ArrowUpRight className="h-3.5 w-3.5" />
+                    </Link>
+                  </div>
+                </div>
               </div>
             </motion.article>
           ))}

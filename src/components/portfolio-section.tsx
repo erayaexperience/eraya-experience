@@ -74,10 +74,16 @@ const PortfolioSection = () => {
     ? projects
     : projects.filter(project => project.category === activeFilter);
 
+  const summaryStats = [
+    { label: 'Campaigns shipped', value: '120+' },
+    { label: 'Industries served', value: '6' },
+    { label: 'Average ROI uplift', value: '3.2x' },
+  ];
+
   return (
     <section
       id="portfolio"
-      className="section-padding relative overflow-hidden bg-gradient-to-b from-white via-[#f5f5f7] to-white"
+      className="section-padding section-shell relative overflow-hidden bg-gradient-to-b from-white via-[#f5f5f7] to-white"
     >
       {/* Background decoration */}
       <div className="absolute bottom-0 left-0 h-96 w-96 rounded-full bg-primary/12 blur-3xl" />
@@ -117,6 +123,25 @@ const PortfolioSection = () => {
             })}
           </div>
         </div>
+
+        <motion.div
+          className="mb-14 grid grid-cols-1 gap-4 rounded-[32px] border border-[rgba(209,209,214,0.45)] bg-white/80 p-6 shadow-[0_20px_44px_rgba(15,23,42,0.1)] backdrop-blur-xl md:grid-cols-3 md:p-8"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        >
+          {summaryStats.map((stat, index) => (
+            <div key={stat.label} className="relative pr-0 md:pr-6">
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/50">
+                {stat.label}
+              </p>
+              <p className="mt-3 text-2xl font-semibold tracking-tight text-foreground">{stat.value}</p>
+              {index < summaryStats.length - 1 && (
+                <span className="absolute -right-3 top-1/2 hidden h-10 w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-foreground/10 to-transparent md:block" />
+              )}
+            </div>
+          ))}
+        </motion.div>
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2">
           {filteredProjects.map((project) => (

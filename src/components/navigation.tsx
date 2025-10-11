@@ -11,6 +11,7 @@ import { Button } from "./ui/button";
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
     let ticking = false;
@@ -20,6 +21,11 @@ const Navigation = () => {
         requestAnimationFrame(() => {
           const scrollY = window.scrollY;
           setScrolled(scrollY > 10);
+          const doc = document.documentElement;
+          const totalScrollable = doc.scrollHeight - window.innerHeight;
+          const nextProgress =
+            totalScrollable > 0 ? Math.min(scrollY / totalScrollable, 1) : 0;
+          setScrollProgress(nextProgress);
           ticking = false;
         });
         ticking = true;
@@ -67,6 +73,12 @@ const Navigation = () => {
         boxShadow: scrolled ? '0 18px 32px rgba(15, 23, 42, 0.08)' : 'none'
       }}
     >
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-50 h-0.5 overflow-hidden">
+        <motion.span
+          className="block h-full origin-left bg-gradient-to-r from-transparent via-primary to-secondary"
+          style={{ scaleX: isOpen ? 1 : scrollProgress }}
+        />
+      </div>
       <div className="container-modern">
         <div className="flex items-center justify-between py-5 lg:py-6">
           {/* Logo */}

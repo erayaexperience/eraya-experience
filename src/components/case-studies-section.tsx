@@ -105,12 +105,13 @@ const CaseStudiesSection = () => {
   const [activeCase, setActiveCase] = useState(0);
 
   const currentCase = caseStudies[activeCase];
+  const caseProgress = ((activeCase + 1) / caseStudies.length) * 100;
 
   return (
     <section
       ref={sectionRef}
       id="case-studies"
-      className="relative overflow-hidden bg-gradient-to-b from-white via-[#f5f5f7] to-white"
+      className="section-shell relative overflow-hidden bg-gradient-to-b from-white via-[#f5f5f7] to-white"
     >
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute inset-x-0 top-20 h-[320px] bg-[radial-gradient(circle_at_top,_rgba(214,182,133,0.2),_transparent_70%)]" />
@@ -137,6 +138,37 @@ const CaseStudiesSection = () => {
               Each engagement pairs Apple&apos;s Human Interface principles with operational clarity. Tap a case to explore
               the orchestration and the numbers.
             </p>
+
+            <motion.div
+              className="mt-8 flex items-center gap-6 rounded-[28px] border border-[rgba(209,209,214,0.55)] bg-white/85 p-6 shadow-[0_22px_48px_rgba(15,23,42,0.08)] backdrop-blur-xl"
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+              transition={{ delay: 0.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <div className="flex items-center gap-4">
+                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary/90 text-base font-semibold text-white shadow-[0_12px_26px_rgba(22,36,81,0.35)]">
+                  {String(activeCase + 1).padStart(2, '0')}
+                </span>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/50">
+                    Live spotlight
+                  </p>
+                  <p className="text-sm font-semibold text-foreground/75">{currentCase.title}</p>
+                </div>
+              </div>
+              <div className="ml-auto flex flex-col items-end gap-2 text-xs uppercase tracking-[0.22em] text-foreground/45">
+                <span>Progress</span>
+                <div className="relative h-1.5 w-36 overflow-hidden rounded-full bg-foreground/10">
+                  <span
+                    className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-primary via-secondary to-secondary/80 transition-all duration-500"
+                    style={{ width: `${caseProgress}%` }}
+                  />
+                </div>
+                <span>
+                  {activeCase + 1} / {caseStudies.length}
+                </span>
+              </div>
+            </motion.div>
 
             <div className="mt-12 space-y-3">
               {caseStudies.map((item, index) => {
