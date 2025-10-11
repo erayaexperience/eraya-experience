@@ -4,6 +4,10 @@ import { useState } from 'react';
 import { Mail, Phone, MapPin, Send, MessageCircle, Clock, CheckCircle, Instagram } from 'lucide-react';
 import Heading from './ui/heading';
 import Badge from './ui/badge';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
+import { Textarea } from './ui/textarea';
+import { Label } from './ui/label';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -79,16 +83,16 @@ const ContactSection = () => {
 
   if (isSubmitted) {
     return (
-      <section id="contact" className="section-padding bg-gradient-to-br from-eraya-beige/5 via-white to-eraya-beige/10">
+      <section id="contact" className="section-padding relative overflow-hidden bg-gradient-to-b from-white via-[#f5f5f7] to-white">
         <div className="container-modern">
-          <div className="max-w-2xl mx-auto text-center">
-            <div className="modern-card p-12">
-              <div className="w-20 h-20 bg-eraya-navy rounded-full flex items-center justify-center mx-auto mb-8">
-                <CheckCircle className="w-10 h-10 text-white" />
+          <div className="mx-auto max-w-2xl text-center">
+            <div className="rounded-[40px] border border-[rgba(209,209,214,0.6)] bg-white/95 p-12 shadow-[0_36px_90px_rgba(15,23,42,0.18)] backdrop-blur-xl">
+              <div className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-primary text-white">
+                <CheckCircle className="h-10 w-10" />
               </div>
-              <h2 className="text-4xl font-light text-eraya-navy mb-6">Message sent successfully!</h2>
-              <p className="text-lg text-eraya-navy/60 font-light leading-relaxed">
-                Thank you for reaching out. We'll get back to you within 24 hours with a detailed response.
+              <h2 className="mb-6 text-4xl font-semibold text-foreground">Message sent successfully!</h2>
+              <p className="text-lg leading-relaxed text-foreground/65">
+                Thank you for reaching out. We will get back to you within 24 hours with a detailed response.
               </p>
             </div>
           </div>
@@ -98,156 +102,148 @@ const ContactSection = () => {
   }
 
   return (
-    <section id="contact" className="section-padding bg-gradient-to-br from-eraya-beige/5 via-white to-eraya-beige/10 relative overflow-hidden">
+    <section id="contact" className="section-padding relative overflow-hidden bg-gradient-to-b from-white via-[#f5f5f7] to-white">
       {/* Background decoration */}
-      <div className="absolute top-1/4 left-0 w-96 h-96 bg-eraya-navy/5 rounded-full filter blur-3xl"></div>
+      <div className="absolute left-0 top-1/4 h-96 w-96 rounded-full bg-primary/12 blur-3xl"></div>
 
       <div className="container-modern">
-        <div className="text-center mb-20">
+        <div className="mb-20 text-center">
           <div className="mb-8">
-            <Badge icon={<MessageCircle className="w-4 h-4 mr-2 text-eraya-navy/60" />}>Get in touch</Badge>
+            <Badge icon={<MessageCircle className="mr-2 h-4 w-4 text-secondary/70" />} className="mx-auto">Get in touch</Badge>
           </div>
 
           <Heading
             as="h2"
             before="Got questions? "
             gradient="Reach out."
-            subtitle="Ready to boost your brand visibility? Let's discuss how we can help transform your digital presence and achieve your business goals."
+            subtitle="Ready to boost your brand visibility? Let's discuss how to transform your presence with Apple-aligned craft."
           />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
           {/* Contact Information */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="space-y-8 lg:col-span-2">
             {contactInfo.map((info, index) => (
-              <div key={index} className="group flex items-start space-x-6 p-6 hover:bg-eraya-navy/5 rounded-2xl transition-all duration-300">
-                <div className="w-14 h-14 bg-eraya-navy rounded-2xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
-                  <info.icon className="w-6 h-6 text-white" />
+              <div
+                key={index}
+                className="group flex items-start gap-6 rounded-[28px] border border-[rgba(209,209,214,0.5)] bg-white/90 p-6 shadow-[0_16px_32px_rgba(15,23,42,0.1)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_26px_56px_rgba(15,23,42,0.14)]"
+              >
+                <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/12 text-secondary transition-transform duration-300 group-hover:scale-110">
+                  <info.icon className="h-6 w-6" />
                 </div>
                 <div>
-                  <h3 className="font-medium text-eraya-navy mb-1 text-lg">{info.title}</h3>
-                  <p className="text-eraya-navy font-medium mb-1">{info.details}</p>
-                  <p className="text-eraya-navy/50 text-sm font-light">{info.description}</p>
+                  <h3 className="mb-1 text-lg font-semibold text-foreground">{info.title}</h3>
+                  <p className="mb-1 text-base font-semibold text-foreground/80">{info.details}</p>
+                  <p className="text-sm text-foreground/55">{info.description}</p>
                 </div>
               </div>
             ))}
 
             {/* Quick response card */}
-            <div className="glass-dark rounded-2xl p-8 text-white">
-              <div className="flex items-center mb-4">
-                <Clock className="w-6 h-6 mr-3" />
-                <h3 className="font-medium text-lg">Quick response</h3>
+            <div className="rounded-[28px] border border-[rgba(209,209,214,0.5)] bg-white/95 p-8 shadow-[0_18px_36px_rgba(15,23,42,0.12)]">
+              <div className="mb-4 flex items-center gap-3">
+                <Clock className="h-6 w-6 text-secondary/70" />
+                <h3 className="text-lg font-semibold text-foreground">Quick response</h3>
               </div>
-              <p className="text-white/80 font-light leading-relaxed">
-                We typically respond within 2 hours during business hours. For urgent matters, don't hesitate to call us directly.
+              <p className="leading-relaxed text-foreground/65">
+                We typically respond within 2 hours during business hours. For urgent matters, call us directly.
               </p>
             </div>
           </div>
 
           {/* Contact Form */}
           <div className="lg:col-span-3">
-            <div className="modern-card p-8 lg:p-12">
+            <div className="rounded-[40px] border border-[rgba(209,209,214,0.5)] bg-white/95 p-8 shadow-[0_28px_60px_rgba(15,23,42,0.14)] backdrop-blur-xl lg:p-12">
               <form onSubmit={handleSubmit} className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-eraya-navy mb-3">
-                      Full Name *
-                    </label>
-                    <input
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                  <div className="space-y-3">
+                    <Label htmlFor="name">Full Name *</Label>
+                    <Input
                       id="name"
                       name="name"
                       type="text"
                       required
                       value={formData.name}
                       onChange={handleChange}
-                      className="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-eraya-navy focus:border-transparent transition-all duration-300 text-lg"
                       placeholder="John Doe"
                     />
                   </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-eraya-navy mb-3">
-                      Email Address *
-                    </label>
-                    <input
+                  <div className="space-y-3">
+                    <Label htmlFor="email">Email Address *</Label>
+                    <Input
                       id="email"
                       name="email"
                       type="email"
                       required
                       value={formData.email}
                       onChange={handleChange}
-                      className="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-eraya-navy focus:border-transparent transition-all duration-300 text-lg"
                       placeholder="john@company.com"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div>
-                    <label htmlFor="company" className="block text-sm font-medium text-eraya-navy mb-3">
-                      Company
-                    </label>
-                    <input
+                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+                  <div className="space-y-3">
+                    <Label htmlFor="company">Company</Label>
+                    <Input
                       id="company"
                       name="company"
                       type="text"
                       value={formData.company}
                       onChange={handleChange}
-                      className="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-eraya-navy focus:border-transparent transition-all duration-300 text-lg"
                       placeholder="Your Company"
                     />
                   </div>
-                  <div>
-                    <label htmlFor="service" className="block text-sm font-medium text-eraya-navy mb-3">
-                      Service Needed
-                    </label>
+                  <div className="space-y-3">
+                    <Label htmlFor="service">Service Needed</Label>
                     <select
                       id="service"
                       name="service"
                       value={formData.service}
                       onChange={handleChange}
-                      className="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-eraya-navy focus:border-transparent transition-all duration-300 text-lg bg-white"
+                      className="h-12 w-full rounded-[26px] border border-[rgba(209,209,214,0.8)] bg-white/90 px-5 text-[15px] leading-tight shadow-[0_12px_26px_rgba(0,0,0,0.08)] transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer"
                     >
                       <option value="">Select a service</option>
                       {serviceOptions.map((option, index) => (
-                        <option key={index} value={option}>{option}</option>
+                        <option key={index} value={option}>
+                          {option}
+                        </option>
                       ))}
                     </select>
                   </div>
                 </div>
 
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-eraya-navy mb-3">
-                    Project Details *
-                  </label>
-                  <textarea
+                <div className="space-y-3">
+                  <Label htmlFor="message">Project Details *</Label>
+                  <Textarea
                     id="message"
                     name="message"
                     rows={6}
                     required
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full px-6 py-4 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-eraya-navy focus:border-transparent transition-all duration-300 resize-none text-lg"
                     placeholder="Tell us about your project, goals, and timeline..."
                   />
                 </div>
 
-                <button
+                <Button
                   type="submit"
-                  className="modern-button modern-button-primary w-full group text-lg"
+                  size="lg"
+                  className="group w-full justify-center"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
-                    <div className="flex items-center justify-center">
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-3"></div>
+                    <span className="inline-flex items-center gap-3">
+                      <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
                       Sending message...
-                    </div>
+                    </span>
                   ) : (
-                    <>
+                    <span className="inline-flex items-center gap-3">
                       Send message
-                      <Send className="ml-3 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
-                    </>
+                      <Send className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                    </span>
                   )}
-                </button>
+                </Button>
               </form>
             </div>
           </div>
@@ -258,3 +254,5 @@ const ContactSection = () => {
 };
 
 export default ContactSection;
+
+

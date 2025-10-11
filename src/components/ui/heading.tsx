@@ -1,5 +1,3 @@
-"use client";
-
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -16,12 +14,12 @@ type HeadingProps = {
 };
 
 const baseClass =
-    'font-extralight leading-none tracking-tighter text-eraya-navy';
+    'font-semibold leading-[1.04] tracking-[-0.04em] text-foreground';
 
 const sizeByAs: Record<NonNullable<HeadingProps['as']>, string> = {
-    h1: 'text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl',
-    h2: 'text-4xl md:text-6xl lg:text-7xl',
-    h3: 'text-3xl md:text-4xl',
+    h1: 'text-[2.75rem] sm:text-[3.25rem] md:text-[3.75rem] lg:text-[4.25rem] xl:text-[4.75rem]',
+    h2: 'text-[2.25rem] sm:text-[2.75rem] md:text-[3.25rem] lg:text-[3.75rem]',
+    h3: 'text-[1.75rem] sm:text-[2rem] md:text-[2.5rem]',
 };
 
 export function Heading({
@@ -47,16 +45,16 @@ export function Heading({
                 <Tag className={cn(baseClass, sizeByAs[as], className)}>
                     {typeof before === 'string' || typeof gradient === 'string' || typeof after === 'string' ? (
                         <>
-                            {before && <span className="text-eraya-navy">{before}</span>}
+                            {before && <span className="text-secondary">{before}</span>}
                             {gradient && (
-                                <span className="font-semibold bg-gradient-to-r from-eraya-navy via-eraya-beige to-eraya-navy bg-clip-text text-transparent">
+                                <span className="font-semibold bg-gradient-to-r from-primary via-secondary/70 to-secondary bg-clip-text text-transparent">
                                     {gradient}
                                 </span>
                             )}
-                            {after && <span className="text-eraya-navy">{after}</span>}
+                            {after && <span className="text-foreground">{after}</span>}
                         </>
                     ) : highlight ? (
-                        <span className="font-semibold bg-gradient-to-r from-eraya-navy via-eraya-beige to-eraya-navy bg-clip-text text-transparent">
+                        <span className="font-semibold bg-gradient-to-r from-primary via-secondary/70 to-secondary bg-clip-text text-transparent">
                             {children}
                         </span>
                     ) : (
@@ -64,7 +62,7 @@ export function Heading({
                     )}
                 </Tag>
                 {subtitle && (
-                    <p className="text-base md:text-xl text-eraya-navy/60 max-w-2xl md:max-w-3xl mx-auto font-light mt-3 md:mt-4">
+                    <p className="text-sm sm:text-base md:text-lg text-foreground/70 max-w-2xl md:max-w-3xl mx-auto font-normal mt-4">
                         {subtitle}
                     </p>
                 )}
@@ -74,5 +72,3 @@ export function Heading({
 }
 
 export default Heading;
-
-

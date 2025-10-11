@@ -1,529 +1,299 @@
 "use client";
 
-import { useState } from 'react';
-import { ArrowUpRight, TrendingUp, Users, Eye, Heart, MessageCircle, Share2, Target, Award } from 'lucide-react';
+import { useState, useRef } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { ArrowUpRight, Award } from 'lucide-react';
 import { motion, AnimatePresence, useInView } from 'framer-motion';
-import { useRef } from 'react';
 import Heading from './ui/heading';
 import Badge from './ui/badge';
+import { Button } from './ui/button';
+import { cn } from '@/lib/utils';
+
+type CaseStudy = {
+  id: string;
+  title: string;
+  subtitle: string;
+  category: string;
+  description: string;
+  image: string;
+  metrics: Array<{ label: string; value: string }>;
+  highlights: string[];
+  services: string[];
+  duration: string;
+  roi: string;
+};
+
+const caseStudies: CaseStudy[] = [
+  {
+    id: 'you-and-me-anjuna',
+    title: 'You And Me Anjuna',
+    subtitle: 'Restaurant social transformation',
+    category: 'Social Media Marketing',
+    description:
+      'A nimble, stock-first content system rebuilt their feed with emotion-led storytelling and a cadence that feels effortless.',
+    image: 'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    metrics: [
+      { label: 'Follower growth', value: '+18.5%' },
+      { label: 'Engagement lift', value: '+340%' },
+      { label: 'Total reach', value: '10K+' },
+      { label: 'Posts shipped', value: '12' },
+    ],
+    highlights: [
+      'Optimised and set up Google Business Profile',
+      'Reworked the feed with cohesive art direction',
+      'Delivered 12 high-performing post templates',
+      'Unlocked consistent organic follower growth',
+    ],
+    services: ['Social Media Management', 'Content Creation', 'GMB Optimization', 'Account Setup'],
+    duration: '3 months',
+    roi: 'High engagement & walk-in',
+  },
+  {
+    id: 'snow-park-goa',
+    title: 'Snow Park Goa',
+    subtitle: 'Entertainment venue growth campaign',
+    category: 'Influencer Marketing',
+    description:
+      'A blended influencer and paid push that injected energy, broadened awareness, and converted online buzz into footfall.',
+    image: 'https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    metrics: [
+      { label: 'Followers gained', value: '+108' },
+      { label: 'Walk-in lift', value: '+20%' },
+      { label: 'Campaign reach', value: '50M+' },
+      { label: 'Engagement status', value: 'High' },
+    ],
+    highlights: [
+      '20% increase in walk-in traffic from social',
+      'Influencer amplification delivered 50M+ reach',
+      'Optimised creative direction for shareability',
+      'Strengthened top-of-mind awareness across Goa',
+    ],
+    services: ['Influencer Marketing', 'Social Media Marketing', 'ROI Marketing', 'Brand Awareness'],
+    duration: '4 months',
+    roi: 'High engagement & visibility',
+  },
+  {
+    id: 'beach-walk-resort',
+    title: 'Beach Walk Resort',
+    subtitle: 'Luxury resort digital reset',
+    category: 'Digital Marketing',
+    description:
+      'End-to-end digital transformation anchored in premium content, streamlined analytics, and a bookings-focused funnel.',
+    image: 'https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=1600',
+    metrics: [
+      { label: 'Profile activity', value: '+26.8%' },
+      { label: 'Profile visits', value: '+19.1%' },
+      { label: 'Views generated', value: '80,404' },
+      { label: 'External taps', value: '+1,900%' },
+    ],
+    highlights: [
+      'Shot and edited premium resort storytelling',
+      '87.5% of total views delivered via paid optimisation',
+      'Sharp measurement model informed conversion tweaks',
+      'Sustained uplift in on-site bookings and inquiries',
+    ],
+    services: ['Content Production', 'Performance Marketing', 'Paid Media', 'Analytics'],
+    duration: '6 months',
+    roi: 'Bookings & conversions uplift',
+  },
+];
 
 const CaseStudiesSection = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const isInView = useInView(sectionRef, { once: true, margin: '-120px' });
   const [activeCase, setActiveCase] = useState(0);
 
-  const caseStudies = [
-    {
-      id: 1,
-      title: "You And Me Anjuna",
-      subtitle: "Restaurant Social Media Transformation",
-      category: "Social Media Marketing",
-      challenge: "The client wanted to increase the reach and awareness of his restaurant",
-      hurdles: "The client was not able to give a shoot date due to which the content had to be generated using stock images and stock content",
-      image: "https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      beforeAfter: {
-        before: {
-          posts: 34,
-          followers: 54,
-          following: 36
-        },
-        after: {
-          posts: 48,
-          followers: 64,
-          following: 13
-        }
-      },
-      results: [
-        "Optimised and set their GMB",
-        "Reworked the Feed",
-        "Make attractive creatives",
-        "Optimized the account",
-        "Gained 10 organic followers",
-        "12 postings done",
-        "Any number from 0-9 for a timer",
-        "Redesigned the highlights"
-      ],
-      metrics: {
-        followerGrowth: "+18.5%",
-        engagement: "+340%",
-        reach: "10K+",
-        posts: "12"
-      },
-      services: ["Social Media Management", "Content Creation", "GMB Optimization", "Account Setup"],
-      duration: "3 months",
-      roi: "High engagement & walk-in"
-    },
-    {
-      id: 2,
-      title: "Snow Park Goa",
-      subtitle: "Entertainment Venue Marketing Campaign",
-      category: "Influencer Marketing",
-      challenge: "Increase follower count, create brand reach, and bring walk-in/client brand awareness",
-      solution: "Comprehensive social media and influencer marketing campaign focusing on ROI marketing",
-      image: "https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      beforeAfter: {
-        before: {
-          followers: 1289,
-          walkIn: "50%",
-          engagement: "Low"
-        },
-        after: {
-          followers: 1397,
-          walkIn: "70%",
-          engagement: "High"
-        }
-      },
-      results: [
-        "108 followers gained organically",
-        "20% increase in walk-in traffic",
-        "50M+ reach through influencer campaigns",
-        "High engagement rate achieved",
-        "Brand awareness significantly increased"
-      ],
-      metrics: {
-        followerGrowth: "+108",
-        walkInIncrease: "+20%",
-        reach: "50M+",
-        engagement: "High"
-      },
-      services: ["Influencer Marketing", "Social Media Marketing", "ROI Marketing", "Brand Awareness"],
-      duration: "4 months",
-      roi: "High engagement & walk in & visibility"
-    },
-    {
-      id: 3,
-      title: "Beach Walk Resort",
-      subtitle: "Luxury Resort Digital Transformation",
-      category: "Digital Marketing",
-      challenge: "Transform digital presence for luxury resort and increase bookings",
-      solution: "Comprehensive digital marketing strategy with professional content creation",
-      image: "https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=1200",
-      beforeAfter: {
-        before: {
-          posts: 74,
-          followers: 234,
-          following: 163,
-          views: "390"
-        },
-        after: {
-          posts: 89,
-          followers: 296,
-          following: 172,
-          views: "80,404"
-        }
-      },
-      results: [
-        "Profile activity increased by 619 (+26.8%)",
-        "Profile visits: 579 (+19.1%)",
-        "External link taps: 40 (+1,900%)",
-        "Views increased to 80,404",
-        "87.5% views from ads",
-        "Accounts reached: 57,953 (+2,672%)"
-      ],
-      metrics: {
-        viewsIncrease: "+20,514%",
-        profileVisits: "+19.1%",
-        linkTaps: "+1,900%",
-        reach: "57,953"
-      },
-      services: ["Digital Marketing", "Content Strategy", "Paid Advertising", "Profile Optimization"],
-      duration: "6 months",
-      roi: "High engagement & traction"
-    }
-  ];
-
-  const campaignGoals = [
-    {
-      icon: Users,
-      title: "Increase Follower Count",
-      description: "Organic growth through engaging content"
-    },
-    {
-      icon: Target,
-      title: "Create Brand Reach",
-      description: "Expand visibility across target demographics"
-    },
-    {
-      icon: TrendingUp,
-      title: "Bring Walk In/Client Brand Awareness",
-      description: "Convert online engagement to real business"
-    }
-  ];
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { y: 50, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 12
-      }
-    }
-  };
+  const currentCase = caseStudies[activeCase];
 
   return (
-    <section id="case-studies" className="section-padding relative overflow-hidden" ref={ref}>
-      {/* Background decoration */}
-      <motion.div
-        className="absolute top-1/4 right-0 w-96 h-96 morphing-blob"
-        style={{
-          background: 'linear-gradient(135deg, rgba(22, 36, 81, 0.08) 0%, rgba(214, 182, 133, 0.05) 100%)',
-          filter: 'blur(80px)'
-        }}
-        animate={{
-          x: [0, -50, 0],
-          y: [0, 30, 0],
-          scale: [1, 1.2, 1]
-        }}
-        transition={{
-          duration: 15,
-          repeat: Infinity,
-          ease: "easeInOut"
-        }}
-      />
+    <section
+      ref={sectionRef}
+      id="case-studies"
+      className="relative overflow-hidden bg-gradient-to-b from-white via-[#f5f5f7] to-white"
+    >
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute inset-x-0 top-20 h-[320px] bg-[radial-gradient(circle_at_top,_rgba(214,182,133,0.2),_transparent_70%)]" />
+      </div>
 
-      <div className="container-modern">
-        {/* Header */}
-        <motion.div
-          className="text-center mb-20"
-          variants={containerVariants}
-          initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-        >
-          <motion.div variants={itemVariants} className="mb-8">
-            <Badge icon={<Award className="w-4 h-4 mr-2 text-eraya-navy/60" />}>Case Studies</Badge>
-          </motion.div>
-
-          <Heading
-            as="h2"
-            before="Real "
-            gradient="results"
-            after=" for real clients"
-            subtitle="Discover how we've helped businesses achieve remarkable growth through strategic digital marketing campaigns."
-          />
-        </motion.div>
-
-        {/* Campaign Goals */}
-        <motion.div
-          className="mb-20"
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
-        >
-          <motion.h3
-            className="text-3xl md:text-4xl font-light text-eraya-navy mb-12 text-center"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ delay: 0.6, duration: 0.6 }}
-          >
-            Campaign Goals
-          </motion.h3>
+      <div className="container-modern relative z-10 py-28">
+        <div className="grid gap-16 lg:grid-cols-[0.9fr_1.1fr]">
           <motion.div
-            className="grid grid-cols-1 md:grid-cols-3 gap-8"
-            variants={containerVariants}
-            initial="hidden"
-            animate={isInView ? "visible" : "hidden"}
+            className="space-y-8"
+            initial={{ opacity: 0, y: 40 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           >
-            {campaignGoals.map((goal, index) => (
-              <motion.div
-                key={index}
-                className="liquid-card rounded-3xl p-8 text-center group"
-                variants={itemVariants}
-                whileHover={{ y: -10, scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 300, damping: 20 }}
-              >
-                <motion.div
-                  className="w-16 h-16 bg-eraya-navy rounded-2xl flex items-center justify-center mx-auto mb-6"
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                >
-                  <goal.icon className="w-8 h-8 text-white" />
-                </motion.div>
-                <h4 className="text-xl font-medium text-eraya-navy mb-4">{goal.title}</h4>
-                <p className="text-eraya-navy/60 font-light leading-relaxed">{goal.description}</p>
-              </motion.div>
-            ))}
-          </motion.div>
-        </motion.div>
+            <Badge className="w-fit">Case Studies</Badge>
+            <Heading
+              as="h2"
+              center={false}
+              before="Proof that human-first craft drives"
+              gradient="measurable movement"
+              after="for ambitious brands."
+              className="max-w-xl"
+            />
+            <p className="max-w-xl text-base leading-relaxed text-foreground/65">
+              Each engagement pairs Apple&apos;s Human Interface principles with operational clarity. Tap a case to explore
+              the orchestration and the numbers.
+            </p>
 
-        {/* Case Study Navigation */}
-        <motion.div
-          className="flex flex-wrap justify-center gap-3 md:gap-4 mb-12 md:mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ delay: 0.8, duration: 0.6 }}
-          role="tablist"
-          aria-label="Case studies"
-        >
-          {caseStudies.map((study, index) => (
-            <motion.button
-              key={study.id}
-              onClick={() => setActiveCase(index)}
-              className={`px-5 md:px-7 py-3 md:py-4 rounded-2xl font-medium transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-eraya-navy/30 ${activeCase === index
-                ? 'liquid-button text-white'
-                : 'liquid-glass hairline-border text-eraya-navy'
-                }`}
-              whileHover={{ scale: activeCase === index ? 1.03 : 1.05, y: -2 }}
-              whileTap={{ scale: 0.96 }}
-              role="tab"
-              aria-selected={activeCase === index}
-              aria-controls={`case-panel-${index}`}
-              id={`case-tab-${index}`}
+            <div className="mt-12 space-y-3">
+              {caseStudies.map((item, index) => {
+                const isActive = index === activeCase;
+                return (
+                  <motion.button
+                    key={item.id}
+                    onClick={() => setActiveCase(index)}
+                    className={cn(
+                      'w-full rounded-[26px] border border-[rgba(209,209,214,0.65)] bg-white/85 px-6 py-5 text-left transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_20px_48px_rgba(15,23,42,0.12)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                      isActive &&
+                        'border-transparent bg-primary text-white shadow-[0_28px_56px_rgba(22,36,81,0.32)] hover:shadow-[0_32px_72px_rgba(22,36,81,0.35)]'
+                    )}
+                    aria-pressed={isActive}
+                  >
+                    <div className="flex items-center justify-between gap-6">
+                      <div>
+                        <p
+                          className={cn(
+                            'text-xs font-semibold uppercase tracking-[0.16em]',
+                            isActive ? 'text-white/70' : 'text-foreground/50'
+                          )}
+                        >
+                          {item.category}
+                        </p>
+                        <p
+                          className={cn(
+                            'mt-2 text-lg font-semibold tracking-tight',
+                            isActive ? 'text-white' : 'text-foreground'
+                          )}
+                        >
+                          {item.title}
+                        </p>
+                      </div>
+                      <ArrowUpRight
+                        className={cn(
+                          'h-5 w-5 transition-transform duration-300',
+                          isActive ? 'text-white' : 'text-secondary/70'
+                        )}
+                      />
+                    </div>
+                    <p
+                      className={cn(
+                        'mt-3 text-sm leading-relaxed',
+                        isActive ? 'text-white/80' : 'text-foreground/60'
+                      )}
+                    >
+                      {item.subtitle}
+                    </p>
+                  </motion.button>
+                );
+              })}
+            </div>
+          </motion.div>
+
+          <AnimatePresence mode="wait">
+            <motion.article
+              key={currentCase.id}
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -40 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+              className="space-y-10"
             >
-              {study.title}
-            </motion.button>
-          ))}
-        </motion.div>
-
-        {/* Active Case Study */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={activeCase}
-            className="liquid-card glass-noise hairline-border rounded-3xl overflow-hidden"
-            initial={{ opacity: 0, y: 50, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -50, scale: 0.98 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-            role="tabpanel"
-            aria-labelledby={`case-tab-${activeCase}`}
-            id={`case-panel-${activeCase}`}
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-              {/* Image Section */}
-              <div className="relative h-96 lg:h-auto overflow-hidden">
-                <motion.img
-                  src={caseStudies[activeCase].image}
-                  alt={caseStudies[activeCase].title}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                  decoding="async"
-                  initial={{ scale: 1.06 }}
-                  animate={{ scale: 1 }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-eraya-navy/60 via-eraya-navy/20 to-transparent"></div>
-
-                {/* Category Badge */}
-                <motion.div
-                  className="absolute top-6 left-6 px-4 py-2 liquid-glass hairline-border rounded-xl"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3, duration: 0.6 }}
-                >
-                  <span className="text-sm font-medium text-eraya-navy">{caseStudies[activeCase].category}</span>
-                </motion.div>
-              </div>
-
-              {/* Content Section */}
               <motion.div
-                className="p-8 lg:p-12"
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2, duration: 0.6 }}
+                className="relative overflow-hidden rounded-[40px] border border-[rgba(209,209,214,0.5)] bg-white/95 shadow-[0_28px_64px_rgba(15,23,42,0.14)] backdrop-blur-xl"
               >
-                <div className="mb-8">
-                  <h3 className="text-3xl md:text-4xl font-medium text-eraya-navy mb-4">
-                    {caseStudies[activeCase].title}
-                  </h3>
-                  <p className="text-xl text-eraya-navy/70 mb-6 font-light">
-                    {caseStudies[activeCase].subtitle}
+                <div className="relative h-[320px] w-full sm:h-[380px] lg:h-[420px]">
+                  <Image
+                    src={currentCase.image}
+                    alt={currentCase.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 60vw, 560px"
+                    priority={currentCase.id === 'you-and-me-anjuna'}
+                  />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-tr from-[rgba(22,36,81,0.22)] via-transparent to-white/35" />
+                <div className="absolute bottom-6 left-6 rounded-[24px] bg-white/90 px-5 py-3 backdrop-blur-xl">
+                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-foreground/60">
+                    {currentCase.duration}
                   </p>
+                  <p className="mt-1 text-sm font-semibold text-foreground">{currentCase.roi}</p>
+                </div>
+              </motion.div>
 
-                  {/* Services */}
-                  <div className="flex flex-wrap gap-2 mb-8">
-                    {caseStudies[activeCase].services.map((service, index) => (
-                      <span key={index} className="px-3 py-1 liquid-glass hairline-border rounded-full text-sm font-medium">
-                        {service}
-                      </span>
+              <div className="grid gap-8 lg:grid-cols-[1fr_0.9fr]">
+                <div className="space-y-6">
+                  <h3 className="text-xl font-semibold tracking-tight text-foreground">
+                    What we put into the world
+                  </h3>
+                  <p className="text-sm leading-relaxed text-foreground/65">{currentCase.description}</p>
+                  <ul className="space-y-3">
+                    {currentCase.highlights.map((highlight) => (
+                      <li key={highlight} className="flex items-start gap-3 text-sm text-foreground/70">
+                        <span className="mt-1 inline-flex h-2 w-2 rounded-full bg-secondary/50" />
+                        <span>{highlight}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="space-y-6">
+                  <h3 className="text-xl font-semibold tracking-tight text-foreground">Key metrics</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    {currentCase.metrics.map((metric) => (
+                      <div
+                        key={metric.label}
+                        className="rounded-[24px] border border-[rgba(209,209,214,0.5)] bg-white/85 p-5 shadow-[0_16px_32px_rgba(15,23,42,0.08)]"
+                      >
+                        <p className="text-2xl font-semibold tracking-tight text-foreground">{metric.value}</p>
+                        <p className="mt-2 text-xs uppercase tracking-[0.16em] text-foreground/50">{metric.label}</p>
+                      </div>
                     ))}
                   </div>
-                </div>
 
-                {/* Challenge & Solution */}
-                <div className="space-y-6 mb-8">
-                  <div>
-                    <h4 className="font-medium text-eraya-navy mb-2">Challenge</h4>
-                    <p className="text-eraya-navy/60 font-light leading-relaxed">{caseStudies[activeCase].challenge}</p>
+                  <div className="rounded-[26px] border border-[rgba(209,209,214,0.5)] bg-white/90 p-6 shadow-[0_18px_36px_rgba(15,23,42,0.1)]">
+                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-foreground/60">Services</p>
+                    <div className="mt-4 flex flex-wrap gap-2">
+                      {currentCase.services.map((service) => (
+                        <span
+                          key={service}
+                          className="rounded-full border border-[rgba(209,209,214,0.6)] bg-white px-4 py-2 text-xs font-semibold tracking-[0.08em] text-foreground/70"
+                        >
+                          {service}
+                        </span>
+                      ))}
+                    </div>
                   </div>
-                  {caseStudies[activeCase].hurdles && (
-                    <div>
-                      <h4 className="font-medium text-eraya-navy mb-2">Hurdles</h4>
-                      <p className="text-eraya-navy/60 font-light leading-relaxed">{caseStudies[activeCase].hurdles}</p>
-                    </div>
-                  )}
-                  {caseStudies[activeCase].solution && (
-                    <div>
-                      <h4 className="font-medium text-eraya-navy mb-2">Solution</h4>
-                      <p className="text-eraya-navy/60 font-light leading-relaxed">{caseStudies[activeCase].solution}</p>
-                    </div>
-                  )}
                 </div>
+              </div>
 
-                {/* Key Metrics */}
-                <div className="grid grid-cols-2 gap-4 mb-8">
-                  {Object.entries(caseStudies[activeCase].metrics).map(([key, value], index) => (
-                    <div key={index} className="text-center p-4 liquid-glass hairline-border rounded-xl">
-                      <div className="text-2xl font-medium text-eraya-navy mb-1">{value}</div>
-                      <div className="text-xs text-eraya-navy/60 capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</div>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Duration & ROI */}
-                <div className="flex items-center justify-between text-sm text-eraya-navy/60 mb-8">
-                  <span><strong>Duration:</strong> {caseStudies[activeCase].duration}</span>
-                  <span><strong>ROI:</strong> {caseStudies[activeCase].roi}</span>
-                </div>
-
-                <motion.button
-                  className="liquid-button text-white px-8 py-4 rounded-2xl font-medium group w-full inline-flex items-center justify-center"
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                <Button asChild size="lg" className="group w-full sm:w-auto justify-center">
+                  <Link href="#contact" className="inline-flex items-center gap-3">
+                    Plan a similar launch
+                    <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  </Link>
+                </Button>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="lg"
+                  className="inline-flex items-center justify-center gap-3 text-foreground/70 w-full sm:w-auto"
                 >
-                  View Full Case Study
-                  <ArrowUpRight className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
-                </motion.button>
-              </motion.div>
-            </div>
-          </motion.div>
-        </AnimatePresence>
-
-        {/* Before/After Comparison */}
-        <motion.div
-          className="mt-16 liquid-card rounded-3xl p-8 lg:p-12"
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-        >
-          <h3 className="text-3xl font-light text-eraya-navy mb-8 text-center">Results Comparison</h3>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-            {/* Before */}
-            <motion.div
-              className="text-center"
-              initial={{ opacity: 0, x: -50 }}
-              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -50 }}
-              transition={{ delay: 1.4, duration: 0.6 }}
-            >
-              <h4 className="text-2xl font-medium text-eraya-navy mb-6">Before</h4>
-              <div className="space-y-4">
-                {Object.entries(caseStudies[activeCase].beforeAfter.before).map(([key, value], index) => (
-                  <motion.div
-                    key={index}
-                    className="flex justify-between items-center p-4 liquid-glass rounded-xl"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.5 + index * 0.1, duration: 0.4 }}
-                  >
-                    <span className="capitalize font-medium text-eraya-navy">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
-                    <span className="text-eraya-navy/60">{value}</span>
-                  </motion.div>
-                ))}
+                  <Award className="h-5 w-5 text-secondary/70" />
+                  Download credentials deck
+                </Button>
               </div>
-            </motion.div>
-
-            {/* After */}
-            <motion.div
-              className="text-center"
-              initial={{ opacity: 0, x: 50 }}
-              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-              transition={{ delay: 1.4, duration: 0.6 }}
-            >
-              <h4 className="text-2xl font-medium text-eraya-navy mb-6">After</h4>
-              <div className="space-y-4">
-                {Object.entries(caseStudies[activeCase].beforeAfter.after).map(([key, value], index) => (
-                  <motion.div
-                    key={index}
-                    className="flex justify-between items-center p-4 liquid-glass rounded-xl"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 1.5 + index * 0.1, duration: 0.4 }}
-                  >
-                    <span className="capitalize font-medium text-eraya-navy">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
-                    <span className="text-eraya-navy font-medium">{value}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Results List */}
-        <motion.div
-          className="mt-16 liquid-card rounded-3xl p-8 lg:p-12"
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ delay: 1.6, duration: 0.8 }}
-        >
-          <h3 className="text-3xl font-light text-eraya-navy mb-8 text-center">Key Results Achieved</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {caseStudies[activeCase].results.map((result, index) => (
-              <motion.div
-                key={index}
-                className="flex items-start space-x-3 p-4 liquid-glass rounded-xl"
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 1.8 + index * 0.1, duration: 0.4 }}
-                whileHover={{ x: 5, scale: 1.02 }}
-              >
-                <motion.div
-                  className="w-2 h-2 bg-eraya-beige rounded-full mt-2 flex-shrink-0"
-                  whileHover={{ scale: 1.5 }}
-                />
-                <span className="text-eraya-navy/70 font-light leading-relaxed">{result}</span>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-
-        {/* CTA Section */}
-        <motion.div
-          className="text-center mt-20"
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ delay: 2, duration: 0.8 }}
-        >
-          <motion.div
-            className="liquid-glass rounded-3xl p-12 max-w-4xl mx-auto"
-            whileHover={{ scale: 1.02 }}
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-          >
-            <div className="flex items-center justify-center mb-6">
-              <TrendingUp className="w-8 h-8 text-eraya-navy/60 mr-3" />
-              <Target className="w-8 h-8 text-eraya-navy/60" />
-            </div>
-            <h3 className="text-3xl md:text-4xl font-light text-eraya-navy mb-6">
-              Ready to achieve similar results?
-            </h3>
-            <p className="text-lg text-eraya-navy/60 mb-8 font-light leading-relaxed">
-              Let's discuss how we can create a customized strategy for your business growth.
-            </p>
-            <motion.button
-              className="liquid-button text-white px-8 py-4 rounded-2xl font-medium group text-lg inline-flex items-center"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Start your success story
-              <ArrowUpRight className="ml-3 h-5 w-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
-            </motion.button>
-          </motion.div>
-        </motion.div>
+            </motion.article>
+          </AnimatePresence>
+        </div>
       </div>
     </section>
   );
 };
 
 export default CaseStudiesSection;
+
+

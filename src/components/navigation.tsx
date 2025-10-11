@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Menu, X, ArrowUpRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
+import { Button } from "./ui/button";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -59,15 +60,15 @@ const Navigation = () => {
         left: 0,
         right: 0,
         zIndex: 50,
-        backgroundColor: scrolled ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(20px)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid transparent',
-        boxShadow: scrolled ? '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)' : 'none'
+        backgroundColor: scrolled ? 'rgba(245, 245, 247, 0.92)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(24px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(24px)' : 'none',
+        borderBottom: scrolled ? '1px solid rgba(209, 209, 214, 0.6)' : '1px solid transparent',
+        boxShadow: scrolled ? '0 18px 32px rgba(15, 23, 42, 0.08)' : 'none'
       }}
     >
       <div className="container-modern">
-        <div className="flex justify-between items-center h-20">
+        <div className="flex items-center justify-between py-5 lg:py-6">
           {/* Logo */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -113,10 +114,10 @@ const Navigation = () => {
               >
                 <Link
                   href={item.href}
-                  className="relative text-sm font-medium text-eraya-navy/80 hover:text-eraya-navy transition-all duration-300 group"
+                  className="relative text-[15px] font-medium text-foreground/70 hover:text-foreground transition-all duration-300 group cursor-pointer"
                 >
                   {item.name}
-                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-eraya-navy transition-all duration-300 group-hover:w-full"></span>
+                  <span className="absolute -bottom-1 left-0 h-0.5 w-0 bg-primary/70 transition-all duration-300 group-hover:w-full"></span>
                 </Link>
               </motion.div>
             ))}
@@ -127,19 +128,21 @@ const Navigation = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Link
-                href="#contact"
-                className="liquid-button text-white px-6 py-3 rounded-xl font-medium group inline-flex items-center"
-              >
-                Get Started
-                <ArrowUpRight className="ml-2 h-4 w-4 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
-              </Link>
+              <Button asChild size="sm" className="group">
+                <Link
+                  href="#contact"
+                  className="inline-flex items-center gap-2 cursor-pointer"
+                >
+                  Get Started
+                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                </Link>
+              </Button>
             </motion.div>
           </motion.div>
 
           {/* Mobile menu button */}
           <motion.button
-            className="lg:hidden p-3 bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl transition-all duration-300 hover:bg-white/20"
+            className="lg:hidden p-3 rounded-[20px] bg-white/80 border border-[rgba(209,209,214,0.6)] shadow-[0_12px_28px_rgba(0,0,0,0.12)] transition-all duration-300 hover:-translate-y-0.5"
             onClick={() => setIsOpen(!isOpen)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -156,7 +159,7 @@ const Navigation = () => {
                   exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <X className="h-6 w-6 text-eraya-navy" />
+                  <X className="h-6 w-6 text-foreground" />
                 </motion.div>
               ) : (
                 <motion.div
@@ -166,7 +169,7 @@ const Navigation = () => {
                   exit={{ rotate: -90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Menu className="h-6 w-6 text-eraya-navy" />
+                  <Menu className="h-6 w-6 text-foreground" />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -183,7 +186,7 @@ const Navigation = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "-100%", opacity: 0 }}
             transition={{ duration: 0.4, ease: [0.42, 0, 0.58, 1] }}
-            className="fixed inset-0 z-50 bg-white/90 backdrop-blur-lg lg:hidden flex flex-col items-center justify-center space-y-8 p-6"
+            className="fixed inset-0 z-50 bg-[#f5f5f7]/95 backdrop-blur-3xl border-b border-[rgba(209,209,214,0.6)] lg:hidden flex flex-col items-center justify-center space-y-8 p-6"
           >
             {navItems.map((item) => (
               <motion.div
@@ -196,7 +199,7 @@ const Navigation = () => {
               >
                 <Link
                   href={item.href}
-                  className="block text-2xl font-medium text-eraya-navy hover:text-eraya-navy/70 transition-all duration-300"
+                  className="block text-2xl font-semibold text-foreground hover:text-foreground/70 transition-all duration-300 cursor-pointer"
                   onClick={() => setIsOpen(false)}
                 >
                   {item.name}
@@ -211,14 +214,16 @@ const Navigation = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Link
-                href="#contact"
-                className="liquid-button text-white px-8 py-4 rounded-xl font-medium text-lg group inline-flex items-center justify-center"
-                onClick={() => setIsOpen(false)}
-              >
-                Get Started
-                <ArrowUpRight className="ml-2 h-5 w-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
-              </Link>
+              <Button asChild size="lg" className="group w-full justify-center">
+                <Link
+                  href="#contact"
+                  className="inline-flex items-center gap-3 cursor-pointer"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Get Started
+                  <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                </Link>
+              </Button>
             </motion.div>
           </motion.div>
         )}
@@ -228,3 +233,4 @@ const Navigation = () => {
 };
 
 export default Navigation;
+

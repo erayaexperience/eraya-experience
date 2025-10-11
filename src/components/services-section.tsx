@@ -10,10 +10,12 @@ import {
   ArrowUpRight,
   Zap
 } from 'lucide-react';
+import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import Heading from './ui/heading';
 import Badge from './ui/badge';
+import { Button } from './ui/button';
 
 const ServicesSection = () => {
   const ref = useRef(null);
@@ -104,11 +106,11 @@ const ServicesSection = () => {
 
   return (
     <section id="services" className="section-padding relative overflow-hidden" ref={ref}>
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
+      <div
+        className="pointer-events-none absolute inset-0"
         style={{
           background:
-            'radial-gradient(60% 40% at 80% 0%, rgba(214,182,133,0.12), transparent 60%), radial-gradient(60% 40% at 0% 100%, rgba(22,36,81,0.10), transparent 60%)'
+            'radial-gradient(60% 40% at 80% 0%, rgba(214,182,133,0.18), transparent 60%), radial-gradient(60% 40% at 0% 100%, rgba(22,36,81,0.1), transparent 60%)',
         }}
         aria-hidden
       />
@@ -121,14 +123,17 @@ const ServicesSection = () => {
           animate={isInView ? 'visible' : 'hidden'}
         >
           <motion.div variants={itemVariants} className="mb-6">
-            <Badge icon={<Zap className="w-4 h-4 mr-2 text-eraya-navy/60" />}>Our Services</Badge>
+            <Badge icon={<Zap className="mr-2 h-4 w-4 text-secondary/70" />} className="mx-auto">
+              Our Services
+            </Badge>
           </motion.div>
           <Heading
             as="h2"
-            before="Use our expert services to "
-            gradient="kick boost"
-            after=" your brand"
-            subtitle="A focused suite of services to shape exceptional brand experiences."
+            before="A focused suite of services for "
+            gradient="modern brands"
+            after=" to feel effortless."
+            className="mx-auto max-w-3xl"
+            subtitle="Strategy, craft, and production shaped by Apple's Human Interface principles."
           />
         </motion.div>
 
@@ -141,44 +146,52 @@ const ServicesSection = () => {
           {services.map((service, index) => (
             <motion.article
               key={index}
-              className="group liquid-card glass-noise rounded-3xl overflow-hidden cursor-pointer focus-within:ring-2 focus-within:ring-eraya-navy/20 focus-within:outline-none"
+              className="group flex h-full flex-col overflow-hidden rounded-3xl liquid-card glass-noise cursor-pointer focus-within:outline-none focus-within:ring-2 focus-within:ring-primary/20"
               variants={cardVariants}
               whileHover={{ y: -6 }}
               whileTap={{ scale: 0.99 }}
               role="region"
               aria-labelledby={`service-${index}`}
             >
-              <div className="relative h-44 md:h-48 overflow-hidden">
-                <motion.img
-                  src={service.image}
-                  alt=""
-                  className="w-full h-full object-cover"
-                  whileHover={{ scale: 1.06 }}
-                  transition={{ duration: 0.6, ease: 'easeOut' }}
-                />
+              <motion.div
+                className="relative h-44 md:h-48 overflow-hidden"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.4, ease: 'easeOut' }}
+              >
+                <div className="absolute inset-0">
+                  <Image
+                    src={service.image}
+                    alt={service.title}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 33vw"
+                  />
+                </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-white/70 via-white/10 to-transparent" />
 
                 <div className="absolute top-5 left-5 w-11 h-11 liquid-glass hairline-border rounded-xl flex items-center justify-center">
-                  <service.icon className="w-5 h-5 text-eraya-navy" />
+                  <service.icon className="h-5 w-5 text-secondary" />
                 </div>
 
                 <div className="absolute top-5 right-5 w-9 h-9 liquid-glass hairline-border rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <ArrowUpRight className="w-4 h-4 text-eraya-navy" />
+                  <ArrowUpRight className="h-4 w-4 text-secondary" />
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="p-6 md:p-7">
-                <h3 id={`service-${index}`} className="text-xl md:text-2xl font-medium text-eraya-navy mb-3">
+              <div className="flex flex-1 flex-col justify-between p-6 md:p-7">
+                <div className="space-y-4">
+                  <h3 id={`service-${index}`} className="text-xl font-semibold text-foreground md:text-2xl">
                   {service.title}
-                </h3>
-                <p className="text-eraya-navy/60 font-light leading-relaxed mb-5">
-                  {service.description}
-                </p>
+                  </h3>
+                  <p className="text-sm leading-relaxed text-foreground/65 md:text-base">
+                    {service.description}
+                  </p>
+                </div>
 
-                <ul className="space-y-2">
+                <ul className="mt-4 space-y-2">
                   {service.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center text-sm text-eraya-navy/60">
-                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-eraya-beige mr-3" />
+                    <li key={featureIndex} className="flex items-center text-sm text-foreground/60">
+                      <span className="mr-3 inline-block h-1.5 w-1.5 rounded-full bg-primary/40" />
                       {feature}
                     </li>
                   ))}
@@ -195,22 +208,23 @@ const ServicesSection = () => {
           transition={{ delay: 0.6, duration: 0.6 }}
         >
           <motion.div
-            className="liquid-glass hairline-border rounded-3xl p-8 md:p-12 max-w-3xl md:max-w-4xl mx-auto"
+            className="liquid-glass hairline-border mx-auto max-w-3xl rounded-3xl p-8 md:max-w-4xl md:p-12"
             whileHover={{ scale: 1.01 }}
             transition={{ type: 'spring', stiffness: 250, damping: 28 }}
           >
-            <h3 className="text-2xl md:text-4xl font-light text-eraya-navy mb-4">Let’s build something meaningful</h3>
-            <p className="text-base md:text-lg text-eraya-navy/60 mb-6 md:mb-8 font-light">
-              Tell us your goals. We’ll bring the craft.
+            <h3 className="mb-4 text-2xl font-semibold text-foreground md:text-4xl">Let&apos;s build something meaningful</h3>
+            <p className="mb-6 text-base leading-relaxed text-foreground/65 md:mb-8 md:text-lg">
+              Tell us your goals. We&apos;ll bring the craft.
             </p>
-            <motion.button
-              className="liquid-button text-white px-7 md:px-8 py-3.5 md:py-4 rounded-2xl font-medium group text-base md:text-lg inline-flex items-center"
+            <motion.div
               whileHover={{ y: -1 }}
               whileTap={{ scale: 0.98 }}
             >
-              Start your project
-              <ArrowUpRight className="ml-3 h-5 w-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
-            </motion.button>
+              <Button type="button" size="lg" className="group inline-flex items-center gap-3 w-full sm:w-auto justify-center">
+                Start your project
+                <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+              </Button>
+            </motion.div>
           </motion.div>
         </motion.div>
       </div>
