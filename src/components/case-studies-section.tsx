@@ -1,237 +1,167 @@
 "use client";
 
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowUpRight, Award } from 'lucide-react';
-import { motion, AnimatePresence, useInView } from 'framer-motion';
-import Heading from './ui/heading';
-import Badge from './ui/badge';
+import { ArrowRight, Award } from 'lucide-react';
 import { Button } from './ui/button';
 import { cn } from '@/lib/utils';
 import { caseStudies } from '@/data/case-studies';
 
 const CaseStudiesSection = () => {
-  const sectionRef = useRef<HTMLElement | null>(null);
-  const isInView = useInView(sectionRef, { once: true, margin: '-120px' });
   const [activeCase, setActiveCase] = useState(0);
-
   const currentCase = caseStudies[activeCase];
-  const caseProgress = ((activeCase + 1) / caseStudies.length) * 100;
 
   return (
-    <section
-      ref={sectionRef}
-      id="case-studies"
-      className="section-shell relative overflow-hidden bg-gradient-to-b from-white via-[#f5f5f7] to-white"
-    >
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute inset-x-0 top-20 h-[320px] bg-[radial-gradient(circle_at_top,_rgba(214,182,133,0.2),_transparent_70%)]" />
-      </div>
+    <section id="case-studies" className="bg-white py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-6 lg:px-12">
+        <div className="grid gap-16 lg:grid-cols-[0.8fr_1.2fr]">
 
-      <div className="container-modern relative z-10 py-28">
-        <div className="grid gap-16 lg:grid-cols-[0.9fr_1.1fr]">
-          <motion.div
-            className="space-y-8"
-            initial={{ opacity: 0, y: 40 }}
-            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <Badge className="w-fit">Case Studies</Badge>
-            <Heading
-              as="h2"
-              center={false}
-              before="Proof that human-first craft drives"
-              gradient="measurable movement"
-              after="for ambitious brands."
-              className="max-w-xl"
-            />
-            <p className="max-w-xl text-base leading-relaxed text-foreground/65">
-              Each engagement pairs Apple&apos;s Human Interface principles with operational clarity. Tap a case to explore
-              the orchestration and the numbers.
-            </p>
+          {/* Left Column - List */}
+          <div className="space-y-10">
+            <div>
+              <span className="inline-block rounded-full border border-[#e5e5e7] bg-[#f9f9f9] px-4 py-2 text-xs font-medium uppercase tracking-wider text-gray-600 mb-6">
+                Case Studies
+              </span>
+              <h2 className="text-3xl font-semibold text-gray-900 sm:text-4xl">
+                Proof that craft drives growth
+              </h2>
+              <p className="mt-4 text-lg text-gray-600 leading-relaxed">
+                Each engagement pairs strategic clarity with premium execution. Select a case to explore the details.
+              </p>
+            </div>
 
-            <motion.div
-              className="mt-8 flex items-center gap-6 rounded-[28px] border border-[rgba(209,209,214,0.55)] bg-white/85 p-6 shadow-[0_22px_48px_rgba(15,23,42,0.08)] backdrop-blur-xl"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-              transition={{ delay: 0.2, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <div className="flex items-center gap-4">
-                <span className="flex h-12 w-12 items-center justify-center rounded-full bg-secondary/90 text-base font-semibold text-white shadow-[0_12px_26px_rgba(22,36,81,0.35)]">
-                  {String(activeCase + 1).padStart(2, '0')}
-                </span>
-                <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/50">
-                    Live spotlight
-                  </p>
-                  <p className="text-sm font-semibold text-foreground/75">{currentCase.title}</p>
-                </div>
-              </div>
-              <div className="ml-auto flex flex-col items-end gap-2 text-xs uppercase tracking-[0.22em] text-foreground/45">
-                <span>Progress</span>
-                <div className="relative h-1.5 w-36 overflow-hidden rounded-full bg-foreground/10">
-                  <span
-                    className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-primary via-secondary to-secondary/80 transition-all duration-500"
-                    style={{ width: `${caseProgress}%` }}
-                  />
-                </div>
-                <span>
-                  {activeCase + 1} / {caseStudies.length}
-                </span>
-              </div>
-            </motion.div>
-
-            <div className="mt-12 space-y-3">
+            <div className="space-y-3">
               {caseStudies.map((item, index) => {
                 const isActive = index === activeCase;
                 return (
-                  <motion.button
+                  <button
                     key={item.id}
                     onClick={() => setActiveCase(index)}
                     className={cn(
-                      'w-full rounded-[26px] border border-[rgba(209,209,214,0.65)] bg-white/85 px-6 py-5 text-left transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-[0_20px_48px_rgba(15,23,42,0.12)] focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
-                      isActive &&
-                        'border-transparent bg-primary text-white shadow-[0_28px_56px_rgba(22,36,81,0.32)] hover:shadow-[0_32px_72px_rgba(22,36,81,0.35)]'
+                      'w-full rounded-xl border px-6 py-5 text-left transition-all duration-200',
+                      isActive
+                        ? 'border-[#162451] bg-[#162451] text-white shadow-md'
+                        : 'border-[#e5e5e7] bg-white text-gray-900 hover:border-gray-300 hover:bg-gray-50'
                     )}
-                    aria-pressed={isActive}
                   >
-                    <div className="flex items-center justify-between gap-6">
+                    <div className="flex items-center justify-between">
                       <div>
-                        <p
-                          className={cn(
-                            'text-xs font-semibold uppercase tracking-[0.16em]',
-                            isActive ? 'text-white/70' : 'text-foreground/50'
-                          )}
-                        >
+                        <p className={cn(
+                          'text-xs font-medium uppercase tracking-wider',
+                          isActive ? 'text-white/70' : 'text-gray-500'
+                        )}>
                           {item.category}
                         </p>
-                        <p
-                          className={cn(
-                            'mt-2 text-lg font-semibold tracking-tight',
-                            isActive ? 'text-white' : 'text-foreground'
-                          )}
-                        >
+                        <p className="mt-1 text-lg font-semibold">
                           {item.title}
                         </p>
                       </div>
-                      <ArrowUpRight
-                        className={cn(
-                          'h-5 w-5 transition-transform duration-300',
-                          isActive ? 'text-white' : 'text-secondary/70'
-                        )}
-                      />
+                      <ArrowRight className={cn(
+                        'h-5 w-5',
+                        isActive ? 'text-white' : 'text-gray-400'
+                      )} />
                     </div>
-                    <p
-                      className={cn(
-                        'mt-3 text-sm leading-relaxed',
-                        isActive ? 'text-white/80' : 'text-foreground/60'
-                      )}
-                    >
-                      {item.subtitle}
-                    </p>
-                  </motion.button>
+                  </button>
                 );
               })}
             </div>
-          </motion.div>
+          </div>
 
-          <AnimatePresence mode="wait">
-            <motion.article
-              key={currentCase.id}
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -40 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="space-y-10"
-            >
-              <motion.div
-                className="relative overflow-hidden rounded-[40px] border border-[rgba(209,209,214,0.5)] bg-white/95 shadow-[0_28px_64px_rgba(15,23,42,0.14)] backdrop-blur-xl"
-              >
-                <div className="relative h-[320px] w-full sm:h-[380px] lg:h-[420px]">
-                  <Image
-                    src={currentCase.image}
-                    alt={currentCase.title}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 60vw, 560px"
-                    priority={currentCase.id === 'you-and-me-anjuna'}
-                  />
+          {/* Right Column - Detail View */}
+          <div className="relative">
+            <div className="overflow-hidden rounded-2xl border border-[#e5e5e7] bg-white">
+              {/* Image */}
+              <div className="relative h-[300px] sm:h-[400px]">
+                <Image
+                  src={currentCase.image}
+                  alt={currentCase.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 60vw, 800px"
+                />
+                <div className="absolute bottom-4 left-4 rounded-lg bg-white/95 px-4 py-2 text-sm font-medium text-gray-900 shadow-sm">
+                  {currentCase.roi}
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-tr from-[rgba(22,36,81,0.22)] via-transparent to-white/35" />
-                <div className="absolute bottom-6 left-6 rounded-[24px] bg-white/90 px-5 py-3 backdrop-blur-xl">
-                  <p className="text-xs font-semibold uppercase tracking-[0.16em] text-foreground/60">
-                    {currentCase.duration}
-                  </p>
-                  <p className="mt-1 text-sm font-semibold text-foreground">{currentCase.roi}</p>
-                </div>
-              </motion.div>
+              </div>
 
-              <div className="grid gap-8 lg:grid-cols-[1fr_0.9fr]">
-                <div className="space-y-6">
-                  <h3 className="text-xl font-semibold tracking-tight text-foreground">
-                    What we put into the world
-                  </h3>
-                  <p className="text-sm leading-relaxed text-foreground/65">{currentCase.description}</p>
-                  <ul className="space-y-3">
-                    {currentCase.highlights.map((highlight) => (
-                      <li key={highlight} className="flex items-start gap-3 text-sm text-foreground/70">
-                        <span className="mt-1 inline-flex h-2 w-2 rounded-full bg-secondary/50" />
-                        <span>{highlight}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
+              {/* Content */}
+              <div className="p-8">
+                <div className="grid gap-10 lg:grid-cols-2">
+                  <div className="space-y-6">
+                    <h3 className="text-xl font-semibold text-gray-900">
+                      The Challenge & Solution
+                    </h3>
+                    <p className="text-sm leading-relaxed text-gray-600">
+                      {currentCase.description}
+                    </p>
 
-                <div className="space-y-6">
-                  <h3 className="text-xl font-semibold tracking-tight text-foreground">Key metrics</h3>
-                  <div className="grid grid-cols-2 gap-4">
-                    {currentCase.metrics.map((metric) => (
-                      <div
-                        key={metric.label}
-                        className="rounded-[24px] border border-[rgba(209,209,214,0.5)] bg-white/85 p-5 shadow-[0_16px_32px_rgba(15,23,42,0.08)]"
-                      >
-                        <p className="text-2xl font-semibold tracking-tight text-foreground">{metric.value}</p>
-                        <p className="mt-2 text-xs uppercase tracking-[0.16em] text-foreground/50">{metric.label}</p>
-                      </div>
-                    ))}
+                    <div className="space-y-3">
+                      <p className="text-xs font-medium uppercase tracking-wider text-gray-400">
+                        Highlights
+                      </p>
+                      <ul className="space-y-2">
+                        {currentCase.highlights.map((highlight) => (
+                          <li key={highlight} className="flex items-start gap-2 text-sm text-gray-600">
+                            <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#d6b685]" />
+                            {highlight}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
                   </div>
 
-                  <div className="rounded-[26px] border border-[rgba(209,209,214,0.5)] bg-white/90 p-6 shadow-[0_18px_36px_rgba(15,23,42,0.1)]">
-                    <p className="text-xs font-semibold uppercase tracking-[0.16em] text-foreground/60">Services</p>
-                    <div className="mt-4 flex flex-wrap gap-2">
-                      {currentCase.services.map((service) => (
-                        <span
-                          key={service}
-                          className="rounded-full border border-[rgba(209,209,214,0.6)] bg-white px-4 py-2 text-xs font-semibold tracking-[0.08em] text-foreground/70"
-                        >
-                          {service}
-                        </span>
+                  <div className="space-y-6">
+                    <h3 className="text-xl font-semibold text-gray-900">
+                      Key Metrics
+                    </h3>
+                    <div className="grid grid-cols-2 gap-4">
+                      {currentCase.metrics.map((metric) => (
+                        <div key={metric.label} className="rounded-lg border border-[#e5e5e7] bg-[#f9f9f9] p-4">
+                          <p className="text-xl font-semibold text-[#162451]">
+                            {metric.value}
+                          </p>
+                          <p className="mt-1 text-xs text-gray-500">
+                            {metric.label}
+                          </p>
+                        </div>
                       ))}
+                    </div>
+
+                    <div>
+                      <p className="text-xs font-medium uppercase tracking-wider text-gray-400 mb-3">
+                        Services Delivered
+                      </p>
+                      <div className="flex flex-wrap gap-2">
+                        {currentCase.services.map((service) => (
+                          <span
+                            key={service}
+                            className="rounded-full border border-[#e5e5e7] bg-white px-3 py-1 text-xs font-medium text-gray-600"
+                          >
+                            {service}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                <Button asChild size="lg" className="group w-full sm:w-auto justify-center">
-                  <Link href="#contact" className="inline-flex items-center gap-3">
-                    Plan a similar launch
-                    <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                  </Link>
-                </Button>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="lg"
-                  className="inline-flex items-center justify-center gap-3 text-foreground/70 w-full sm:w-auto"
-                >
-                  <Award className="h-5 w-5 text-secondary/70" />
-                  Download credentials deck
-                </Button>
+                <div className="mt-8 flex flex-col gap-4 border-t border-[#e5e5e7] pt-8 sm:flex-row">
+                  <Button asChild size="lg">
+                    <Link href="#contact" className="inline-flex items-center gap-2">
+                      Start a similar project
+                      <ArrowRight className="h-4 w-4" />
+                    </Link>
+                  </Button>
+                  <Button variant="outline" size="lg" className="gap-2">
+                    <Award className="h-4 w-4" />
+                    Download case study
+                  </Button>
+                </div>
               </div>
-            </motion.article>
-          </AnimatePresence>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -239,5 +169,3 @@ const CaseStudiesSection = () => {
 };
 
 export default CaseStudiesSection;
-
-

@@ -66,19 +66,13 @@ const Navigation = () => {
         left: 0,
         right: 0,
         zIndex: 50,
-        backgroundColor: scrolled ? 'rgba(245, 245, 247, 0.92)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(24px)' : 'none',
-        WebkitBackdropFilter: scrolled ? 'blur(24px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(209, 209, 214, 0.6)' : '1px solid transparent',
-        boxShadow: scrolled ? '0 18px 32px rgba(15, 23, 42, 0.08)' : 'none'
+        backgroundColor: scrolled ? 'rgba(255, 255, 255, 0.98)' : 'transparent',
+        backdropFilter: scrolled ? 'blur(20px)' : 'none',
+        WebkitBackdropFilter: scrolled ? 'blur(20px)' : 'none',
+        borderBottom: scrolled ? '1px solid #e5e5e7' : '1px solid transparent',
+        boxShadow: scrolled ? '0 1px 3px rgba(0, 0, 0, 0.04)' : 'none'
       }}
     >
-      <div className="pointer-events-none absolute inset-x-0 top-0 z-50 h-0.5 overflow-hidden">
-        <motion.span
-          className="block h-full origin-left bg-gradient-to-r from-transparent via-primary to-secondary"
-          style={{ scaleX: isOpen ? 1 : scrollProgress }}
-        />
-      </div>
       <div className="container-modern">
         <div className="flex items-center justify-between py-5 lg:py-6">
           {/* Logo */}
@@ -154,7 +148,7 @@ const Navigation = () => {
 
           {/* Mobile menu button */}
           <motion.button
-            className="lg:hidden p-3 rounded-[20px] bg-white/80 border border-[rgba(209,209,214,0.6)] shadow-[0_12px_28px_rgba(0,0,0,0.12)] transition-all duration-300 hover:-translate-y-0.5"
+            className="lg:hidden p-3 rounded-[18px] liquid-glass transition-all duration-200 hover:-translate-y-0.5"
             onClick={() => setIsOpen(!isOpen)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -198,7 +192,7 @@ const Navigation = () => {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "-100%", opacity: 0 }}
             transition={{ duration: 0.4, ease: [0.42, 0, 0.58, 1] }}
-            className="fixed inset-0 z-50 bg-[#f5f5f7]/95 backdrop-blur-3xl border-b border-[rgba(209,209,214,0.6)] lg:hidden flex flex-col items-center justify-center space-y-8 p-6"
+            className="fixed inset-0 z-50 bg-white/90 backdrop-blur-3xl border-b border-white/40 lg:hidden flex flex-col items-center justify-center space-y-8 p-6"
           >
             {navItems.map((item) => (
               <motion.div

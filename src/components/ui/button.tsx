@@ -5,29 +5,29 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-[26px] text-[15px] font-semibold tracking-tight ring-offset-background transition-all duration-300 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer',
+  'inline-flex items-center justify-center whitespace-nowrap rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
   {
     variants: {
       variant: {
         default:
-          'bg-primary text-primary-foreground shadow-[0_12px_28px_rgba(214,182,133,0.32)] hover:bg-primary/90 hover:shadow-[0_18px_36px_rgba(214,182,133,0.35)]',
+          'bg-[#162451] text-white hover:bg-[#162451]/90',
         destructive:
-          'bg-destructive text-destructive-foreground shadow-[0_10px_24px_rgba(255,69,58,0.28)] hover:bg-destructive/90',
+          'bg-red-600 text-white hover:bg-red-600/90',
         outline:
-          'border border-[rgba(209,209,214,0.8)] bg-white text-foreground shadow-[0_8px_20px_rgba(0,0,0,0.08)] hover:bg-white/90',
+          'border border-[#e5e5e7] bg-white text-gray-900 hover:bg-gray-50',
         secondary:
-          'bg-secondary text-secondary-foreground shadow-[0_6px_16px_rgba(22,36,81,0.32)] hover:bg-secondary/90 hover:shadow-[0_10px_24px_rgba(22,36,81,0.35)]',
+          'bg-[#d6b685] text-[#162451] hover:bg-[#d6b685]/90',
         subtle:
-          'bg-[rgba(255,255,255,0.65)] text-foreground border border-[rgba(255,255,255,0.6)] backdrop-blur-2xl hover:bg-[rgba(255,255,255,0.8)] hover:border-[rgba(255,255,255,0.8)] shadow-[0_10px_28px_rgba(0,0,0,0.08)]',
+          'bg-gray-100 text-gray-900 hover:bg-gray-200',
         ghost:
-          'text-foreground hover:bg-[rgba(0,0,0,0.05)] hover:text-foreground/80',
-        link: 'text-secondary underline-offset-4 hover:underline decoration-2',
+          'text-gray-900 hover:bg-gray-100',
+        link: 'text-[#162451] underline-offset-4 hover:underline',
       },
       size: {
-        default: 'h-12 px-6',
-        sm: 'h-10 rounded-[24px] px-5 text-[14px]',
-        lg: 'h-14 rounded-[30px] px-10 text-base',
-        icon: 'h-12 w-12 rounded-[24px]',
+        default: 'h-11 px-6',
+        sm: 'h-9 px-4 text-sm',
+        lg: 'h-12 px-8',
+        icon: 'h-10 w-10',
       },
     },
     defaultVariants: {
@@ -39,7 +39,7 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
+  VariantProps<typeof buttonVariants> {
   asChild?: boolean;
 }
 

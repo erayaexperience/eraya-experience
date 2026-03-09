@@ -1,9 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Send, MessageCircle, Clock, CheckCircle, Instagram } from 'lucide-react';
-import Heading from './ui/heading';
-import Badge from './ui/badge';
+import { Mail, Phone, MapPin, Send, CheckCircle, Instagram } from 'lucide-react';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
@@ -81,26 +79,18 @@ const ContactSection = () => {
     'Complete Digital Marketing Package'
   ];
 
-  const assurances = [
-    'Average reply in under 2 hours',
-    'Dedicated strategist on day one',
-    'Confidential discovery call',
-  ];
-
   if (isSubmitted) {
     return (
-      <section id="contact" className="section-padding section-shell relative overflow-hidden bg-gradient-to-b from-white via-[#f5f5f7] to-white">
-        <div className="container-modern">
-          <div className="mx-auto max-w-2xl text-center">
-            <div className="rounded-[40px] border border-[rgba(209,209,214,0.6)] bg-white/95 p-12 shadow-[0_36px_90px_rgba(15,23,42,0.18)] backdrop-blur-xl">
-              <div className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-primary text-white">
-                <CheckCircle className="h-10 w-10" />
-              </div>
-              <h2 className="mb-6 text-4xl font-semibold text-foreground">Message sent successfully!</h2>
-              <p className="text-lg leading-relaxed text-foreground/65">
-                Thank you for reaching out. We will get back to you within 24 hours with a detailed response.
-              </p>
+      <section id="contact" className="bg-[#f9f9f9] py-20 lg:py-28">
+        <div className="mx-auto max-w-2xl px-6 text-center">
+          <div className="rounded-2xl border border-[#e5e5e7] bg-white p-12 shadow-sm">
+            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600">
+              <CheckCircle className="h-8 w-8" />
             </div>
+            <h2 className="mb-4 text-3xl font-semibold text-gray-900">Message sent!</h2>
+            <p className="text-lg text-gray-600">
+              Thank you for reaching out. We will get back to you within 24 hours.
+            </p>
           </div>
         </div>
       </section>
@@ -108,86 +98,55 @@ const ContactSection = () => {
   }
 
   return (
-    <section id="contact" className="section-padding section-shell relative overflow-hidden bg-gradient-to-b from-white via-[#f5f5f7] to-white">
-      {/* Background decoration */}
-      <div className="absolute left-0 top-1/4 h-96 w-96 rounded-full bg-primary/12 blur-3xl"></div>
-
-      <div className="container-modern">
-        <div className="mb-20 text-center">
-          <div className="mb-8">
-            <Badge icon={<MessageCircle className="mr-2 h-4 w-4 text-secondary/70" />} className="mx-auto">Get in touch</Badge>
-          </div>
-
-          <Heading
-            as="h2"
-            before="Got questions? "
-            gradient="Reach out."
-            subtitle="Ready to boost your brand visibility? Let's discuss how to transform your presence with Apple-aligned craft."
-          />
+    <section id="contact" className="bg-[#f9f9f9] py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-6 lg:px-12">
+        <div className="text-center mb-16">
+          <span className="inline-block rounded-full border border-[#e5e5e7] bg-white px-4 py-2 text-xs font-medium uppercase tracking-wider text-gray-600 mb-6">
+            Get in touch
+          </span>
+          <h2 className="text-3xl font-semibold text-gray-900 sm:text-4xl lg:text-5xl">
+            Let's start a conversation
+          </h2>
+          <p className="mt-4 text-lg text-gray-600">
+            Ready to boost your brand visibility? We're here to help.
+          </p>
         </div>
 
-        <div className="mx-auto mb-16 flex max-w-3xl flex-wrap justify-center gap-3">
-          {assurances.map((point) => (
-            <span
-              key={point}
-              className="inline-flex items-center gap-2 rounded-full border border-[rgba(209,209,214,0.5)] bg-white/90 px-5 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-foreground/55 shadow-[0_12px_24px_rgba(15,23,42,0.08)]"
-            >
-              <span className="h-1.5 w-1.5 rounded-full bg-secondary/40" />
-              {point}
-            </span>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
-          {/* Contact Information */}
-          <div className="space-y-8 lg:col-span-2">
+        <div className="grid gap-12 lg:grid-cols-5">
+          {/* Contact Info */}
+          <div className="lg:col-span-2 space-y-6">
             {contactInfo.map((info, index) => (
-              <div
-                key={index}
-                className="group flex items-start gap-6 rounded-[28px] border border-[rgba(209,209,214,0.5)] bg-white/90 p-6 shadow-[0_16px_32px_rgba(15,23,42,0.1)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_26px_56px_rgba(15,23,42,0.14)]"
-              >
-                <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-2xl bg-primary/12 text-secondary transition-transform duration-300 group-hover:scale-110">
+              <div key={index} className="flex items-start gap-4 rounded-xl border border-[#e5e5e7] bg-white p-6">
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-[#f9f9f9] text-[#162451]">
                   <info.icon className="h-6 w-6" />
                 </div>
                 <div>
-                  <h3 className="mb-1 text-lg font-semibold text-foreground">{info.title}</h3>
-                  <p className="mb-1 text-base font-semibold text-foreground/80">{info.details}</p>
-                  <p className="text-sm text-foreground/55">{info.description}</p>
+                  <h3 className="font-semibold text-gray-900">{info.title}</h3>
+                  <p className="font-medium text-[#162451]">{info.details}</p>
+                  <p className="text-sm text-gray-500">{info.description}</p>
                 </div>
               </div>
             ))}
-
-            {/* Quick response card */}
-            <div className="rounded-[28px] border border-[rgba(209,209,214,0.5)] bg-white/95 p-8 shadow-[0_18px_36px_rgba(15,23,42,0.12)]">
-              <div className="mb-4 flex items-center gap-3">
-                <Clock className="h-6 w-6 text-secondary/70" />
-                <h3 className="text-lg font-semibold text-foreground">Quick response</h3>
-              </div>
-              <p className="leading-relaxed text-foreground/65">
-                We typically respond within 2 hours during business hours. For urgent matters, call us directly.
-              </p>
-            </div>
           </div>
 
-          {/* Contact Form */}
+          {/* Form */}
           <div className="lg:col-span-3">
-            <div className="rounded-[40px] border border-[rgba(209,209,214,0.5)] bg-white/95 p-8 shadow-[0_28px_60px_rgba(15,23,42,0.14)] backdrop-blur-xl lg:p-12">
-              <form onSubmit={handleSubmit} className="space-y-8">
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  <div className="space-y-3">
-                    <Label htmlFor="name">Full Name *</Label>
+            <div className="rounded-2xl border border-[#e5e5e7] bg-white p-8 lg:p-10 shadow-sm">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div className="grid gap-6 md:grid-cols-2">
+                  <div className="space-y-2">
+                    <Label htmlFor="name">Full Name</Label>
                     <Input
                       id="name"
                       name="name"
-                      type="text"
                       required
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="John Doe"
                     />
                   </div>
-                  <div className="space-y-3">
-                    <Label htmlFor="email">Email Address *</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email Address</Label>
                     <Input
                       id="email"
                       name="email"
@@ -200,26 +159,25 @@ const ContactSection = () => {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-                  <div className="space-y-3">
+                <div className="grid gap-6 md:grid-cols-2">
+                  <div className="space-y-2">
                     <Label htmlFor="company">Company</Label>
                     <Input
                       id="company"
                       name="company"
-                      type="text"
                       value={formData.company}
                       onChange={handleChange}
                       placeholder="Your Company"
                     />
                   </div>
-                  <div className="space-y-3">
+                  <div className="space-y-2">
                     <Label htmlFor="service">Service Needed</Label>
                     <select
                       id="service"
                       name="service"
                       value={formData.service}
                       onChange={handleChange}
-                      className="h-12 w-full rounded-[26px] border border-[rgba(209,209,214,0.8)] bg-white/90 px-5 text-[15px] leading-tight shadow-[0_12px_26px_rgba(0,0,0,0.08)] transition-all duration-200 ease-out focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 cursor-pointer"
+                      className="flex h-11 w-full rounded-lg border border-[#e5e5e7] bg-white px-4 text-sm text-gray-900 focus:border-[#162451] focus:outline-none focus:ring-1 focus:ring-[#162451]"
                     >
                       <option value="">Select a service</option>
                       {serviceOptions.map((option, index) => (
@@ -231,36 +189,27 @@ const ContactSection = () => {
                   </div>
                 </div>
 
-                <div className="space-y-3">
-                  <Label htmlFor="message">Project Details *</Label>
+                <div className="space-y-2">
+                  <Label htmlFor="message">Project Details</Label>
                   <Textarea
                     id="message"
                     name="message"
-                    rows={6}
+                    rows={5}
                     required
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="Tell us about your project, goals, and timeline..."
+                    placeholder="Tell us about your project..."
                   />
                 </div>
 
                 <Button
                   type="submit"
                   size="lg"
-                  className="group w-full justify-center"
+                  className="w-full"
                   disabled={isSubmitting}
                 >
-                  {isSubmitting ? (
-                    <span className="inline-flex items-center gap-3">
-                      <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-                      Sending message...
-                    </span>
-                  ) : (
-                    <span className="inline-flex items-center gap-3">
-                      Send message
-                      <Send className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
-                    </span>
-                  )}
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                  {!isSubmitting && <Send className="ml-2 h-4 w-4" />}
                 </Button>
               </form>
             </div>
@@ -272,5 +221,3 @@ const ContactSection = () => {
 };
 
 export default ContactSection;
-
-

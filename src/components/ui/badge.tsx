@@ -8,16 +8,14 @@ type BadgeProps = {
   className?: string;
 };
 
-const baseBadgeClass =
-  'inline-flex items-center gap-2 px-4 sm:px-5 py-2 sm:py-2.5 rounded-full bg-white/80 border border-white/60 backdrop-blur-xl shadow-[0_8px_24px_rgba(0,0,0,0.08)]';
-
 export function Badge({ children, icon, className }: BadgeProps) {
   return (
-    <div className={cn(baseBadgeClass, className)}>
+    <div className={cn(
+      'inline-flex items-center gap-2 px-4 py-2 rounded-full border border-[#e5e5e7] bg-[#f9f9f9] text-xs font-medium uppercase tracking-wider text-gray-600',
+      className
+    )}>
       {icon}
-      <span className="text-[11px] sm:text-xs font-semibold uppercase tracking-[0.3em] text-secondary">
-        {children}
-      </span>
+      <span>{children}</span>
     </div>
   );
 }

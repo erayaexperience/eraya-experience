@@ -35,7 +35,7 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-[rgba(209,209,214,0.35)] bg-white text-foreground">
+    <footer className="border-t border-[#e5e5e7] bg-[#f9f9f9] text-foreground">
       <div className="container-modern py-16">
         <div className="grid gap-12 lg:grid-cols-[1.15fr_0.85fr]">
           <div className="space-y-8">
@@ -50,14 +50,14 @@ const Footer = () => {
 
             <div className="grid gap-4 sm:grid-cols-2">
               {contactItems.map(({ icon: Icon, label }) => (
-                <div key={label} className="flex items-center gap-3 rounded-[18px] border border-[rgba(209,209,214,0.45)] bg-white/80 px-4 py-3 shadow-[0_10px_24px_rgba(15,23,42,0.06)]">
+                <div key={label} className="flex items-center gap-3 rounded-[18px] liquid-glass px-4 py-3">
                   <Icon className="h-4 w-4 text-secondary" />
                   <span className="text-sm font-medium text-foreground/70">{label}</span>
                 </div>
               ))}
             </div>
 
-            <div className="rounded-[26px] border border-[rgba(209,209,214,0.45)] bg-white/90 p-6 shadow-[0_18px_36px_rgba(15,23,42,0.08)]">
+            <div className="rounded-[22px] liquid-card p-6">
               <h3 className="text-base font-semibold text-foreground">Let&apos;s build something unmistakable</h3>
               <p className="mt-2 text-sm text-foreground/60">
                 Tell us about the next product, platform, or campaign you want to bring to life.
@@ -94,7 +94,7 @@ const Footer = () => {
               ))}
             </div>
 
-            <div className="rounded-[24px] border border-[rgba(209,209,214,0.45)] bg-white/90 p-6 shadow-[0_16px_32px_rgba(15,23,42,0.08)]">
+            <div className="rounded-[20px] liquid-card p-6">
               <h4 className="text-sm font-semibold uppercase tracking-[0.25em] text-foreground/60">
                 Newsletter
               </h4>
@@ -126,7 +126,7 @@ const Footer = () => {
             </div>
             <Link
               href="#top"
-              className="inline-flex items-center gap-2 rounded-full border border-[rgba(209,209,214,0.45)] bg-white/80 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-foreground/60 transition-transform duration-300 hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 rounded-full liquid-glass px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-foreground/60 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(15,23,42,0.1)]"
             >
               Back to top
               <ArrowUpRight className="h-3.5 w-3.5" />

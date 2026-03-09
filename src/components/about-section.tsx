@@ -1,10 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import { motion } from 'framer-motion';
-import { Award, Users, Target, Zap, MapPin } from 'lucide-react';
-import Heading from './ui/heading';
-import Badge from './ui/badge';
+import { Award, Users, Target, MapPin } from 'lucide-react';
 
 const AboutSection = () => {
   const stats = [
@@ -58,151 +55,121 @@ const AboutSection = () => {
     'ROI Marketing',
   ];
 
-  const principles = [
-    'Audience-first storytelling',
-    'Premium craft & polish',
-    'Always-on measurement',
-    'Partnership over vendor mindset',
-  ];
-
   return (
-    <section
-      id="about"
-      className="section-padding section-shell relative overflow-hidden bg-gradient-to-b from-[#f5f5f7] via-white to-[#f5f5f7]"
-    >
-      <div className="absolute right-0 top-1/4 h-96 w-96 rounded-full bg-primary/12 blur-3xl"></div>
-
-      <div className="container-modern">
-        <div className="mb-20 text-center">
-          <div className="mb-8">
-            <Badge icon={<Zap className="mr-2 h-4 w-4 text-secondary/70" />} className="mx-auto">
-              About Eraya Experience
-            </Badge>
-          </div>
-
-          <Heading as="h2" before="KPI's about " gradient="Eraya Experience" />
+    <section id="about" className="bg-white py-20 lg:py-28">
+      <div className="mx-auto max-w-7xl px-6 lg:px-12">
+        {/* Header */}
+        <div className="text-center mb-20">
+          <span className="inline-block rounded-full border border-[#e5e5e7] bg-[#f9f9f9] px-4 py-2 text-xs font-medium uppercase tracking-wider text-gray-600 mb-6">
+            About Eraya Experience
+          </span>
+          <h2 className="text-3xl font-semibold text-gray-900 sm:text-4xl lg:text-5xl">
+            KPIs that matter
+          </h2>
         </div>
 
-        <div className="grid grid-cols-1 items-center gap-20 lg:grid-cols-2">
+        <div className="grid gap-16 lg:grid-cols-2 lg:items-center">
+          {/* Text Content */}
           <div>
-            <p className="mb-8 text-2xl leading-relaxed text-foreground md:text-3xl">
+            <p className="text-2xl font-medium leading-relaxed text-gray-900 sm:text-3xl">
               We help brands grow with social media management and influencer marketing that boost visibility.
             </p>
-            <p className="mb-12 text-base leading-relaxed text-foreground/65 md:text-lg">
+            <p className="mt-6 text-lg leading-relaxed text-gray-600">
               From eye-catching hoardings and creative photoshoots to result-driven ads and paid campaigns, we cover it all. Our B2B strategies and workshops build stronger connections, while our focus on ROI marketing ensures every effort delivers real growth.
             </p>
 
-            <div className="mb-12 flex flex-wrap gap-3">
-              {principles.map((principle) => (
-                <span
-                  key={principle}
-                  className="inline-flex items-center gap-2 rounded-full border border-[rgba(209,209,214,0.6)] bg-white/90 px-5 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-foreground/55 shadow-[0_12px_26px_rgba(15,23,42,0.08)]"
-                >
-                  <span className="h-1.5 w-1.5 rounded-full bg-secondary/50" />
-                  {principle}
-                </span>
-              ))}
-            </div>
-
-            <div className="grid grid-cols-2 gap-8 text-center sm:text-left">
+            {/* Stats Grid */}
+            <div className="mt-12 grid grid-cols-2 gap-6">
               {stats.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="group rounded-[28px] border border-[rgba(209,209,214,0.5)] bg-white/90 p-6 text-center shadow-[0_18px_40px_rgba(15,23,42,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_26px_56px_rgba(15,23,42,0.14)]"
-                >
-                  <stat.icon className="mx-auto mb-4 h-8 w-8 text-secondary/70 transition-transform duration-300 group-hover:scale-110" />
-                  <div className="mb-2 text-4xl font-semibold text-foreground transition-transform duration-300 group-hover:scale-105">
+                <div key={stat.label} className="rounded-xl border border-[#e5e5e7] bg-[#f9f9f9] p-6">
+                  <stat.icon className="h-6 w-6 text-[#162451]" />
+                  <p className="mt-4 text-3xl font-semibold text-gray-900">
                     {stat.value}
-                  </div>
-                  <div className="text-sm font-semibold text-foreground/60">{stat.label}</div>
+                  </p>
+                  <p className="mt-1 text-sm text-gray-600">
+                    {stat.label}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
 
+          {/* Image */}
           <div className="relative">
-            <motion.div className="image-reveal overflow-hidden rounded-[40px] border border-[rgba(209,209,214,0.6)] bg-white/80 shadow-[0_38px_90px_rgba(15,23,42,0.18)] backdrop-blur-xl">
-              <div className="relative h-[460px] w-full md:h-[560px]">
-                <Image
-                  src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                  alt="Eraya Experience team at work"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 520px"
-                  priority
-                />
-              </div>
-            </motion.div>
-
-            <motion.div className="floating-element absolute -bottom-8 -left-8 rounded-[24px] border border-[rgba(209,209,214,0.6)] bg-white/90 p-6 shadow-[0_20px_45px_rgba(15,23,42,0.12)] backdrop-blur-xl">
-              <div className="flex items-center gap-3">
-                <Award className="h-6 w-6 text-secondary/70" />
+            <div className="relative h-[500px] overflow-hidden rounded-2xl border border-[#e5e5e7]">
+              <Image
+                src="https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                alt="Eraya Experience team at work"
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 600px"
+              />
+            </div>
+            {/* Floating Badge */}
+            <div className="absolute -bottom-6 -left-6 rounded-xl border border-[#e5e5e7] bg-white p-6 shadow-lg hidden lg:block">
+              <div className="flex items-center gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#f9f9f9]">
+                  <MapPin className="h-6 w-6 text-[#162451]" />
+                </div>
                 <div>
-                  <div className="font-semibold text-foreground">Pan India</div>
-                  <div className="text-sm text-foreground/60">Reach & Presence</div>
+                  <p className="font-semibold text-gray-900">Pan India</p>
+                  <p className="text-sm text-gray-600">Reach & Presence</p>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
 
-        <div className="mt-24">
-          <div className="mb-16 text-center">
-            <h3 className="mb-6 text-4xl font-semibold text-foreground md:text-5xl">Our expertise</h3>
-            <p className="mx-auto max-w-2xl text-lg leading-relaxed text-foreground/60">
+        {/* Expertise */}
+        <div className="mt-32">
+          <div className="text-center mb-12">
+            <h3 className="text-3xl font-semibold text-gray-900">Our Expertise</h3>
+            <p className="mt-4 text-lg text-gray-600">
               Comprehensive digital marketing services tailored to your business needs.
             </p>
           </div>
 
-          <div className="rounded-3xl border border-[rgba(209,209,214,0.6)] bg-white/90 p-12 text-center shadow-[0_26px_60px_rgba(15,23,42,0.12)]">
-            <div className="flex flex-wrap justify-center gap-4">
-              {services.map((service) => (
-                <div
-                  key={service}
-                  className="rounded-full border border-[rgba(209,209,214,0.6)] bg-white px-6 py-3 text-sm font-semibold tracking-[0.08em] text-foreground/70 transition-transform duration-300 hover:-translate-y-0.5"
-                >
-                  {service}
-                </div>
-              ))}
-            </div>
+          <div className="flex flex-wrap justify-center gap-3">
+            {services.map((service) => (
+              <span
+                key={service}
+                className="rounded-full border border-[#e5e5e7] bg-white px-6 py-3 text-sm font-medium text-gray-700"
+              >
+                {service}
+              </span>
+            ))}
           </div>
         </div>
 
-        <div className="mt-24 text-center">
-          <h3 className="mb-6 text-4xl font-semibold text-foreground md:text-5xl">Industries we have worked in</h3>
-          <p className="mx-auto mb-16 max-w-2xl text-lg leading-relaxed text-foreground/60">
-            Our diverse portfolio spans across multiple industries, delivering tailored solutions for each sector.
-          </p>
+        {/* Industries */}
+        <div className="mt-32">
+          <div className="text-center mb-16">
+            <h3 className="text-3xl font-semibold text-gray-900">Industries We Serve</h3>
+            <p className="mt-4 text-lg text-gray-600">
+              Delivering tailored solutions across diverse sectors.
+            </p>
+          </div>
 
-          <div className="grid grid-cols-2 gap-8 text-left md:grid-cols-3">
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
             {industries.map((industry) => (
-              <motion.div
-                key={industry.name}
-                className="group modern-card h-full overflow-hidden"
-                whileHover={{ y: -6 }}
-                transition={{ duration: 0.35, ease: 'easeOut' }}
-              >
+              <div key={industry.name} className="group overflow-hidden rounded-xl border border-[#e5e5e7] bg-white">
                 <div className="relative h-48 overflow-hidden">
-                  <div className="absolute inset-0">
-                    <Image
-                      src={industry.image}
-                      alt={industry.name}
-                      fill
-                      className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
-                      sizes="(max-width: 768px) 50vw, (max-width: 1280px) 33vw, 240px"
-                    />
-                  </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-primary/25 to-transparent" />
-
+                  <Image
+                    src={industry.image}
+                    alt={industry.name}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 33vw, 400px"
+                  />
+                  <div className="absolute inset-0 bg-black/40 transition-opacity group-hover:bg-black/50" />
                   <div className="absolute inset-0 flex items-center justify-center">
                     <h4 className="text-2xl font-medium text-white">{industry.name}</h4>
                   </div>
                 </div>
-
                 <div className="p-6">
-                  <p className="text-sm leading-relaxed text-foreground/65">{industry.description}</p>
+                  <p className="text-sm text-gray-600">{industry.description}</p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
