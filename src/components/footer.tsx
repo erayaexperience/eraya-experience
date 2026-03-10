@@ -3,38 +3,7 @@ import Image from 'next/image';
 import { FiArrowUpRight, FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
 import { FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { Button } from './ui/button';
-const navColumns = [
-  {
-    title: 'Services',
-    links: [
-      { name: 'Social Media Management', href: '#services' },
-      { name: 'Influencer Marketing', href: '#services' },
-      { name: 'Performance Marketing', href: '#services' },
-      { name: 'Website & SEO', href: '#services' },
-    ],
-  },
-  {
-    title: 'Company',
-    links: [
-      { name: 'About', href: '#about' },
-      { name: 'Case Studies', href: '#case-studies' },
-      { name: 'Portfolio', href: '#portfolio' },
-      { name: 'Contact', href: '#contact' },
-    ],
-  },
-];
-
-const contactItems = [
-  { icon: FiMapPin, label: 'Porvorim, Goa' },
-  { icon: FiMail, label: 'ino.erayaexp@gmail.com' },
-  { icon: FiPhone, label: '+91 9272166475' },
-];
-
-const socialLinks = [
-  { icon: FaInstagram, href: 'https://instagram.com/erayaexperience', label: 'Instagram' },
-  { icon: FaLinkedin, href: '#', label: 'LinkedIn' },
-  { icon: FaTwitter, href: '#', label: 'Twitter' },
-];
+import { navColumns, contactItems, socialLinks } from '@/constants/footer';
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
@@ -44,7 +13,7 @@ const Footer = () => {
       <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
       <div className="absolute top-0 right-0 w-[40rem] h-[40rem] bg-primary/10 rounded-full blur-[120px] -translate-y-1/2 translate-x-1/3 pointer-events-none" />
 
-      <div className="container-modern relative z-10 pt-16 pb-8 lg:pt-20">
+      <div className="container-modern relative z-10 pt-16 pb-8 lg:pt-16">
         <div className="grid gap-12 lg:grid-cols-12 items-start">
           {/* Brand & Contact */}
           <div className="lg:col-span-4 space-y-8">
@@ -137,7 +106,7 @@ const Footer = () => {
         </div>
 
         {/* Bottom Bar */}
-        <div className="mt-16 flex flex-col items-center justify-center gap-6 border-t border-white/10 pt-6 text-sm font-light text-white/50">
+        <div className="mt-12 flex flex-col items-center justify-center gap-6 border-t border-white/10 pt-6 text-sm font-light text-white/50">
           <p>&copy; {currentYear} Eraya Experience. All rights reserved.</p>
         </div>
       </div>

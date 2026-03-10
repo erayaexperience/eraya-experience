@@ -1,9 +1,12 @@
 import Navigation from '@/components/navigation';
 import HeroSection from '@/components/hero-section';
+import AboutSection from '@/components/about-section';
+import KPIsSection from '@/components/kpis-section';
+import AchievementsSection from '@/components/achievements-section';
 import ServicesSection from '@/components/services-section';
 import CaseStudiesSection from '@/components/case-studies-section';
+import ClientsSection from '@/components/clients-section';
 import PortfolioSection from '@/components/portfolio-section';
-import AboutSection from '@/components/about-section';
 import ContactSection from '@/components/contact-section';
 import Footer from '@/components/footer';
 
@@ -42,10 +45,13 @@ export default function Home() {
       <main id="top" className="min-h-screen bg-white">
         <Navigation />
         <HeroSection />
+        <KPIsSection />
+        <AboutSection />
+        <AchievementsSection />
         <ServicesSection />
         <CaseStudiesSection />
+        <ClientsSection />
         <PortfolioSection />
-        <AboutSection />
         <ContactSection />
         <Footer />
       </main>

@@ -9,6 +9,8 @@ import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { SectionHeading } from './ui/section-heading';
 
+import { contactInfo, serviceOptions } from '@/constants/contact';
+
 const ContactSection = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -44,37 +46,6 @@ const ContactSection = () => {
     }));
   };
 
-  const contactInfo = [
-    {
-      icon: FiMapPin,
-      title: 'Location',
-      details: 'Porvorim, Goa',
-      description: 'Visit our studio'
-    },
-    {
-      icon: FiMail,
-      title: 'Email',
-      details: 'ino.erayaexp@gmail.com',
-      description: 'Drop us a line anytime'
-    },
-    {
-      icon: FiPhone,
-      title: 'Phone',
-      details: '+91 9272166475',
-      description: 'Call us for immediate support'
-    }
-  ];
-
-  const serviceOptions = [
-    'Social Media Management',
-    'Influencer Marketing',
-    'Hoardings & Offline Marketing',
-    'Performance Marketing',
-    'Website/SEO Development',
-    'Event Curation/B2B',
-    'Complete Digital Marketing Package'
-  ];
-
   return (
     <section id="contact" className="relative bg-background py-(--spacing-section) overflow-hidden">
       {/* Decorative Orbs */}
@@ -82,22 +53,24 @@ const ContactSection = () => {
       <div className="absolute bottom-[20%] -left-24 w-[400px] h-[400px] bg-secondary/5 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="container-modern relative z-10">
+        {/* Header - Split Layout matching Services */}
+        <SectionHeading
+          subtitle="Get in Touch"
+          title={
+            <>
+              Let&apos;s build your <br />
+              <span className="italic font-serif text-primary">digital legacy</span>
+            </>
+          }
+          description="We&apos;re currently accepting new projects for Q2 2026. Reach out today and let&apos;s discuss how we can scale your brand together."
+          layout="split"
+          className="mb-12 md:mb-16"
+        />
+
         <div className="grid lg:grid-cols-12 gap-16 lg:gap-24 items-start">
 
           {/* Left Column - Context & Info */}
           <div className="lg:col-span-5 flex flex-col">
-            <SectionHeading
-              subtitle="Get in Touch"
-              title={
-                <>
-                  Let's build your <br />
-                  <span className="italic font-serif text-primary">digital legacy</span>
-                </>
-              }
-              description="We're currently accepting new projects for Q2 2026. Reach out today and let's discuss how we can scale your brand together. Reach out today and let's discuss how we can scale your brand together."
-              layout="stacked"
-              className="mb-8"
-            />
 
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -182,7 +155,7 @@ const ContactSection = () => {
                     </div>
                     <h3 className="text-3xl font-semibold text-secondary mb-4 tracking-tight">Strategy Received.</h3>
                     <p className="text-foreground/60 font-light leading-relaxed max-w-xs mx-auto">
-                      Our team is analyzing your request. You'll receive a detailed proposal within 24 hours.
+                      Our team is analyzing your request. You&apos;ll receive a detailed proposal within 24 hours.
                     </p>
                   </motion.div>
                 ) : (
@@ -203,8 +176,6 @@ const ContactSection = () => {
                         onChange={handleChange}
                         placeholder="Ex. Alexander Rivera"
                         label="Full Name"
-                        labelClassName="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1"
-                        className="h-14 rounded-2xl border-border bg-background/30 px-6 focus-visible:ring-primary/20 focus-visible:border-primary transition-all text-base placeholder:text-foreground/30"
                       />
                       <Input
                         id="email"
@@ -215,8 +186,6 @@ const ContactSection = () => {
                         onChange={handleChange}
                         placeholder="hello@company.com"
                         label="Email Address"
-                        labelClassName="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1"
-                        className="h-14 rounded-2xl border-border bg-background/30 px-6 focus-visible:ring-primary/20 focus-visible:border-primary transition-all text-base placeholder:text-foreground/30"
                       />
                     </div>
 
@@ -228,8 +197,6 @@ const ContactSection = () => {
                         onChange={handleChange}
                         placeholder="Your Organization"
                         label="Company / Brand"
-                        labelClassName="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1"
-                        className="h-14 rounded-2xl border-border bg-background/30 px-6 focus-visible:ring-primary/20 focus-visible:border-primary transition-all text-base placeholder:text-foreground/30"
                       />
                       <div className="flex flex-col gap-2">
                         <label htmlFor="service" className="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1">Service Required</label>
@@ -239,7 +206,7 @@ const ContactSection = () => {
                             name="service"
                             value={formData.service}
                             onChange={handleChange}
-                            className="flex h-14 w-full appearance-none rounded-2xl border border-border bg-background/30 px-6 text-base text-foreground focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/5 transition-all"
+                            className="flex h-11 w-full appearance-none rounded-2xl border border-border bg-background/30 px-6 text-base text-foreground focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/5 transition-all"
                           >
                             <option value="" disabled>Select Expertise</option>
                             {serviceOptions.map((option, index) => (

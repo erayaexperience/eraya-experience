@@ -182,7 +182,7 @@ const PortfolioSection = () => {
 
         {/* Clients */}
         <motion.div
-          className="mt-(--spacing-inner) border-t border-border/60 pt-16"
+          className="mt-(--spacing-inner) border-t border-border/60 pt-12"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
