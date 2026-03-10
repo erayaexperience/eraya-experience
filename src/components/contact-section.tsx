@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from 'react';
-import { Mail, Phone, MapPin, Send, CheckCircle, Instagram } from 'lucide-react';
+import { Mail, Phone, MapPin, CheckCircle, Instagram, ChevronDown, ArrowRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { Label } from './ui/label';
+import { SectionHeading } from './ui/section-heading';
 
 const ContactSection = () => {
   const [formData, setFormData] = useState({
@@ -32,7 +34,7 @@ const ContactSection = () => {
     setTimeout(() => {
       setIsSubmitted(false);
       setFormData({ name: '', email: '', company: '', service: '', message: '' });
-    }, 3000);
+    }, 5000);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -47,7 +49,7 @@ const ContactSection = () => {
       icon: MapPin,
       title: 'Location',
       details: 'Porvorim, Goa',
-      description: 'Visit our office'
+      description: 'Visit our studio'
     },
     {
       icon: Mail,
@@ -79,140 +81,200 @@ const ContactSection = () => {
     'Complete Digital Marketing Package'
   ];
 
-  if (isSubmitted) {
-    return (
-      <section id="contact" className="bg-[#f9f9f9] py-20 lg:py-28">
-        <div className="mx-auto max-w-2xl px-6 text-center">
-          <div className="rounded-2xl border border-[#e5e5e7] bg-white p-12 shadow-sm">
-            <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600">
-              <CheckCircle className="h-8 w-8" />
-            </div>
-            <h2 className="mb-4 text-3xl font-semibold text-gray-900">Message sent!</h2>
-            <p className="text-lg text-gray-600">
-              Thank you for reaching out. We will get back to you within 24 hours.
-            </p>
-          </div>
-        </div>
-      </section>
-    );
-  }
-
   return (
-    <section id="contact" className="bg-[#f9f9f9] py-20 lg:py-28">
-      <div className="mx-auto max-w-7xl px-6 lg:px-12">
-        <div className="text-center mb-16">
-          <span className="inline-block rounded-full border border-[#e5e5e7] bg-white px-4 py-2 text-xs font-medium uppercase tracking-wider text-gray-600 mb-6">
-            Get in touch
-          </span>
-          <h2 className="text-3xl font-semibold text-gray-900 sm:text-4xl lg:text-5xl">
-            Let's start a conversation
-          </h2>
-          <p className="mt-4 text-lg text-gray-600">
-            Ready to boost your brand visibility? We're here to help.
-          </p>
-        </div>
+    <section id="contact" className="relative bg-background py-(--spacing-section) overflow-hidden">
+      {/* Decorative Orbs */}
+      <div className="absolute top-[10%] -right-24 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[20%] -left-24 w-[400px] h-[400px] bg-secondary/5 rounded-full blur-[100px] pointer-events-none" />
 
-        <div className="grid gap-12 lg:grid-cols-5">
-          {/* Contact Info */}
-          <div className="lg:col-span-2 space-y-6">
-            {contactInfo.map((info, index) => (
-              <div key={index} className="flex items-start gap-4 rounded-xl border border-[#e5e5e7] bg-white p-6">
-                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-lg bg-[#f9f9f9] text-[#162451]">
-                  <info.icon className="h-6 w-6" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900">{info.title}</h3>
-                  <p className="font-medium text-[#162451]">{info.details}</p>
-                  <p className="text-sm text-gray-500">{info.description}</p>
-                </div>
+      <div className="container-modern relative z-10">
+        <div className="grid lg:grid-cols-12 gap-16 lg:gap-24 items-start">
+
+          {/* Left Column - Context & Info */}
+          <div className="lg:col-span-5 flex flex-col pt-4">
+            <SectionHeading
+              subtitle="Get in Touch"
+              title={
+                <>
+                  Let's build your <br />
+                  <span className="italic font-serif text-primary">digital legacy</span>
+                </>
+              }
+              description="We're currently accepting new projects for Q2 2026. Reach out today and let's discuss how we can scale your brand together. Reach out today and let's discuss how we can scale your brand together."
+              layout="stacked"
+              className="mb-8"
+            />
+
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
+
+              {/* Info Grid */}
+              <div className="grid gap-8">
+                {contactInfo.map((info, index) => (
+                  <motion.div
+                    key={index}
+                    className="flex items-center gap-6 group"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white border border-border/40 shadow-sm text-secondary transition-all duration-500 group-hover:bg-secondary group-hover:text-white group-hover:shadow-md">
+                      <info.icon className="h-6 w-6" strokeWidth={1.5} />
+                    </div>
+                    <div>
+                      <p className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 mb-1">{info.title}</p>
+                      <p className="text-lg font-medium text-secondary">{info.details}</p>
+                    </div>
+                  </motion.div>
+                ))}
               </div>
-            ))}
+            </motion.div>
           </div>
 
-          {/* Form */}
-          <div className="lg:col-span-3">
-            <div className="rounded-2xl border border-[#e5e5e7] bg-white p-8 lg:p-10 shadow-sm">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label htmlFor="name">Full Name</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      required
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder="John Doe"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email Address</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      value={formData.email}
-                      onChange={handleChange}
-                      placeholder="john@company.com"
-                    />
-                  </div>
-                </div>
+          {/* Right Column - Premium Form Card */}
+          <div className="lg:col-span-7">
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative rounded-[40px] bg-white border border-border/40 shadow-lg p-8 sm:p-12 lg:p-14 overflow-hidden"
+            >
+              {/* Subtle accent border at top */}
+              <div className="absolute top-0 left-1/4 right-1/4 h-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
 
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <Label htmlFor="company">Company</Label>
-                    <Input
-                      id="company"
-                      name="company"
-                      value={formData.company}
-                      onChange={handleChange}
-                      placeholder="Your Company"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="service">Service Needed</Label>
-                    <select
-                      id="service"
-                      name="service"
-                      value={formData.service}
-                      onChange={handleChange}
-                      className="flex h-11 w-full rounded-lg border border-[#e5e5e7] bg-white px-4 text-sm text-gray-900 focus:border-[#162451] focus:outline-none focus:ring-1 focus:ring-[#162451]"
+              <AnimatePresence mode="wait">
+                {isSubmitted ? (
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    className="flex flex-col items-center justify-center text-center py-20"
+                  >
+                    <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-primary">
+                      <CheckCircle className="h-12 w-12" strokeWidth={1.2} />
+                    </div>
+                    <h3 className="text-3xl font-semibold text-secondary mb-4 tracking-tight">Strategy Received.</h3>
+                    <p className="text-foreground/60 font-light leading-relaxed max-w-xs mx-auto">
+                      Our team is analyzing your request. You'll receive a detailed proposal within 24 hours.
+                    </p>
+                  </motion.div>
+                ) : (
+                  <motion.form
+                    key="form"
+                    onSubmit={handleSubmit}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="space-y-10"
+                  >
+                    <div className="grid sm:grid-cols-2 gap-8">
+                      <div className="space-y-4">
+                        <Label htmlFor="name" className="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1">Full Name</Label>
+                        <Input
+                          id="name"
+                          name="name"
+                          required
+                          value={formData.name}
+                          onChange={handleChange}
+                          placeholder="Ex. Alexander Rivera"
+                          className="h-14 rounded-2xl border-border/80 bg-background/30 px-6 focus-visible:ring-primary/20 focus-visible:border-primary transition-all text-base placeholder:text-foreground/30"
+                        />
+                      </div>
+                      <div className="space-y-4">
+                        <Label htmlFor="email" className="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1">Email Address</Label>
+                        <Input
+                          id="email"
+                          name="email"
+                          type="email"
+                          required
+                          value={formData.email}
+                          onChange={handleChange}
+                          placeholder="hello@company.com"
+                          className="h-14 rounded-2xl border-border/80 bg-background/30 px-6 focus-visible:ring-primary/20 focus-visible:border-primary transition-all text-base placeholder:text-foreground/30"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="grid sm:grid-cols-2 gap-8">
+                      <div className="space-y-4">
+                        <Label htmlFor="company" className="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1">Company / Brand</Label>
+                        <Input
+                          id="company"
+                          name="company"
+                          value={formData.company}
+                          onChange={handleChange}
+                          placeholder="Your Organization"
+                          className="h-14 rounded-2xl border-border/80 bg-background/30 px-6 focus-visible:ring-primary/20 focus-visible:border-primary transition-all text-base placeholder:text-foreground/30"
+                        />
+                      </div>
+                      <div className="space-y-4">
+                        <Label htmlFor="service" className="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1">Service Required</Label>
+                        <div className="relative group/select">
+                          <select
+                            id="service"
+                            name="service"
+                            value={formData.service}
+                            onChange={handleChange}
+                            className="flex h-14 w-full appearance-none rounded-2xl border border-border/80 bg-background/30 px-6 text-base text-foreground focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/5 transition-all"
+                          >
+                            <option value="" disabled>Select Expertise</option>
+                            {serviceOptions.map((option, index) => (
+                              <option key={index} value={option}>{option}</option>
+                            ))}
+                          </select>
+                          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-foreground/40 group-hover/select:text-primary transition-colors">
+                            <ChevronDown className="h-4 w-4" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <Label htmlFor="message" className="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1">Project Objective</Label>
+                      <Textarea
+                        id="message"
+                        name="message"
+                        rows={5}
+                        required
+                        value={formData.message}
+                        onChange={handleChange}
+                        placeholder="Briefly describe your goals, timeline, and budget range..."
+                        className="rounded-2xl border-border/80 bg-background/30 p-6 focus-visible:ring-primary/20 focus-visible:border-primary transition-all text-base resize-none placeholder:text-foreground/30"
+                      />
+                    </div>
+
+                    <Button
+                      type="submit"
+                      className="w-full h-16 rounded-2xl text-base font-semibold tracking-wide bg-secondary hover:bg-secondary/90 shadow-lg shadow-secondary/20 group"
+                      disabled={isSubmitting}
                     >
-                      <option value="">Select a service</option>
-                      {serviceOptions.map((option, index) => (
-                        <option key={index} value={option}>
-                          {option}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
+                      {isSubmitting ? (
+                        <span className="flex items-center gap-3">
+                          <span className="h-5 w-5 rounded-full border-2 border-white/20 border-t-white animate-spin" />
+                          Processing Application...
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-2">
+                          Initiate Growth Strategy
+                          <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                        </span>
+                      )}
+                    </Button>
 
-                <div className="space-y-2">
-                  <Label htmlFor="message">Project Details</Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    rows={5}
-                    required
-                    value={formData.message}
-                    onChange={handleChange}
-                    placeholder="Tell us about your project..."
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  size="lg"
-                  className="w-full"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
-                  {!isSubmitting && <Send className="ml-2 h-4 w-4" />}
-                </Button>
-              </form>
-            </div>
+                    <p className="text-center text-[10px] text-foreground/40 uppercase tracking-[0.2em] font-medium">
+                      Privacy First. Your data is encrypted and confidential.
+                    </p>
+                  </motion.form>
+                )}
+              </AnimatePresence>
+            </motion.div>
           </div>
         </div>
       </div>

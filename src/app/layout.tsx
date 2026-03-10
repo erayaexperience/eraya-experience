@@ -1,29 +1,70 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
+import { Playfair_Display } from 'next/font/google';
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  variable: '--font-playfair',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  title: 'Eraya Experience - Digital Marketing Agency | Social Media & Influencer Marketing',
-  description: 'We help brands grow with social media management and influencer marketing that boost visibility. From creative campaigns to ROI-driven results across Pan India.',
-  keywords: 'digital marketing, social media management, influencer marketing, brand growth, ROI marketing, Goa marketing agency',
-  authors: [{ name: 'Eraya Experience' }],
+  metadataBase: new URL('https://erayaexperience.com'),
+  title: {
+    default: 'Eraya Experience | Digital Marketing Agency Goa',
+    template: '%s | Eraya Experience',
+  },
+  description: 'We craft human-first brand experiences that merge strategy, storytelling, and premium execution. From social media management to Pan-India ROI marketing.',
+  keywords: [
+    'digital marketing agency',
+    'social media management Goa',
+    'influencer marketing India',
+    'performance marketing',
+    'creative agency Goa',
+    'brand strategy',
+    'ROI marketing',
+  ],
+  authors: [{ name: 'Eraya Experience', url: 'https://erayaexperience.com' }],
+  creator: 'Eraya Experience',
+  publisher: 'Eraya Experience',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: '/',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   icons: {
     icon: '/logo-small.png',
     shortcut: '/logo-small.png',
     apple: '/logo-small.png',
   },
   openGraph: {
-    title: 'Eraya Experience - Digital Marketing Agency',
-    description: 'We help brands grow with social media management and influencer marketing that boost visibility.',
+    title: 'Eraya Experience | Digital Marketing Agency Goa',
+    description: 'We craft human-first brand experiences that merge strategy, storytelling, and premium execution.',
     url: 'https://erayaexperience.com',
     siteName: 'Eraya Experience',
-    locale: 'en_US',
+    locale: 'en_IN',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Eraya Experience - Digital Marketing Agency',
-    description: 'We help brands grow with social media management and influencer marketing that boost visibility.',
+    title: 'Eraya Experience | Digital Marketing Agency Goa',
+    description: 'We craft human-first brand experiences that merge strategy, storytelling, and premium execution.',
+    creator: '@erayaexperience',
   },
 };
 
@@ -34,7 +75,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={GeistSans.className}>{children}</body>
+      <body className={`${GeistSans.variable} ${playfair.variable} font-sans antialiased text-foreground bg-background selection:bg-primary/30 selection:text-foreground`}>
+        {children}
+      </body>
     </html>
   );
 }

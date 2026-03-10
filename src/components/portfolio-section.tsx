@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import { ArrowRight, Award } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from './ui/button';
+import { SectionHeading } from './ui/section-heading';
 
 const PortfolioSection = () => {
   const [activeFilter, setActiveFilter] = useState('All');
@@ -25,7 +27,7 @@ const PortfolioSection = () => {
       image: 'https://images.pexels.com/photos/3184298/pexels-photo-3184298.jpeg?auto=compress&cs=tinysrgb&w=1200',
       category: 'Influencer Marketing',
       metrics: { followers: '+108', walkin: '+20%', reach: '50M+' },
-      tags: ['Entertainment', 'Influencer Marketing']
+      tags: ['Entertainment', 'Influencer']
     },
     {
       id: 3,
@@ -34,12 +36,12 @@ const PortfolioSection = () => {
       image: 'https://images.pexels.com/photos/3184360/pexels-photo-3184360.jpeg?auto=compress&cs=tinysrgb&w=1200',
       category: 'Digital Marketing',
       metrics: { views: '+20k%', reach: '57k', visits: '+19%' },
-      tags: ['Hospitality', 'Digital Marketing']
+      tags: ['Hospitality', 'Digital']
     },
     {
       id: 4,
       title: 'F&B Industry Campaigns',
-      description: 'Multiple restaurant and cafe marketing campaigns across Goa',
+      description: 'Multiple restaurant and cafe marketing campaigns strategically executed across Goa',
       image: 'https://images.pexels.com/photos/3184431/pexels-photo-3184431.jpeg?auto=compress&cs=tinysrgb&w=1200',
       category: 'Social Media',
       metrics: { campaigns: '25+', reach: '10M+', conversion: '+180%' },
@@ -48,16 +50,16 @@ const PortfolioSection = () => {
     {
       id: 5,
       title: 'Healthcare Sector',
-      description: 'Digital presence building for healthcare and wellness brands',
+      description: 'Digital presence building and trust cultivation for healthcare and wellness brands',
       image: 'https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1200',
       category: 'Digital Marketing',
       metrics: { awareness: '+300%', leads: '+250%', trust: '95%' },
-      tags: ['Healthcare', 'Trust Building']
+      tags: ['Healthcare', 'Corporate']
     },
     {
       id: 6,
       title: 'Fashion & Lifestyle',
-      description: 'Brand building and influencer partnerships for fashion brands',
+      description: 'Premium brand building and influencer partnerships for bespoke fashion brands',
       image: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1200',
       category: 'Influencer Marketing',
       metrics: { partnerships: '50+', reach: '25M+', sales: '+220%' },
@@ -72,129 +74,134 @@ const PortfolioSection = () => {
     : projects.filter(project => project.category === activeFilter);
 
   return (
-    <section id="portfolio" className="bg-[#f9f9f9] py-20 lg:py-28">
-      <div className="mx-auto max-w-7xl px-6 lg:px-12">
+    <section id="portfolio" className="bg-white py-(--spacing-section)">
+      <div className="container-modern">
         {/* Header */}
-        <div className="text-center mb-16">
-          <span className="inline-block rounded-full border border-[#e5e5e7] bg-white px-4 py-2 text-xs font-medium uppercase tracking-wider text-gray-600 mb-6">
-            Our Portfolio
-          </span>
-          <h2 className="text-3xl font-semibold text-gray-900 sm:text-4xl lg:text-5xl">
-            Selected client work
-          </h2>
-          <p className="mt-4 mx-auto max-w-2xl text-lg text-gray-600">
-            A cross-industry look at our most impactful launches spanning hospitality, entertainment, healthcare, and lifestyle.
-          </p>
+        <SectionHeading
+          subtitle="Our Portfolio"
+          title={
+            <>
+              Selected <span className="text-primary italic font-serif">client work</span>
+            </>
+          }
+          description="A cross-industry look at our most impactful launches spanning hospitality, entertainment, healthcare, and lifestyle."
+          layout="center"
+        />
 
-          {/* Filters */}
-          <div className="mt-8 flex flex-wrap justify-center gap-2">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveFilter(category)}
-                className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${activeFilter === category
-                    ? 'bg-[#162451] text-white'
-                    : 'bg-white text-gray-600 hover:bg-gray-100 border border-[#e5e5e7]'
-                  }`}
-              >
-                {category}
-              </button>
-            ))}
-          </div>
-        </div>
+        {/* Filters */}
+        <motion.div
+          className="mt-(--spacing-component) flex flex-wrap justify-center gap-3"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setActiveFilter(category)}
+              className={`relative px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${activeFilter === category
+                ? 'text-white shadow-md'
+                : 'text-foreground/70 hover:text-foreground hover:bg-foreground/5 bg-white border border-border/50'
+                }`}
+            >
+              {activeFilter === category && (
+                <motion.div
+                  layoutId="activeFilter"
+                  className="absolute inset-0 bg-secondary rounded-full -z-10"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
+              {category}
+            </button>
+          ))}
+        </motion.div>
 
         {/* Projects Grid */}
-        <div className="grid gap-8 md:grid-cols-2">
-          {filteredProjects.map((project) => (
-            <article
-              key={project.id}
-              className="group overflow-hidden rounded-2xl border border-[#e5e5e7] bg-white transition-shadow hover:shadow-md"
-            >
-              {/* Image */}
-              <div className="relative h-64 overflow-hidden sm:h-72">
-                <Image
-                  src={project.image}
-                  alt={project.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 600px"
-                />
-                <div className="absolute top-4 left-4 flex flex-wrap gap-2">
-                  {project.tags.map((tag) => (
-                    <span key={tag} className="rounded-full bg-white/95 px-3 py-1 text-xs font-medium text-gray-900 shadow-sm">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Content */}
-              <div className="p-6 sm:p-8">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900">
-                      {project.title}
-                    </h3>
-                    <p className="mt-2 text-sm text-gray-600 leading-relaxed">
-                      {project.description}
-                    </p>
+        <motion.div
+          layout
+          className="grid gap-8 md:grid-cols-2"
+        >
+          <AnimatePresence mode="popLayout">
+            {filteredProjects.map((project, index) => (
+              <motion.article
+                key={project.id}
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.5, delay: index * 0.05 }}
+                className="group flex flex-col overflow-hidden rounded-[24px] border border-border/40 bg-white hover:shadow-2xl hover:shadow-primary/5 transition-shadow duration-500"
+              >
+                {/* Image */}
+                <div className="relative h-64 overflow-hidden sm:h-[400px]">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 600px"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
+                  <div className="absolute top-6 left-6 flex flex-wrap gap-2">
+                    {project.tags.map((tag) => (
+                      <span key={tag} className="rounded-full bg-white/20 backdrop-blur-md border border-white/20 px-4 py-1.5 text-xs font-medium text-white shadow-sm tracking-wide">
+                        {tag}
+                      </span>
+                    ))}
                   </div>
                 </div>
 
-                {/* Metrics */}
-                <div className="mt-6 grid grid-cols-3 gap-4 border-t border-[#e5e5e7] pt-6">
-                  {Object.entries(project.metrics).map(([key, value]) => (
-                    <div key={key}>
-                      <p className="text-lg font-semibold text-[#162451]">
-                        {value}
-                      </p>
-                      <p className="text-xs capitalize text-gray-500">
-                        {key}
-                      </p>
-                    </div>
-                  ))}
+                {/* Content */}
+                <div className="flex flex-col flex-grow p-8 sm:p-10">
+                  <h3 className="text-2xl font-medium text-foreground mb-3 group-hover:text-secondary transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-foreground/70 font-light leading-relaxed mb-8 flex-grow">
+                    {project.description}
+                  </p>
+
+                  {/* Metrics */}
+                  <div className="grid grid-cols-3 gap-6 border-t border-border/60 pt-6">
+                    {Object.entries(project.metrics).map(([key, value]) => (
+                      <div key={key}>
+                        <p className="text-xl font-medium tracking-tight text-secondary">
+                          {value}
+                        </p>
+                        <p className="text-xs uppercase tracking-wider text-foreground/50 mt-1">
+                          {key}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </article>
-          ))}
-        </div>
+              </motion.article>
+            ))}
+          </AnimatePresence>
+        </motion.div>
 
         {/* Clients */}
-        <div className="mt-24 border-t border-[#e5e5e7] pt-16">
-          <p className="text-center text-sm font-medium text-gray-500 mb-8">
+        <motion.div
+          className="mt-(--spacing-inner) border-t border-border/60 pt-16"
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+        >
+          <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-foreground/40 mb-10">
             Trusted by leading brands across industries
           </p>
-          <div className="flex flex-wrap justify-center gap-x-8 gap-y-4 opacity-60 grayscale transition-all hover:opacity-100 hover:grayscale-0">
+          <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 opacity-50 grayscale transition-all duration-500 hover:opacity-100 hover:grayscale-0">
             {[
               'Amazon', 'Myntra', 'Hotel DevDeep', 'Beach Walk', 'Xavier\'s Cafe', 'Mission Rabies',
               'Snow Park Goa', 'Koleso Lounge', 'Optica Indira', 'Thunder World', 'Carlito\'s', 'Dreamdays'
             ].map((client) => (
-              <span key={client} className="text-lg font-semibold text-gray-800">
+              <span key={client} className="text-xl font-serif italic text-foreground/80 hover:text-primary transition-colors">
                 {client}
               </span>
             ))}
           </div>
-        </div>
-
-        {/* CTA */}
-        <div className="mt-20 text-center">
-          <div className="mx-auto max-w-3xl rounded-2xl bg-[#162451] p-10 text-white sm:p-16">
-            <h3 className="text-2xl font-semibold sm:text-3xl">
-              Ready to join our success stories?
-            </h3>
-            <p className="mt-4 text-white/80 text-lg">
-              Let's create something extraordinary together and transform your business.
-            </p>
-            <div className="mt-8">
-              <Button asChild size="lg" className="bg-white text-[#162451] hover:bg-white/90">
-                <a href="#contact" className="inline-flex items-center gap-2">
-                  Start your project
-                  <ArrowRight className="h-4 w-4" />
-                </a>
-              </Button>
-            </div>
-          </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

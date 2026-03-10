@@ -57,9 +57,6 @@ const Navigation = () => {
   return (
     <motion.nav
       className="fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-out"
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, ease: [0.42, 0, 0.58, 1] }}
       style={{
         position: 'fixed',
         top: 0,
@@ -76,11 +73,7 @@ const Navigation = () => {
       <div className="container-modern">
         <div className="flex items-center justify-between py-5 lg:py-6">
           {/* Logo */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-          >
+          <motion.div>
             <Link href="/" className="flex items-center">
               {/* Desktop Logo */}
               <Image
@@ -106,16 +99,10 @@ const Navigation = () => {
           {/* Desktop Navigation */}
           <motion.div
             className="hidden lg:flex items-center space-x-12"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
           >
             {navItems.map((item, index) => (
               <motion.div
                 key={item.name}
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 + index * 0.1, duration: 0.6 }}
                 whileHover={{ y: -2 }}
               >
                 <Link
@@ -128,13 +115,10 @@ const Navigation = () => {
               </motion.div>
             ))}
             <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.8, duration: 0.6 }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Button asChild size="sm" className="group">
+              <Button asChild className="group">
                 <Link
                   href="#contact"
                   className="inline-flex items-center gap-2 cursor-pointer"
@@ -152,9 +136,6 @@ const Navigation = () => {
             onClick={() => setIsOpen(!isOpen)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
           >
             <AnimatePresence mode="wait">
               {isOpen ? (
@@ -220,7 +201,7 @@ const Navigation = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Button asChild size="lg" className="group w-full justify-center">
+              <Button asChild className="group w-full justify-center">
                 <Link
                   href="#contact"
                   className="inline-flex items-center gap-3 cursor-pointer"

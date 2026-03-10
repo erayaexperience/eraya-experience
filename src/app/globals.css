@@ -23,8 +23,21 @@
   --color-eraya-navy: rgb(var(--eraya-navy));
   --color-eraya-beige: rgb(var(--eraya-beige));
   --color-eraya-black: rgb(var(--eraya-black));
-  --font-sans: "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  --font-sans: var(--font-geist-sans), "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-serif: var(--font-playfair), "Georgia", "Times New Roman", serif;
   --font-mono: "SFMono-Regular", ui-monospace, "SFMono-Regular", "Menlo", "Monaco", "Consolas", monospace;
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.02);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.03);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.06);
+
+  /* Fluid Semantic Spacing - Pro Way */
+  --spacing-section: clamp(5rem, 10vw, 10rem);
+  --spacing-inner: clamp(3rem, 6vw, 6rem);
+  --spacing-component: clamp(2rem, 4vw, 4rem);
 }
 
 body {
@@ -40,11 +53,6 @@ body {
   --glass-border: rgba(0, 0, 0, 0.06);
   --glass-inner: rgba(255, 255, 255, 0.95);
   --glass-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
-  --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.1);
 }
 
 @layer base {
@@ -70,7 +78,6 @@ body {
     --ring: 214 182 133;
     --radius: 20px;
 
-    /* Legacy tokens mapped to Apple system palette */
     --eraya-navy: 22 36 81;
     --eraya-beige: 214 182 133;
     --eraya-black: 29 29 31;
@@ -90,6 +97,21 @@ body {
     overflow-x: hidden;
     background: #ffffff;
     color: #1d1d1f;
+  }
+
+  @media (min-width: 1024px) {
+    body {
+      cursor: url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 2L22 17L15 17L7 25V2Z' fill='%23D6B685' stroke='white' stroke-width='1'/%3E%3C/svg%3E") 7 2, auto !important;
+    }
+
+    a,
+    button,
+    [role="button"],
+    .cursor-pointer,
+    input[type="submit"],
+    input[type="button"] {
+      cursor: url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 32 32' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 2C10 1.44772 10.4477 1 11 1C11.5523 1 12 1.44772 12 2V11H14V5C14 4.44772 14.4477 4 15 4C15.5523 4 16 4.44772 16 5V11H18V7C18 6.44772 18.4477 6 19 6C19.5523 6 20 6.44772 20 7V11H22V10C22 9.44772 22.4477 9 23 9C23.5523 9 24 9.44772 24 10V18C24 22 21 25 17 25H16C12 25 9 22 9 18V2' fill='%23D6B685' stroke='white' stroke-width='1.5'/%3E%3C/svg%3E") 10 1, pointer !important;
+    }
   }
 
   h1,
@@ -115,23 +137,23 @@ body {
     background: #ffffff;
     border: 1px solid #e5e5e7;
     border-radius: var(--radius);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
   }
 
   .liquid-glass:hover {
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
   }
 
   .liquid-card {
     background: #ffffff;
     border: 1px solid #e5e5e7;
     border-radius: 16px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.03);
     transition: box-shadow 0.2s ease, transform 0.2s ease;
   }
 
   .liquid-card:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
 
   /* Optional subtle glass noise without heavy assets */
@@ -159,7 +181,7 @@ body {
     background: rgb(var(--primary));
     border: none;
     border-radius: calc(var(--radius) - 6px);
-    box-shadow: 0 4px 12px rgba(214, 182, 133, 0.25);
+    box-shadow: 0 4px 12px rgba(214, 182, 133, 0.1);
     position: relative;
     overflow: hidden;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -168,7 +190,7 @@ body {
 
   .liquid-button:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(214, 182, 133, 0.3);
+    box-shadow: 0 6px 16px rgba(214, 182, 133, 0.15);
   }
 
   .morphing-blob {
@@ -200,41 +222,43 @@ body {
 
   .modern-button-primary {
     @apply bg-primary text-primary-foreground hover:bg-primary/90;
-    box-shadow: 0 4px 12px rgba(214, 182, 133, 0.2);
+    box-shadow: 0 4px 12px rgba(214, 182, 133, 0.1);
   }
 
   .modern-button-primary:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(214, 182, 133, 0.25);
+    box-shadow: 0 6px 16px rgba(214, 182, 133, 0.15);
   }
 
   .modern-button-secondary {
     @apply bg-secondary text-secondary-foreground border border-secondary/80 hover:bg-secondary/90;
-    box-shadow: 0 4px 12px rgba(22, 36, 81, 0.15);
+    box-shadow: 0 4px 12px rgba(22, 36, 81, 0.08);
   }
 
   .modern-button-secondary:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(22, 36, 81, 0.2);
+    box-shadow: 0 6px 16px rgba(22, 36, 81, 0.1);
   }
 
   .modern-card {
     background: #ffffff;
     border-radius: 16px;
     border: 1px solid #e5e5e7;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.02);
     transition: all 0.2s ease;
   }
 
   .modern-card:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
   }
 
-  .section-padding {
-    @apply py-24 md:py-32 lg:py-40;
+  .modern-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
   }
 
+  /* Standard Layout Utility */
   .container-modern {
     @apply max-w-7xl mx-auto px-6 md:px-8 lg:px-12;
   }
@@ -329,15 +353,15 @@ body {
   }
 
   .neon-glow {
-    box-shadow: 0 4px 16px rgba(214, 182, 133, 0.2);
+    box-shadow: 0 4px 16px rgba(214, 182, 133, 0.08);
   }
 
   .soft-glow {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
   }
 
   .premium-shadow {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.04);
   }
 
   .interactive-scale {

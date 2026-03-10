@@ -1,167 +1,189 @@
 "use client";
 
-import { useState } from 'react';
+import { useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, Award } from 'lucide-react';
+import { ArrowRight, ChevronLeft, ChevronRight, Share2, TrendingUp } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Navigation, EffectFade } from 'swiper/modules';
 import { Button } from './ui/button';
-import { cn } from '@/lib/utils';
 import { caseStudies } from '@/data/case-studies';
+import { SectionHeading } from './ui/section-heading';
+
+// Swiper styles
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/effect-fade';
 
 const CaseStudiesSection = () => {
-  const [activeCase, setActiveCase] = useState(0);
-  const currentCase = caseStudies[activeCase];
+  const swiperRef = useRef<any>(null);
 
   return (
-    <section id="case-studies" className="bg-white py-20 lg:py-28">
-      <div className="mx-auto max-w-7xl px-6 lg:px-12">
-        <div className="grid gap-16 lg:grid-cols-[0.8fr_1.2fr]">
+    <section id="case-studies" className="relative bg-background py-(--spacing-section) overflow-hidden">
+      {/* Background Decorative Element */}
+      <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
+      <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-secondary/5 blur-3xl" />
 
-          {/* Left Column - List */}
-          <div className="space-y-10">
-            <div>
-              <span className="inline-block rounded-full border border-[#e5e5e7] bg-[#f9f9f9] px-4 py-2 text-xs font-medium uppercase tracking-wider text-gray-600 mb-6">
-                Case Studies
-              </span>
-              <h2 className="text-3xl font-semibold text-gray-900 sm:text-4xl">
-                Proof that craft drives growth
-              </h2>
-              <p className="mt-4 text-lg text-gray-600 leading-relaxed">
-                Each engagement pairs strategic clarity with premium execution. Select a case to explore the details.
-              </p>
-            </div>
+      <div className="container-modern relative z-10">
+        <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
 
-            <div className="space-y-3">
-              {caseStudies.map((item, index) => {
-                const isActive = index === activeCase;
-                return (
-                  <button
-                    key={item.id}
-                    onClick={() => setActiveCase(index)}
-                    className={cn(
-                      'w-full rounded-xl border px-6 py-5 text-left transition-all duration-200',
-                      isActive
-                        ? 'border-[#162451] bg-[#162451] text-white shadow-md'
-                        : 'border-[#e5e5e7] bg-white text-gray-900 hover:border-gray-300 hover:bg-gray-50'
-                    )}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <p className={cn(
-                          'text-xs font-medium uppercase tracking-wider',
-                          isActive ? 'text-white/70' : 'text-gray-500'
-                        )}>
-                          {item.category}
-                        </p>
-                        <p className="mt-1 text-lg font-semibold">
-                          {item.title}
-                        </p>
-                      </div>
-                      <ArrowRight className={cn(
-                        'h-5 w-5',
-                        isActive ? 'text-white' : 'text-gray-400'
-                      )} />
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
+          {/* Left Column - Heading & Navigation */}
+          <div className="lg:col-span-4 flex flex-col justify-center">
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <SectionHeading
+                subtitle="Case Studies"
+                title={
+                  <>
+                    Proof that craft <br />
+                    <span className="text-primary italic font-serif">drives growth</span>
+                  </>
+                }
+                description="Strategy meets premium execution. Explore how we transform vision into market-leading impact."
+                layout="stacked"
+                className="mb-8"
+              />
 
-          {/* Right Column - Detail View */}
-          <div className="relative">
-            <div className="overflow-hidden rounded-2xl border border-[#e5e5e7] bg-white">
-              {/* Image */}
-              <div className="relative h-[300px] sm:h-[400px]">
-                <Image
-                  src={currentCase.image}
-                  alt={currentCase.title}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1280px) 60vw, 800px"
-                />
-                <div className="absolute bottom-4 left-4 rounded-lg bg-white/95 px-4 py-2 text-sm font-medium text-gray-900 shadow-sm">
-                  {currentCase.roi}
-                </div>
+              <div className="hidden lg:flex items-center gap-4 mt-8">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => swiperRef.current?.slidePrev()}
+                  className="rounded-full bg-white shadow-sm hover:bg-secondary hover:text-white transition-all duration-300"
+                  aria-label="Previous slide"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => swiperRef.current?.slideNext()}
+                  className="rounded-full bg-white shadow-sm hover:bg-secondary hover:text-white transition-all duration-300"
+                  aria-label="Next slide"
+                >
+                  <ChevronRight className="h-5 w-5" />
+                </Button>
+                <div className="h-px w-24 bg-border/40 ml-4" />
               </div>
 
-              {/* Content */}
-              <div className="p-8">
-                <div className="grid gap-10 lg:grid-cols-2">
-                  <div className="space-y-6">
-                    <h3 className="text-xl font-semibold text-gray-900">
-                      The Challenge & Solution
-                    </h3>
-                    <p className="text-sm leading-relaxed text-gray-600">
-                      {currentCase.description}
-                    </p>
+              <div className="mt-12 hidden lg:block">
+                <Button asChild variant="link" className="px-0 text-secondary hover:text-primary transition-colors gap-2 group">
+                  <Link href="#contact">
+                    Scale your brand with us
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </Button>
+              </div>
+            </motion.div>
+          </div>
 
-                    <div className="space-y-3">
-                      <p className="text-xs font-medium uppercase tracking-wider text-gray-400">
-                        Highlights
-                      </p>
-                      <ul className="space-y-2">
-                        {currentCase.highlights.map((highlight) => (
-                          <li key={highlight} className="flex items-start gap-2 text-sm text-gray-600">
-                            <span className="mt-1.5 h-1.5 w-1.5 rounded-full bg-[#d6b685]" />
-                            {highlight}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
+          {/* Right Column - Swiper Carousel */}
+          <div className="lg:col-span-8">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.98 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative rounded-[32px] bg-white shadow-lg overflow-hidden"
+            >
+              <Swiper
+                onSwiper={(swiper) => {
+                  swiperRef.current = swiper;
+                }}
+                modules={[Autoplay, Navigation, EffectFade]}
+                spaceBetween={30}
+                slidesPerView={1}
+                autoplay={{ delay: 7000, disableOnInteraction: false }}
+                loop={true}
+                grabCursor={true}
+                className="case-study-swiper"
+              >
+                {caseStudies.map((item) => (
+                  <SwiperSlide key={item.id}>
+                    <div className="p-3.5 sm:p-6">
+                      <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 lg:items-center">
 
-                  <div className="space-y-6">
-                    <h3 className="text-xl font-semibold text-gray-900">
-                      Key Metrics
-                    </h3>
-                    <div className="grid grid-cols-2 gap-4">
-                      {currentCase.metrics.map((metric) => (
-                        <div key={metric.label} className="rounded-lg border border-[#e5e5e7] bg-[#f9f9f9] p-4">
-                          <p className="text-xl font-semibold text-[#162451]">
-                            {metric.value}
-                          </p>
-                          <p className="mt-1 text-xs text-gray-500">
-                            {metric.label}
-                          </p>
+                        {/* Interaction Card / Slide Image - Tighter Height */}
+                        <div className="lg:col-span-6 relative h-[250px] sm:h-[300px] lg:h-[340px] rounded-2xl overflow-hidden group">
+                          <Image
+                            src={item.image}
+                            alt={item.title}
+                            fill
+                            className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                            sizes="(max-width: 768px) 100vw, 400px"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-tr from-secondary/40 to-transparent" />
+
+                          <div className="absolute top-4 left-4">
+                            <span className="bg-white/95 backdrop-blur-sm border border-white/20 text-secondary text-[9px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full shadow-lg">
+                              {item.category}
+                            </span>
+                          </div>
+
+                          <div className="absolute bottom-4 left-4 right-4">
+                            <div className="bg-white/10 backdrop-blur-md border border-white/20 p-3.5 rounded-xl shadow-md">
+                              <p className="text-white/70 text-[8px] uppercase tracking-widest mb-0.5 font-medium flex items-center gap-1.5">
+                                <TrendingUp className="h-2.5 w-2.5" />
+                                Impact Highlight
+                              </p>
+                              <p className="text-white font-semibold text-sm leading-tight">{item.roi}</p>
+                            </div>
+                          </div>
                         </div>
-                      ))}
-                    </div>
 
-                    <div>
-                      <p className="text-xs font-medium uppercase tracking-wider text-gray-400 mb-3">
-                        Services Delivered
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {currentCase.services.map((service) => (
-                          <span
-                            key={service}
-                            className="rounded-full border border-[#e5e5e7] bg-white px-3 py-1 text-xs font-medium text-gray-600"
-                          >
-                            {service}
-                          </span>
-                        ))}
+                        {/* Content Section - Tightened */}
+                        <div className="lg:col-span-6 flex flex-col h-full py-1">
+                          <div className="mb-4">
+                            <h3 className="text-xl lg:text-2xl font-semibold text-secondary tracking-tight mb-2">
+                              {item.title}
+                            </h3>
+                            <p className="text-foreground/60 font-light leading-relaxed text-xs sm:text-sm line-clamp-3">
+                              {item.description}
+                            </p>
+                          </div>
+
+                          {/* Metrics Grid - Compact Density */}
+                          <div className="grid grid-cols-2 gap-2.5 mb-6">
+                            {item.metrics.slice(0, 4).map((metric, idx) => (
+                              <div key={idx} className="bg-secondary/[0.02] border border-border/30 rounded-xl p-2.5 transition-all hover:bg-white hover:shadow-md hover:border-primary/20 group">
+                                <p className="text-lg font-bold text-secondary mb-0 transition-colors group-hover:text-primary">
+                                  {metric.value}
+                                </p>
+                                <p className="text-[8px] uppercase tracking-wider text-foreground/40 font-bold leading-none">
+                                  {metric.label}
+                                </p>
+                              </div>
+                            ))}
+                          </div>
+
+                          <div className="mt-auto flex items-center justify-end gap-2.5">
+                            <Button variant="outline" size="icon" className="h-9 w-9 shrink-0">
+                              <Share2 className="h-3.5 w-3.5" />
+                            </Button>
+                            <Button asChild size="sm" className="group h-9">
+                              <Link href="#contact" className="flex items-center gap-2">
+                                View Project
+                                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                              </Link>
+                            </Button>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
 
-                <div className="mt-8 flex flex-col gap-4 border-t border-[#e5e5e7] pt-8 sm:flex-row">
-                  <Button asChild size="lg">
-                    <Link href="#contact" className="inline-flex items-center gap-2">
-                      Start a similar project
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                  <Button variant="outline" size="lg" className="gap-2">
-                    <Award className="h-4 w-4" />
-                    Download case study
-                  </Button>
-                </div>
-              </div>
-            </div>
+              {/* Desktop Decoration */}
+              <div className="hidden lg:block absolute -top-8 -right-8 h-32 w-32 bg-primary/10 rounded-full blur-2xl" />
+              <div className="hidden lg:block absolute -bottom-8 -left-8 h-32 w-32 bg-secondary/10 rounded-full blur-2xl" />
+            </motion.div>
           </div>
-
         </div>
       </div>
     </section>
