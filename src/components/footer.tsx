@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowUpRight, Mail, Phone, MapPin, Instagram } from 'lucide-react';
+import { FiArrowUpRight, FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
+import { FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { Button } from './ui/button';
 const navColumns = [
   {
@@ -24,10 +25,15 @@ const navColumns = [
 ];
 
 const contactItems = [
-  { icon: MapPin, label: 'Porvorim, Goa' },
-  { icon: Mail, label: 'ino.erayaexp@gmail.com' },
-  { icon: Phone, label: '+91 9272166475' },
-  { icon: Instagram, label: '@erayaexperience' },
+  { icon: FiMapPin, label: 'Porvorim, Goa' },
+  { icon: FiMail, label: 'ino.erayaexp@gmail.com' },
+  { icon: FiPhone, label: '+91 9272166475' },
+];
+
+const socialLinks = [
+  { icon: FaInstagram, href: 'https://instagram.com/erayaexperience', label: 'Instagram' },
+  { icon: FaLinkedin, href: '#', label: 'LinkedIn' },
+  { icon: FaTwitter, href: '#', label: 'Twitter' },
 ];
 
 const Footer = () => {
@@ -63,6 +69,25 @@ const Footer = () => {
                     <Icon className="h-4 w-4 text-primary" strokeWidth={2} />
                     <span className="text-sm font-medium text-white/90">{item.label}</span>
                   </div>
+                );
+              })}
+            </div>
+
+            {/* Social Links */}
+            <div className="flex items-center gap-4 pt-6">
+              {socialLinks.map((social) => {
+                const Icon = social.icon;
+                return (
+                  <Link
+                    key={social.label}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex h-10 w-10 items-center justify-center rounded-full bg-white/5 border border-white/10 text-white/70 transition-all hover:bg-primary hover:text-secondary hover:border-primary hover:-translate-y-1 shadow-sm"
+                    aria-label={social.label}
+                  >
+                    <Icon className="h-4 w-4" strokeWidth={2} />
+                  </Link>
                 );
               })}
             </div>
@@ -103,7 +128,7 @@ const Footer = () => {
                 <Button asChild variant="secondary" className="w-full group/btn">
                   <Link href="#contact" className="inline-flex items-center justify-center gap-2">
                     Start a project
-                    <ArrowUpRight className="h-5 w-5" strokeWidth={2} />
+                    <FiArrowUpRight className="h-5 w-5" strokeWidth={2} />
                   </Link>
                 </Button>
               </div>

@@ -1,12 +1,12 @@
 "use client";
 
 import { useState } from 'react';
-import { Mail, Phone, MapPin, CheckCircle, Instagram, ChevronDown, ArrowRight } from 'lucide-react';
+import { FiMail, FiPhone, FiMapPin, FiCheckCircle, FiChevronDown, FiArrowRight } from 'react-icons/fi';
+import { FaInstagram, FaLinkedin, FaTwitter } from 'react-icons/fa';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
-import { Label } from './ui/label';
 import { SectionHeading } from './ui/section-heading';
 
 const ContactSection = () => {
@@ -46,28 +46,22 @@ const ContactSection = () => {
 
   const contactInfo = [
     {
-      icon: MapPin,
+      icon: FiMapPin,
       title: 'Location',
       details: 'Porvorim, Goa',
       description: 'Visit our studio'
     },
     {
-      icon: Mail,
+      icon: FiMail,
       title: 'Email',
       details: 'ino.erayaexp@gmail.com',
       description: 'Drop us a line anytime'
     },
     {
-      icon: Phone,
+      icon: FiPhone,
       title: 'Phone',
       details: '+91 9272166475',
       description: 'Call us for immediate support'
-    },
-    {
-      icon: Instagram,
-      title: 'Instagram',
-      details: '@Erayaexperience',
-      description: 'Follow our journey'
     }
   ];
 
@@ -91,7 +85,7 @@ const ContactSection = () => {
         <div className="grid lg:grid-cols-12 gap-16 lg:gap-24 items-start">
 
           {/* Left Column - Context & Info */}
-          <div className="lg:col-span-5 flex flex-col pt-4">
+          <div className="lg:col-span-5 flex flex-col">
             <SectionHeading
               subtitle="Get in Touch"
               title={
@@ -133,6 +127,35 @@ const ContactSection = () => {
                   </motion.div>
                 ))}
               </div>
+
+              {/* Socials Block */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.4 }}
+                className="mt-8 pt-6 border-t border-border/40"
+              >
+                <p className="text-[10px] font-bold uppercase tracking-widest text-foreground/40 mb-6">Connect With Us</p>
+                <div className="flex items-center gap-4">
+                  {[
+                    { icon: FaInstagram, href: 'https://instagram.com/erayaexperience', label: 'Instagram' },
+                    { icon: FaLinkedin, href: '#', label: 'LinkedIn' },
+                    { icon: FaTwitter, href: '#', label: 'Twitter' },
+                  ].map((social) => (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group flex h-12 w-12 items-center justify-center rounded-full bg-white border border-border/40 text-secondary transition-all hover:bg-secondary hover:text-white hover:border-secondary hover:shadow-md hover:-translate-y-1"
+                      aria-label={social.label}
+                    >
+                      <social.icon className="h-5 w-5" strokeWidth={1.5} />
+                    </a>
+                  ))}
+                </div>
+              </motion.div>
             </motion.div>
           </div>
 
@@ -143,11 +166,8 @@ const ContactSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative rounded-[40px] bg-white border border-border/40 shadow-lg p-8 sm:p-12 lg:p-14 overflow-hidden"
+              className="relative rounded-3xl bg-white border border-border shadow-lg p-8 overflow-hidden"
             >
-              {/* Subtle accent border at top */}
-              <div className="absolute top-0 left-1/4 right-1/4 h-1 bg-gradient-to-r from-transparent via-primary/40 to-transparent" />
-
               <AnimatePresence mode="wait">
                 {isSubmitted ? (
                   <motion.div
@@ -158,7 +178,7 @@ const ContactSection = () => {
                     className="flex flex-col items-center justify-center text-center py-20"
                   >
                     <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-primary">
-                      <CheckCircle className="h-12 w-12" strokeWidth={1.2} />
+                      <FiCheckCircle className="h-12 w-12" strokeWidth={1.2} />
                     </div>
                     <h3 className="text-3xl font-semibold text-secondary mb-4 tracking-tight">Strategy Received.</h3>
                     <p className="text-foreground/60 font-light leading-relaxed max-w-xs mx-auto">
@@ -172,57 +192,54 @@ const ContactSection = () => {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="space-y-10"
+                    className="flex flex-col gap-4"
                   >
                     <div className="grid sm:grid-cols-2 gap-8">
-                      <div className="space-y-4">
-                        <Label htmlFor="name" className="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1">Full Name</Label>
-                        <Input
-                          id="name"
-                          name="name"
-                          required
-                          value={formData.name}
-                          onChange={handleChange}
-                          placeholder="Ex. Alexander Rivera"
-                          className="h-14 rounded-2xl border-border/80 bg-background/30 px-6 focus-visible:ring-primary/20 focus-visible:border-primary transition-all text-base placeholder:text-foreground/30"
-                        />
-                      </div>
-                      <div className="space-y-4">
-                        <Label htmlFor="email" className="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1">Email Address</Label>
-                        <Input
-                          id="email"
-                          name="email"
-                          type="email"
-                          required
-                          value={formData.email}
-                          onChange={handleChange}
-                          placeholder="hello@company.com"
-                          className="h-14 rounded-2xl border-border/80 bg-background/30 px-6 focus-visible:ring-primary/20 focus-visible:border-primary transition-all text-base placeholder:text-foreground/30"
-                        />
-                      </div>
+                      <Input
+                        id="name"
+                        name="name"
+                        required
+                        value={formData.name}
+                        onChange={handleChange}
+                        placeholder="Ex. Alexander Rivera"
+                        label="Full Name"
+                        labelClassName="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1"
+                        className="h-14 rounded-2xl border-border bg-background/30 px-6 focus-visible:ring-primary/20 focus-visible:border-primary transition-all text-base placeholder:text-foreground/30"
+                      />
+                      <Input
+                        id="email"
+                        name="email"
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={handleChange}
+                        placeholder="hello@company.com"
+                        label="Email Address"
+                        labelClassName="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1"
+                        className="h-14 rounded-2xl border-border bg-background/30 px-6 focus-visible:ring-primary/20 focus-visible:border-primary transition-all text-base placeholder:text-foreground/30"
+                      />
                     </div>
 
                     <div className="grid sm:grid-cols-2 gap-8">
-                      <div className="space-y-4">
-                        <Label htmlFor="company" className="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1">Company / Brand</Label>
-                        <Input
-                          id="company"
-                          name="company"
-                          value={formData.company}
-                          onChange={handleChange}
-                          placeholder="Your Organization"
-                          className="h-14 rounded-2xl border-border/80 bg-background/30 px-6 focus-visible:ring-primary/20 focus-visible:border-primary transition-all text-base placeholder:text-foreground/30"
-                        />
-                      </div>
-                      <div className="space-y-4">
-                        <Label htmlFor="service" className="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1">Service Required</Label>
+                      <Input
+                        id="company"
+                        name="company"
+                        value={formData.company}
+                        onChange={handleChange}
+                        placeholder="Your Organization"
+                        label="Company / Brand"
+                        labelClassName="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1"
+                        className="h-14 rounded-2xl border-border bg-background/30 px-6 focus-visible:ring-primary/20 focus-visible:border-primary transition-all text-base placeholder:text-foreground/30"
+                      />
+                      <div className="flex flex-col gap-2">
+                        <label htmlFor="service" className="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1">Service Required</label>
                         <div className="relative group/select">
                           <select
                             id="service"
                             name="service"
                             value={formData.service}
                             onChange={handleChange}
-                            className="flex h-14 w-full appearance-none rounded-2xl border border-border/80 bg-background/30 px-6 text-base text-foreground focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/5 transition-all"
+                            className="flex h-14 w-full appearance-none rounded-2xl border border-border bg-background/30 px-6 text-base text-foreground focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/5 transition-all"
                           >
                             <option value="" disabled>Select Expertise</option>
                             {serviceOptions.map((option, index) => (
@@ -230,14 +247,14 @@ const ContactSection = () => {
                             ))}
                           </select>
                           <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-foreground/40 group-hover/select:text-primary transition-colors">
-                            <ChevronDown className="h-4 w-4" />
+                            <FiChevronDown className="h-4 w-4" />
                           </div>
                         </div>
                       </div>
                     </div>
 
-                    <div className="space-y-4">
-                      <Label htmlFor="message" className="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1">Project Objective</Label>
+                    <div className="flex flex-col gap-2">
+                      <label htmlFor="message" className="text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1">Project Objective</label>
                       <Textarea
                         id="message"
                         name="message"
@@ -246,13 +263,13 @@ const ContactSection = () => {
                         value={formData.message}
                         onChange={handleChange}
                         placeholder="Briefly describe your goals, timeline, and budget range..."
-                        className="rounded-2xl border-border/80 bg-background/30 p-6 focus-visible:ring-primary/20 focus-visible:border-primary transition-all text-base resize-none placeholder:text-foreground/30"
+                        className="rounded-2xl border-border bg-background/30 p-6 focus-visible:ring-primary/20 focus-visible:border-primary transition-all text-base resize-none placeholder:text-foreground/30"
                       />
                     </div>
 
                     <Button
                       type="submit"
-                      className="w-full h-16 rounded-2xl text-base font-semibold tracking-wide bg-secondary hover:bg-secondary/90 shadow-lg shadow-secondary/20 group"
+                      className="w-full group"
                       disabled={isSubmitting}
                     >
                       {isSubmitting ? (
@@ -263,14 +280,10 @@ const ContactSection = () => {
                       ) : (
                         <span className="flex items-center gap-2">
                           Initiate Growth Strategy
-                          <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                          <FiArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
                         </span>
                       )}
                     </Button>
-
-                    <p className="text-center text-[10px] text-foreground/40 uppercase tracking-[0.2em] font-medium">
-                      Privacy First. Your data is encrypted and confidential.
-                    </p>
                   </motion.form>
                 )}
               </AnimatePresence>

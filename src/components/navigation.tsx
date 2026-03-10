@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Menu, X, ArrowUpRight } from "lucide-react";
+import { FiMenu, FiX, FiArrowUpRight } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { Button } from "./ui/button";
@@ -124,7 +124,7 @@ const Navigation = () => {
                   className="inline-flex items-center gap-2 cursor-pointer"
                 >
                   Get Started
-                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  <FiArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
                 </Link>
               </Button>
             </motion.div>
@@ -146,7 +146,7 @@ const Navigation = () => {
                   exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <X className="h-6 w-6 text-foreground" />
+                  <FiX className="h-6 w-6 text-foreground" />
                 </motion.div>
               ) : (
                 <motion.div
@@ -156,7 +156,7 @@ const Navigation = () => {
                   exit={{ rotate: -90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  <Menu className="h-6 w-6 text-foreground" />
+                  <FiMenu className="h-6 w-6 text-foreground" />
                 </motion.div>
               )}
             </AnimatePresence>
@@ -208,7 +208,7 @@ const Navigation = () => {
                   onClick={() => setIsOpen(false)}
                 >
                   Get Started
-                  <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  <FiArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
                 </Link>
               </Button>
             </motion.div>

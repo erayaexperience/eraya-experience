@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ArrowRight, ChevronDown } from "lucide-react";
+import { FiArrowRight, FiChevronDown } from "react-icons/fi";
 import Link from "next/link";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -89,7 +89,7 @@ const HeroSection = () => {
               <Button asChild className="group">
                 <Link href="#contact" className="inline-flex items-center gap-2">
                   Start a project
-                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <FiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
               <Button asChild variant="outline">
@@ -163,7 +163,7 @@ const HeroSection = () => {
                       className="inline-flex items-center gap-2 text-sm font-semibold tracking-wide uppercase hover:text-primary transition-colors duration-300"
                     >
                       View case study
-                      <ArrowRight className="h-4 w-4" />
+                      <FiArrowRight className="h-4 w-4" />
                     </Link>
                   </div>
                 </div>
@@ -185,7 +185,7 @@ const HeroSection = () => {
           animate={{ y: [0, 8, 0] }}
           transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
         >
-          <ChevronDown className="w-4 h-4" />
+          <FiChevronDown className="w-4 h-4" />
         </motion.div>
       </motion.div>
     </section>

@@ -1,14 +1,14 @@
 "use client";
 
 import {
-  Users,
-  Camera,
-  TrendingUp,
-  Megaphone,
-  Search,
-  Globe,
-  ArrowRight
-} from 'lucide-react';
+  FiUsers,
+  FiCamera,
+  FiTrendingUp,
+  FiMic,
+  FiSearch,
+  FiGlobe,
+  FiArrowRight
+} from 'react-icons/fi';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
@@ -18,37 +18,37 @@ import { SectionHeading } from './ui/section-heading';
 const ServicesSection = () => {
   const services = [
     {
-      icon: Users,
+      icon: FiUsers,
       title: 'Influencer Marketing',
       description: 'High engagement campaigns with authentic influencer partnerships that drive real results.',
       image: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800',
     },
     {
-      icon: Camera,
+      icon: FiCamera,
       title: 'Social Media Marketing',
       description: 'Graphics, paid ads, and professional content that captures attention and drives engagement.',
       image: 'https://images.pexels.com/photos/607812/pexels-photo-607812.jpeg?auto=compress&cs=tinysrgb&w=800',
     },
     {
-      icon: Megaphone,
+      icon: FiMic,
       title: 'Hoardings & Offline Marketing',
       description: 'Strategic outdoor advertising placements for maximum brand visibility locally and beyond.',
       image: 'https://images.pexels.com/photos/3184418/pexels-photo-3184418.jpeg?auto=compress&cs=tinysrgb&w=800',
     },
     {
-      icon: TrendingUp,
+      icon: FiTrendingUp,
       title: 'Performance Marketing',
       description: 'Data-driven campaigns focused strictly on ROI and measurable, sustainable business growth.',
       image: 'https://images.pexels.com/photos/590020/pexels-photo-590020.jpeg?auto=compress&cs=tinysrgb&w=800',
     },
     {
-      icon: Globe,
+      icon: FiGlobe,
       title: 'Website & SEO',
       description: 'Professional, high-performing websites expertly optimized for search engines and unparalleled user experience.',
       image: 'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=800',
     },
     {
-      icon: Search,
+      icon: FiSearch,
       title: 'Event Curation',
       description: 'Strategic event planning, execution, and extensive B2B networking for ultimate brand activation.',
       image: 'https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800',
@@ -115,7 +115,7 @@ const ServicesSection = () => {
                   >
                     <span className="relative z-10 transition-colors group-hover/link:text-primary">Learn more</span>
                     <span className="flex h-8 w-8 items-center justify-center rounded-full bg-secondary/5 transition-all duration-300 group-hover/link:bg-primary group-hover/link:text-white">
-                      <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/link:translate-x-0.5" />
+                      <FiArrowRight className="h-4 w-4 transition-transform duration-300 group-hover/link:translate-x-0.5" />
                     </span>
                   </Link>
                 </div>
@@ -150,7 +150,7 @@ const ServicesSection = () => {
               <Button asChild variant="secondary" className="group">
                 <Link href="#contact" className="inline-flex items-center gap-3 font-semibold">
                   Start a project
-                  <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
+                  <FiArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </Button>
             </div>

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { ArrowRight, Award } from 'lucide-react';
+import { FiArrowRight, FiAward } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from './ui/button';
 import { SectionHeading } from './ui/section-heading';
@@ -81,7 +81,7 @@ const PortfolioSection = () => {
           subtitle="Our Portfolio"
           title={
             <>
-              Selected <span className="text-primary italic font-serif">client work</span>
+              Featured <span className="text-primary italic font-serif">client work</span>
             </>
           }
           description="A cross-industry look at our most impactful launches spanning hospitality, entertainment, healthcare, and lifestyle."

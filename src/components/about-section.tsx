@@ -1,16 +1,16 @@
 "use client";
 
 import Image from 'next/image';
-import { Award, Users, Target, MapPin } from 'lucide-react';
+import { FiAward, FiUsers, FiTarget, FiMapPin } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
 import { SectionHeading } from './ui/section-heading';
 
 const AboutSection = () => {
   const stats = [
-    { label: 'Years Experience', value: '6+', icon: Target },
-    { label: 'Successfully Grown', value: '18+', icon: Award },
-    { label: 'Creative Heads', value: '11+', icon: Users },
-    { label: 'Pan India Reach', value: '100%', icon: MapPin },
+    { label: 'Years Experience', value: '6+', icon: FiTarget },
+    { label: 'Successfully Grown', value: '18+', icon: FiAward },
+    { label: 'Creative Heads', value: '11+', icon: FiUsers },
+    { label: 'Pan India Reach', value: '100%', icon: FiMapPin },
   ];
 
   const industries = [
@@ -140,7 +140,7 @@ const AboutSection = () => {
             >
               <div className="flex items-center gap-6">
                 <div className="flex h-16 w-16 items-center justify-center rounded-full bg-secondary text-white shadow-inner">
-                  <MapPin className="h-7 w-7" />
+                  <FiMapPin className="h-7 w-7" />
                 </div>
                 <div>
                   <p className="text-2xl font-semibold text-foreground tracking-tight">Pan India</p>

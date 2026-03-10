@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { GeistSans } from 'geist/font/sans';
+import { Toaster } from '@/components/ui/toaster';
 import { Playfair_Display } from 'next/font/google';
 
 const playfair = Playfair_Display({
@@ -77,6 +78,7 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className={`${GeistSans.variable} ${playfair.variable} font-sans antialiased text-foreground bg-background selection:bg-primary/30 selection:text-foreground`}>
         {children}
+        <Toaster />
       </body>
     </html>
   );

@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowRight, ChevronLeft, ChevronRight, Share2, TrendingUp } from 'lucide-react';
+import { FiArrowRight, FiChevronLeft, FiChevronRight, FiShare2, FiTrendingUp } from 'react-icons/fi';
 import { motion } from 'framer-motion';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, EffectFade } from 'swiper/modules';
@@ -57,7 +57,7 @@ const CaseStudiesSection = () => {
                   className="rounded-full bg-white shadow-sm hover:bg-secondary hover:text-white transition-all duration-300"
                   aria-label="Previous slide"
                 >
-                  <ChevronLeft className="h-5 w-5" />
+                  <FiChevronLeft className="h-5 w-5" />
                 </Button>
                 <Button
                   variant="outline"
@@ -66,7 +66,7 @@ const CaseStudiesSection = () => {
                   className="rounded-full bg-white shadow-sm hover:bg-secondary hover:text-white transition-all duration-300"
                   aria-label="Next slide"
                 >
-                  <ChevronRight className="h-5 w-5" />
+                  <FiChevronRight className="h-5 w-5" />
                 </Button>
                 <div className="h-px w-24 bg-border/40 ml-4" />
               </div>
@@ -75,7 +75,7 @@ const CaseStudiesSection = () => {
                 <Button asChild variant="link" className="px-0 text-secondary hover:text-primary transition-colors gap-2 group">
                   <Link href="#contact">
                     Scale your brand with us
-                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                    <FiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                   </Link>
                 </Button>
               </div>
@@ -89,7 +89,7 @@ const CaseStudiesSection = () => {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative rounded-[32px] bg-white shadow-lg overflow-hidden"
+              className="relative rounded-3xl bg-white border border-border overflow-hidden"
             >
               <Swiper
                 onSwiper={(swiper) => {
@@ -105,7 +105,7 @@ const CaseStudiesSection = () => {
               >
                 {caseStudies.map((item) => (
                   <SwiperSlide key={item.id}>
-                    <div className="p-3.5 sm:p-6">
+                    <div className="p-3">
                       <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 lg:items-center">
 
                         {/* Interaction Card / Slide Image - Tighter Height */}
@@ -128,7 +128,7 @@ const CaseStudiesSection = () => {
                           <div className="absolute bottom-4 left-4 right-4">
                             <div className="bg-white/10 backdrop-blur-md border border-white/20 p-3.5 rounded-xl shadow-md">
                               <p className="text-white/70 text-[8px] uppercase tracking-widest mb-0.5 font-medium flex items-center gap-1.5">
-                                <TrendingUp className="h-2.5 w-2.5" />
+                                <FiTrendingUp className="h-2.5 w-2.5" />
                                 Impact Highlight
                               </p>
                               <p className="text-white font-semibold text-sm leading-tight">{item.roi}</p>
@@ -163,12 +163,12 @@ const CaseStudiesSection = () => {
 
                           <div className="mt-auto flex items-center justify-end gap-2.5">
                             <Button variant="outline" size="icon" className="h-9 w-9 shrink-0">
-                              <Share2 className="h-3.5 w-3.5" />
+                              <FiShare2 className="h-3.5 w-3.5" />
                             </Button>
                             <Button asChild size="sm" className="group h-9">
                               <Link href="#contact" className="flex items-center gap-2">
                                 View Project
-                                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                                <FiArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
                               </Link>
                             </Button>
                           </div>
