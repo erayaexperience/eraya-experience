@@ -74,7 +74,7 @@ const PortfolioSection = () => {
     : projects.filter(project => project.category === activeFilter);
 
   return (
-    <section id="portfolio" className="bg-white py-(--spacing-section)">
+    <section id="portfolio" className="bg-white py-section">
       <div className="container-modern">
         {/* Header */}
         <SectionHeading
@@ -90,7 +90,7 @@ const PortfolioSection = () => {
 
         {/* Filters */}
         <motion.div
-          className="mt-(--spacing-component) flex flex-wrap justify-center gap-3"
+          className="mt-component flex flex-wrap justify-center gap-3"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
@@ -131,10 +131,10 @@ const PortfolioSection = () => {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
-                className="group flex flex-col overflow-hidden rounded-[24px] border border-border/40 bg-white hover:shadow-2xl hover:shadow-primary/5 transition-shadow duration-500"
+                className="group flex flex-col overflow-hidden rounded-3xl border border-border/40 bg-white hover:shadow-2xl hover:shadow-primary/5 transition-shadow duration-500"
               >
                 {/* Image */}
-                <div className="relative h-64 overflow-hidden sm:h-[400px]">
+                <div className="relative h-64 overflow-hidden sm:h-100">
                   <Image
                     src={project.image}
                     alt={project.title}
@@ -142,7 +142,7 @@ const PortfolioSection = () => {
                     className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, (max-width: 1280px) 50vw, 600px"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
+                  <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-transparent opacity-60" />
                   <div className="absolute top-6 left-6 flex flex-wrap gap-2">
                     {project.tags.map((tag) => (
                       <span key={tag} className="rounded-full bg-white/20 backdrop-blur-md border border-white/20 px-4 py-1.5 text-xs font-medium text-white shadow-sm tracking-wide">
@@ -153,11 +153,11 @@ const PortfolioSection = () => {
                 </div>
 
                 {/* Content */}
-                <div className="flex flex-col flex-grow p-8 sm:p-10">
+                <div className="flex flex-col grow p-8 sm:p-10">
                   <h3 className="text-2xl font-medium text-foreground mb-3 group-hover:text-secondary transition-colors">
                     {project.title}
                   </h3>
-                  <p className="text-foreground/70 font-light leading-relaxed mb-8 flex-grow">
+                  <p className="text-foreground/70 font-light leading-relaxed mb-8 grow">
                     {project.description}
                   </p>
 

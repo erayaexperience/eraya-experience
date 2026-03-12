@@ -14,7 +14,7 @@ const AchievementsSection = () => {
     return (
         <section id="achievements" className="relative overflow-hidden bg-white py-8 md:py-10">
             <div className="container-modern px-6 md:px-12">
-                <div className="relative flex min-h-[34rem] items-center justify-center overflow-hidden rounded-[2rem] md:min-h-[40rem] lg:min-h-[46rem]">
+                <div className="relative flex min-h-136 items-center justify-center overflow-hidden rounded-4xl md:min-h-160 lg:min-h-184">
                     {/* Background Image with Overlay */}
                     <div className="absolute inset-0 z-0">
                         <Image

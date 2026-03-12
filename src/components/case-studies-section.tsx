@@ -7,7 +7,7 @@ import { SectionHeading } from "./ui/section-heading";
 
 const CaseStudiesSection = () => {
   return (
-    <section id="case-studies" className="relative bg-background py-(--spacing-section) overflow-hidden">
+    <section id="case-studies" className="relative bg-background py-section overflow-hidden">
       <div className="container-modern relative z-10 px-6 md:px-12">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -51,7 +51,7 @@ const CaseStudiesSection = () => {
               </p>
             </div>
             <div className="absolute inset-x-0 bottom-0 z-10 p-8 text-white md:p-10">
-              <div className="max-w-[38rem]">
+              <div className="max-w-152">
               <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/78">
                 {caseStudies[0].subtitle}
               </p>
