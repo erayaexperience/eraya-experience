@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FiMenu, FiX, FiArrowUpRight } from "react-icons/fi";
+import { FiMenu, FiX, FiArrowRight } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { Button } from "./ui/button";
@@ -14,6 +14,7 @@ const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     let ticking = false;
@@ -22,7 +23,13 @@ const Navigation = () => {
       if (!ticking) {
         requestAnimationFrame(() => {
           const scrollY = window.scrollY;
-          setScrolled(scrollY > 10);
+          const headerHeight = navRef.current?.offsetHeight || 0;
+          // Hero is h-screen, so its end is at window.innerHeight
+          // Header bottom touches hero end when scrollY = window.innerHeight - headerHeight
+          const threshold = window.innerHeight - headerHeight;
+
+          setScrolled(scrollY >= threshold);
+
           const doc = document.documentElement;
           const totalScrollable = doc.scrollHeight - window.innerHeight;
           const nextProgress =
@@ -34,10 +41,15 @@ const Navigation = () => {
       }
     };
 
-    handleScroll();
+    handleScroll(); // Call once on mount to set initial state
     window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    window.addEventListener("resize", handleScroll); // Threshold changes on resize
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []); // Empty dependency array means this effect runs once on mount and cleans up on unmount
 
   const itemVariants: Variants = {
     closed: { opacity: 0, x: -20 },
@@ -50,6 +62,7 @@ const Navigation = () => {
 
   return (
     <motion.nav
+      ref={navRef}
       className={cn(
         "fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-out",
         scrolled
@@ -123,7 +136,7 @@ const Navigation = () => {
                   className="inline-flex items-center gap-2 cursor-pointer"
                 >
                   Get Started
-                  <FiArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  <FiArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </Button>
             </motion.div>
@@ -207,7 +220,7 @@ const Navigation = () => {
                   onClick={() => setIsOpen(false)}
                 >
                   Get Started
-                  <FiArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  <FiArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </Button>
             </motion.div>

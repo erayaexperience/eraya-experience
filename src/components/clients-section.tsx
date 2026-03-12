@@ -20,7 +20,7 @@ const clients = [
 
 const ClientsSection = () => {
     return (
-        <section className="bg-white py-20 border-y border-border/20">
+        <section className="bg-white py-(--spacing-section) border-y border-border/20">
             <div className="container-modern">
                 <div className="text-center mb-16">
                     <motion.h2

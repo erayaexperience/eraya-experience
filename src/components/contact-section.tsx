@@ -58,8 +58,8 @@ const ContactSection = () => {
           subtitle="Get in Touch"
           title={
             <>
-              Let&apos;s build your <br />
-              <span className="italic font-serif text-primary">digital legacy</span>
+              Let&apos;s Build Your <br />
+              <span className="italic font-serif text-primary">Digital Legacy</span>
             </>
           }
           description="We&apos;re currently accepting new projects for Q2 2026. Reach out today and let&apos;s discuss how we can scale your brand together."

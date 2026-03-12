@@ -6,7 +6,7 @@ interface SectionHeadingProps {
     subtitle?: string;
     title: ReactNode;
     description?: ReactNode;
-    layout?: "center" | "split" | "stacked";
+    layout?: "center" | "split" | "stacked" | "compact";
     className?: string;
 }
 
@@ -69,6 +69,35 @@ export function SectionHeading({
                     </p>
                 )}
             </div>
+        );
+    }
+
+    if (layout === "compact") {
+        return (
+            <motion.div
+                className={cn("mb-12", className)}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+            >
+                {subtitle && (
+                    <div className="inline-flex items-center gap-3 mb-4">
+                        <span className="w-8 h-px bg-primary" />
+                        <span className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/60">
+                            {subtitle}
+                        </span>
+                    </div>
+                )}
+                <h2 className="text-3xl sm:text-4xl font-semibold text-secondary leading-tight tracking-tight">
+                    {title}
+                </h2>
+                {description && (
+                    <p className="mt-6 text-lg text-foreground/70 font-light leading-relaxed">
+                        {description}
+                    </p>
+                )}
+            </motion.div>
         );
     }
 

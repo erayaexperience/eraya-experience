@@ -81,7 +81,7 @@ const PortfolioSection = () => {
           subtitle="Our Portfolio"
           title={
             <>
-              Featured <span className="text-primary italic font-serif">client work</span>
+              Featured <span className="text-primary italic font-serif">Client Work</span>
             </>
           }
           description="A cross-industry look at our most impactful launches spanning hospitality, entertainment, healthcare, and lifestyle."
@@ -180,28 +180,6 @@ const PortfolioSection = () => {
           </AnimatePresence>
         </motion.div>
 
-        {/* Clients */}
-        <motion.div
-          className="mt-(--spacing-inner) border-t border-border/60 pt-12"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-        >
-          <p className="text-center text-xs font-semibold uppercase tracking-[0.2em] text-foreground/40 mb-10">
-            Trusted by leading brands across industries
-          </p>
-          <div className="flex flex-wrap justify-center items-center gap-x-12 gap-y-8 opacity-50 grayscale transition-all duration-500 hover:opacity-100 hover:grayscale-0">
-            {[
-              'Amazon', 'Myntra', 'Hotel DevDeep', 'Beach Walk', 'Xavier\'s Cafe', 'Mission Rabies',
-              'Snow Park Goa', 'Koleso Lounge', 'Optica Indira', 'Thunder World', 'Carlito\'s', 'Dreamdays'
-            ].map((client) => (
-              <span key={client} className="text-xl font-serif italic text-foreground/80 hover:text-primary transition-colors">
-                {client}
-              </span>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   );

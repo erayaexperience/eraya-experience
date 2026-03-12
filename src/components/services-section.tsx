@@ -60,7 +60,7 @@ const ServicesSection = () => {
             subtitle="Core Expertise"
             title={
               <>
-                The feeling is <span className="text-primary italic font-serif">mutual</span>
+                The Feeling Is <span className="text-primary italic font-serif">Mutual</span>
               </>
             }
             description="A meticulously focused suite of marketing services designed to help modern premium brands succeed and scale."
@@ -103,23 +103,6 @@ const ServicesSection = () => {
             </motion.article>
           ))}
         </div>
-
-        {/* Call To Action Button (Bottom) */}
-        <motion.div
-          className="mt-24 text-center"
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-        >
-          <Link
-            href="#contact"
-            className="inline-flex items-center gap-4 px-8 py-4 rounded-full border border-secondary text-secondary font-semibold hover:bg-secondary hover:text-white transition-all duration-300 group"
-          >
-            Read more about our process
-            <FiArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-1" />
-          </Link>
-        </motion.div>
       </div>
     </section>
   );

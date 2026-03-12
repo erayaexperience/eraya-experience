@@ -1,29 +1,14 @@
 "use client";
 
-import { useRef } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { FiArrowRight, FiChevronLeft, FiChevronRight, FiShare2, FiTrendingUp } from 'react-icons/fi';
-import { motion } from 'framer-motion';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, EffectFade } from 'swiper/modules';
-import { Button } from './ui/button';
-import { caseStudies } from '@/constants/case-studies';
-import { SectionHeading } from './ui/section-heading';
-
-// Swiper styles
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/effect-fade';
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { caseStudies } from "@/constants/case-studies";
+import { SectionHeading } from "./ui/section-heading";
 
 const CaseStudiesSection = () => {
   return (
-    <section id="case-studies" className="relative bg-background py-section overflow-hidden">
-      {/* Background Decorative Elements */}
-      <div className="absolute -top-24 -right-24 h-96 w-96 rounded-full bg-primary/5 blur-3xl" />
-      <div className="absolute -bottom-24 -left-24 h-96 w-96 rounded-full bg-secondary/5 blur-3xl" />
-
-      <div className="container-modern relative z-10">
+    <section id="case-studies" className="relative bg-background py-(--spacing-section) overflow-hidden">
+      <div className="container-modern relative z-10 px-6 md:px-12">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -35,32 +20,23 @@ const CaseStudiesSection = () => {
             subtitle="Case Studies"
             title={
               <>
-                Proof that craft <br />
-                <span className="text-primary italic font-serif">drives growth</span>
+                Proof That Craft <br />
+                <span className="text-primary italic font-serif">Drives Growth</span>
               </>
             }
-            description="Strategy meets premium execution. Explore how we transform vision into market-leading impact."
-            layout="stacked"
-            className="mb-6 justify-center"
+            description="Strategy translated into elegant execution, sharper positioning, and measurable growth across every engagement."
+            layout="center"
+            className="mb-0"
           />
-
-          <Button asChild variant="link" className="px-0 text-secondary hover:text-primary transition-colors gap-2 group mx-auto">
-            <Link href="#contact" className="flex items-center">
-              Scale your brand with us
-              <FiArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1 ml-2" />
-            </Link>
-          </Button>
         </motion.div>
 
-        {/* Bento Grid Layout - 3 Column Pattern */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Card 1: Top Row - Span 2 / Image Focus */}
-          <motion.div
+          <motion.article
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="md:col-span-2 h-100 relative rounded-3xl overflow-hidden group shadow-sm border border-border/10"
+            className="group relative h-100 overflow-hidden rounded-3xl border border-border bg-secondary md:col-span-2 shadow-[0_20px_60px_rgba(15,23,42,0.10)]"
           >
             <Image
               src={caseStudies[0].image}
@@ -68,80 +44,182 @@ const CaseStudiesSection = () => {
               fill
               className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
-            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors duration-300" />
-            <div className="absolute bottom-8 left-8 right-8 text-white">
-              <h3 className="text-2xl md:text-3xl font-bold mb-2">{caseStudies[0].title}</h3>
-              <p className="text-white/80 text-sm md:text-base font-light leading-relaxed max-w-md">{caseStudies[0].subtitle}</p>
+            <div className="absolute inset-0 bg-linear-to-t from-secondary/90 via-secondary/62 to-secondary/14 transition-colors duration-300 group-hover:via-secondary/70" />
+            <div className="absolute top-6 left-6 rounded-full border border-primary/25 bg-primary/20 px-4 py-2 backdrop-blur-md">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/72">
+                {caseStudies[0].category}
+              </p>
             </div>
-          </motion.div>
+            <div className="absolute inset-x-0 bottom-0 z-10 p-8 text-white md:p-10">
+              <div className="max-w-[38rem]">
+              <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/78">
+                {caseStudies[0].subtitle}
+              </p>
+              <h3 className="mb-4 max-w-xl text-2xl font-semibold tracking-tight text-white md:text-3xl">
+                {caseStudies[0].title}
+              </h3>
+              <p className="max-w-xl text-sm font-light leading-relaxed text-white/92 md:text-base">
+                {caseStudies[0].description}
+              </p>
+              </div>
+              <div className="mt-6 flex flex-wrap gap-3">
+                {caseStudies[0].metrics.slice(0, 3).map((metric) => (
+                  <div
+                    key={metric.label}
+                    className="rounded-2xl border border-primary/20 bg-primary/18 px-4 py-3 backdrop-blur-sm"
+                  >
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">
+                      {metric.label}
+                    </p>
+                    <p className="mt-1 text-base font-semibold tracking-tight text-white">
+                      {metric.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.article>
 
-          {/* Card 2: Top Row - Span 1 / Light Brand Accent */}
-          <motion.div
+          <motion.article
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="md:col-span-1 h-100 bg-[#F5F5F7] rounded-3xl p-10 flex flex-col justify-center border border-black/5 group"
+            className="group relative h-100 overflow-hidden rounded-3xl border border-border bg-secondary md:col-span-1 shadow-[0_18px_50px_rgba(15,23,42,0.08)]"
           >
-            <h3 className="text-2xl font-semibold text-secondary mb-4 group-hover:text-primary transition-colors leading-tight">{caseStudies[1].title}</h3>
-            <p className="text-foreground/60 text-sm md:text-base leading-relaxed mb-8">{caseStudies[1].description}</p>
-            <div className="mt-auto">
-              <p className="text-xs uppercase tracking-widest font-bold text-primary">{caseStudies[1].category}</p>
+            <Image
+              src={caseStudies[1].image}
+              alt={caseStudies[1].title}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-secondary/91 via-secondary/64 to-secondary/14 transition-colors duration-300 group-hover:via-secondary/72" />
+            <div className="absolute top-6 left-6 rounded-full border border-primary/25 bg-primary/20 px-4 py-2 backdrop-blur-md">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/72">
+                {caseStudies[1].category}
+              </p>
             </div>
-          </motion.div>
+            <div className="absolute inset-x-0 bottom-0 z-10 p-8 text-white md:p-9">
+              <div className="max-w-sm">
+              <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/78">
+                {caseStudies[1].subtitle}
+              </p>
+              <h3 className="mb-4 text-2xl font-semibold leading-tight tracking-tight text-white">
+                {caseStudies[1].title}
+              </h3>
+              <p className="mb-6 text-sm leading-relaxed text-white/92">
+                {caseStudies[1].description}
+              </p>
+              </div>
+              <div className="grid max-w-sm gap-3">
+                {caseStudies[1].metrics.slice(0, 2).map((metric) => (
+                  <div
+                    key={metric.label}
+                    className="flex items-center justify-between gap-3 rounded-2xl border border-primary/20 bg-primary/18 px-4 py-3 backdrop-blur-sm"
+                  >
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">
+                      {metric.label}
+                    </p>
+                    <p className="text-base font-semibold tracking-tight text-white">
+                      {metric.value}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.article>
 
-          {/* Card 3: Bottom Row - Span 1 / Eraya Beige */}
-          <motion.div
+          <motion.article
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="md:col-span-1 h-100 bg-linear-to-br from-[#D6B685]/10 to-[#D6B685]/20 rounded-3xl p-10 flex flex-col justify-center border border-[#D6B685]/30 group"
+            className="group relative h-100 overflow-hidden rounded-3xl border border-border bg-secondary md:col-span-1 shadow-[0_18px_50px_rgba(15,23,42,0.08)]"
           >
-            <h3 className="text-2xl font-semibold text-secondary mb-4 group-hover:text-primary transition-colors leading-tight">{caseStudies[2].title}</h3>
-            <p className="text-foreground/60 text-sm md:text-base leading-relaxed mb-8">{caseStudies[2].description}</p>
-            <div className="mt-auto">
-              <p className="text-xs uppercase tracking-widest font-bold text-secondary/60">{caseStudies[2].category}</p>
+            <Image
+              src={caseStudies[2].image}
+              alt={caseStudies[2].title}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-linear-to-t from-secondary/91 via-secondary/62 to-secondary/14 transition-colors duration-300 group-hover:via-secondary/70" />
+            <div className="absolute top-6 left-6 rounded-full border border-primary/25 bg-primary/20 px-4 py-2 backdrop-blur-md">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/72">
+                {caseStudies[2].category}
+              </p>
             </div>
-          </motion.div>
+            <div className="absolute inset-x-0 bottom-0 z-10 p-8 text-white md:p-9">
+              <div className="max-w-sm">
+              <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/78">
+                {caseStudies[2].subtitle}
+              </p>
+              <h3 className="mb-4 text-2xl font-semibold leading-tight tracking-tight text-white">
+                {caseStudies[2].title}
+              </h3>
+              <p className="mb-6 text-sm leading-relaxed text-white/92">
+                {caseStudies[2].description}
+              </p>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                {caseStudies[2].metrics.slice(0, 2).map((metric) => (
+                  <div key={metric.label} className="rounded-2xl border border-primary/20 bg-primary/18 px-4 py-4 backdrop-blur-sm">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/75">
+                      {metric.label}
+                    </p>
+                    <p className="mt-2 text-base font-semibold tracking-tight text-white">{metric.value}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </motion.article>
 
-          {/* Card 4: Bottom Row - Span 2 / Eraya Navy */}
-          <motion.div
+          <motion.article
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="md:col-span-2 h-100 bg-secondary rounded-3xl overflow-hidden relative group shadow-lg"
+            className="group relative h-100 overflow-hidden rounded-3xl border border-border bg-secondary md:col-span-2 shadow-[0_24px_70px_rgba(10,15,35,0.12)]"
           >
-            <div className="absolute inset-0 flex flex-col justify-end p-10 z-10 text-white">
-              <div className="max-w-md">
-                <h3 className="text-2xl md:text-3xl font-bold mb-3">{caseStudies[3].title}</h3>
-                <p className="text-white/80 text-sm md:text-base font-light leading-relaxed mb-8">{caseStudies[3].description}</p>
-                <div className="flex items-center gap-4">
-                  <div className="bg-white/10 backdrop-blur-sm px-4 py-2 rounded-xl border border-white/10">
-                    <p className="text-[10px] uppercase font-bold text-white/60 mb-0.5">ROI</p>
-                    <p className="text-sm font-bold text-white">{caseStudies[3].roi}</p>
-                  </div>
-                  <Button asChild variant="outline" size="sm" className="bg-transparent border-white/20 text-white hover:bg-white hover:text-secondary rounded-xl transition-all h-10">
-                    <Link href="#contact" className="flex items-center gap-2">
-                      View details
-                      <FiArrowRight className="h-3 w-3" />
-                    </Link>
-                  </Button>
+            <Image
+              src={caseStudies[3].image}
+              alt={caseStudies[3].title}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-linear-to-r from-secondary/88 via-secondary/58 to-secondary/20 transition-colors duration-300 group-hover:via-secondary/66" />
+            <div className="absolute top-6 left-6 z-10 rounded-full border border-primary/25 bg-primary/20 px-4 py-2 backdrop-blur-md">
+              <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/72">
+                {caseStudies[3].category}
+              </p>
+            </div>
+            <div className="absolute inset-x-0 bottom-0 z-10 p-8 text-white md:p-10">
+              <div className="max-w-2xl">
+                <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/78">
+                  {caseStudies[3].subtitle}
+                </p>
+                <h3 className="mb-4 text-2xl font-semibold tracking-tight text-white md:text-3xl">
+                  {caseStudies[3].title}
+                </h3>
+                <p className="max-w-xl text-sm font-light leading-relaxed text-white/92 md:text-base">
+                  {caseStudies[3].description}
+                </p>
+              </div>
+              <div className="mt-6 flex flex-wrap items-start gap-3">
+                <div className="rounded-2xl border border-primary/20 bg-primary/18 px-4 py-3 backdrop-blur-sm">
+                  <p className="mb-1 text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">ROI</p>
+                  <p className="text-sm font-semibold text-white">{caseStudies[3].roi}</p>
                 </div>
+                {caseStudies[3].metrics.slice(0, 2).map((metric) => (
+                  <div key={metric.label} className="rounded-2xl border border-primary/20 bg-primary/18 px-4 py-3 backdrop-blur-sm">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/75">
+                      {metric.label}
+                    </p>
+                    <p className="mt-1 text-sm font-semibold tracking-tight text-white">{metric.value}</p>
+                  </div>
+                ))}
               </div>
             </div>
-
-            {/* Split layout effect like reference */}
-            <div className="absolute top-0 right-0 w-2/5 h-2/5 overflow-hidden opacity-30 group-hover:opacity-50 transition-opacity duration-500">
-              <Image
-                src={caseStudies[3].image}
-                alt={caseStudies[3].title}
-                fill
-                className="object-cover rounded-bl-[100px]"
-              />
-            </div>
-          </motion.div>
+          </motion.article>
         </div>
       </div>
     </section>
