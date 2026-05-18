@@ -130,7 +130,7 @@ const Navigation = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Button asChild className={cn("group", !scrolled && "bg-white text-black hover:bg-white/90")}>
+              <Button asChild variant="secondary" className={cn("group", !scrolled && "bg-white text-black hover:bg-white/90")}>
                 <Link
                   href="#contact"
                   className="inline-flex items-center gap-2 cursor-pointer"
@@ -213,7 +213,7 @@ const Navigation = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <Button asChild className="group w-full justify-center">
+              <Button asChild variant="secondary" className="group w-full justify-center">
                 <Link
                   href="#contact"
                   className="inline-flex items-center gap-3 cursor-pointer"

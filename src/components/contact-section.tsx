@@ -236,6 +236,7 @@ const ContactSection = () => {
 
                     <Button
                       type="submit"
+                      variant="secondary"
                       className="w-full group"
                       disabled={isSubmitting}
                     >
