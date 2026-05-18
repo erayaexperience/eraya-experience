@@ -47,10 +47,10 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="relative bg-background py-(--spacing-section) overflow-hidden">
+    <section id="contact" className="relative bg-background py-section overflow-hidden">
       {/* Decorative Orbs */}
-      <div className="absolute top-[10%] -right-24 w-[500px] h-[500px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-[20%] -left-24 w-[400px] h-[400px] bg-secondary/5 rounded-full blur-[100px] pointer-events-none" />
+      <div className="absolute top-[10%] -right-24 w-125 h-125 bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-[20%] -left-24 w-100 h-100 bg-secondary/5 rounded-full blur-[100px] pointer-events-none" />
 
       <div className="container-modern relative z-10">
         {/* Header - Split Layout matching Services */}
