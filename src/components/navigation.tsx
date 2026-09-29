@@ -14,6 +14,7 @@ const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [activeSection, setActiveSection] = useState<string>("");
   const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
@@ -35,6 +36,26 @@ const Navigation = () => {
           const nextProgress =
             totalScrollable > 0 ? Math.min(scrollY / totalScrollable, 1) : 0;
           setScrollProgress(nextProgress);
+
+          // Scroll spy: identify currently visible section
+          const sectionIds = ['about', 'services', 'case-studies', 'portfolio', 'contact'];
+          const scrollPosition = scrollY + 160;
+          let current = "";
+          for (const id of sectionIds) {
+            const el = document.getElementById(id);
+            if (el) {
+              const top = el.offsetTop;
+              const height = el.offsetHeight;
+              if (scrollPosition >= top && scrollPosition < top + height) {
+                current = `#${id}`;
+              }
+            }
+          }
+          if (window.innerHeight + Math.round(scrollY) >= doc.scrollHeight - 80) {
+            current = "#contact";
+          }
+          setActiveSection(current);
+
           ticking = false;
         });
         ticking = true;
@@ -91,10 +112,10 @@ const Navigation = () => {
               <Image
                 src="/logo-small.png"
                 alt="ERAYA Logo Small"
-                width={120}
-                height={32}
+                width={48}
+                height={48}
                 className={cn(
-                  "block lg:hidden transition-all duration-300",
+                  "block lg:hidden h-12 w-12 object-contain transition-all duration-300",
                   !scrolled && "invert brightness-[2] grayscale"
                 )}
                 priority
@@ -106,48 +127,57 @@ const Navigation = () => {
           <motion.div
             className="hidden lg:flex items-center space-x-12"
           >
-            {navItems.map((item, index) => (
-              <motion.div
-                key={item.name}
-                whileHover={{ y: -2 }}
-              >
-                <Link
-                  href={item.href}
-                  className={cn(
-                    "relative text-[15px] font-medium transition-all duration-300 group cursor-pointer",
-                    scrolled ? "text-foreground/70 hover:text-foreground" : "text-white/80 hover:text-white"
-                  )}
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href;
+              return (
+                <motion.div
+                  key={item.name}
+                  whileHover={{ y: -2 }}
                 >
-                  {item.name}
-                  <span className={cn(
-                    "absolute -bottom-1 left-0 h-0.5 w-0 transition-all duration-300 group-hover:w-full",
-                    scrolled ? "bg-primary/70" : "bg-white/70"
-                  )}></span>
-                </Link>
-              </motion.div>
-            ))}
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "relative text-[15px] font-medium transition-all duration-300 group cursor-pointer",
+                      isActive
+                        ? (scrolled ? "text-primary font-semibold" : "text-white font-semibold")
+                        : (scrolled ? "text-foreground/70 hover:text-foreground" : "text-white/80 hover:text-white")
+                    )}
+                  >
+                    {item.name}
+                    <span
+                      className={cn(
+                        "absolute -bottom-1 left-0 h-0.5 transition-all duration-300",
+                        isActive ? "w-full bg-primary" : "w-0 group-hover:w-full",
+                        !isActive && (scrolled ? "bg-primary/70" : "bg-white/70")
+                      )}
+                    />
+                  </Link>
+                </motion.div>
+              );
+            })}
+            <Button
+              asChild
+              variant="secondary"
+              className={cn(
+                "group",
+                !scrolled && "bg-white text-secondary hover:bg-white/90"
+              )}
             >
-              <Button asChild variant="secondary" className={cn("group", !scrolled && "bg-white text-black hover:bg-white/90")}>
-                <Link
-                  href="#contact"
-                  className="inline-flex items-center gap-2 cursor-pointer"
-                >
-                  Get Started
-                  <FiArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-                </Link>
-              </Button>
-            </motion.div>
+              <Link
+                href="#contact"
+                className="inline-flex items-center gap-2 cursor-pointer"
+              >
+                Get Started
+                <FiArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </Button>
           </motion.div>
 
           {/* Mobile menu button */}
-          <motion.button
-            className="lg:hidden p-3 rounded-[18px] liquid-glass transition-all duration-200 hover:-translate-y-0.5"
+          <button
+            className="lg:hidden h-12 w-12 flex items-center justify-center p-3 rounded-xl border border-border/40 bg-white/80 backdrop-blur-md text-secondary transition-all duration-150 hover:bg-white active:translate-y-[1px] cursor-pointer"
             onClick={() => setIsOpen(!isOpen)}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            aria-label="Toggle navigation menu"
           >
             <AnimatePresence mode="wait">
               {isOpen ? (
@@ -172,7 +202,7 @@ const Navigation = () => {
                 </motion.div>
               )}
             </AnimatePresence>
-          </motion.button>
+          </button>
         </div>
       </div>
 
@@ -187,31 +217,36 @@ const Navigation = () => {
             transition={{ duration: 0.4, ease: [0.42, 0, 0.58, 1] }}
             className="fixed inset-0 z-50 bg-white/90 backdrop-blur-3xl border-b border-white/40 lg:hidden flex flex-col items-center justify-center space-y-8 p-6"
           >
-            {navItems.map((item) => (
-              <motion.div
-                key={item.name}
-                variants={itemVariants}
-                initial="closed"
-                animate="open"
-                exit="closed"
-                whileHover={{ x: 10 }}
-              >
-                <Link
-                  href={item.href}
-                  className="block text-2xl font-semibold text-foreground hover:text-foreground/70 transition-all duration-300 cursor-pointer"
-                  onClick={() => setIsOpen(false)}
+            {navItems.map((item) => {
+              const isActive = activeSection === item.href;
+              return (
+                <motion.div
+                  key={item.name}
+                  variants={itemVariants}
+                  initial="closed"
+                  animate="open"
+                  exit="closed"
+                  whileHover={{ x: 10 }}
                 >
-                  {item.name}
-                </Link>
-              </motion.div>
-            ))}
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "block text-2xl font-semibold transition-all duration-300 cursor-pointer",
+                      isActive ? "text-primary" : "text-foreground hover:text-foreground/70"
+                    )}
+                    onClick={() => setIsOpen(false)}
+                  >
+                    {item.name}
+                  </Link>
+                </motion.div>
+              );
+            })}
             <motion.div
               variants={itemVariants}
               initial="closed"
               animate="open"
               exit="closed"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              className="w-full"
             >
               <Button asChild variant="secondary" className="group w-full justify-center">
                 <Link

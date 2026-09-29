@@ -86,35 +86,41 @@ const PortfolioSection = () => {
           }
           description="A cross-industry look at our most impactful launches spanning hospitality, entertainment, healthcare, and lifestyle."
           layout="center"
+          className="mb-8 md:mb-10"
         />
 
         {/* Filters */}
         <motion.div
-          className="mt-component flex flex-wrap justify-center gap-3"
+          className="mb-12 md:mb-16 flex flex-wrap justify-center gap-3"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6, delay: 0.3 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
         >
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveFilter(category)}
-              className={`relative px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300 ${activeFilter === category
-                ? 'text-white shadow-md'
-                : 'text-foreground/70 hover:text-foreground hover:bg-foreground/5 bg-white border border-border/50'
+          {categories.map((category) => {
+            const isActive = activeFilter === category;
+            return (
+              <button
+                key={category}
+                type="button"
+                onClick={() => setActiveFilter(category)}
+                className={`relative px-5 py-2 rounded-full text-sm font-medium transition-all duration-150 active:translate-y-[1px] cursor-pointer select-none border ${
+                  isActive
+                    ? 'text-white border-transparent bg-secondary'
+                    : 'text-foreground/70 hover:text-secondary hover:bg-secondary/5 bg-white border-border/40'
                 }`}
-            >
-              {activeFilter === category && (
-                <motion.div
-                  layoutId="activeFilter"
-                  className="absolute inset-0 bg-secondary rounded-full -z-10"
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                />
-              )}
-              {category}
-            </button>
-          ))}
+              >
+                {isActive && (
+                  <motion.div
+                    layoutId="activeFilter"
+                    className="absolute inset-0 bg-secondary rounded-full"
+                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                  />
+                )}
+                <span className="relative z-10">{category}</span>
+              </button>
+            );
+          })}
         </motion.div>
 
         {/* Projects Grid */}

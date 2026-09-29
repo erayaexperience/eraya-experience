@@ -24,10 +24,10 @@ const AboutSection = () => {
                 src={aboutContent.founder.image}
                 alt={aboutContent.founder.name}
                 fill
-                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
+                style={{ objectPosition: 'center top' }}
+                className="object-cover object-top transition-transform duration-700 scale-100 group-hover:scale-105"
                 sizes="(max-width: 768px) 176px, 256px"
               />
-              <div className="absolute inset-0 bg-secondary/5 group-hover:bg-transparent transition-colors duration-700" />
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/70 mb-0.5">{aboutContent.founder.role}</p>
                 <p className="text-xs font-semibold text-white">{aboutContent.founder.name}</p>
@@ -48,10 +48,10 @@ const AboutSection = () => {
                 src={aboutContent.coFounder.image}
                 alt={aboutContent.coFounder.name}
                 fill
-                className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700 scale-105 group-hover:scale-100"
+                style={{ objectPosition: 'center top' }}
+                className="object-cover object-top transition-transform duration-700 scale-100 group-hover:scale-105"
                 sizes="(max-width: 768px) 176px, 256px"
               />
-              <div className="absolute inset-0 bg-secondary/5 group-hover:bg-transparent transition-colors duration-700" />
               <div className="absolute bottom-0 left-0 right-0 p-4 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/70 mb-0.5">{aboutContent.coFounder.role}</p>
                 <p className="text-xs font-semibold text-white">{aboutContent.coFounder.name}</p>

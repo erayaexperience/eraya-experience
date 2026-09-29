@@ -54,13 +54,13 @@ export const aboutContent = {
     title: 'Defining the Digital Narrative',
     description: 'We help brands grow with strategic social media management and bespoke campaigns. From eye-catching hoardings and creative photoshoots to result-driven ads and paid campaigns, we encompass the entire brand spectrum. Our B2B strategies and dynamic workshops build lasting connections, while our pure focus on measurable ROI ensures every marketing endeavor propels concrete growth.',
     founder: {
-        name: 'Alexander Rivera',
-        role: 'Founder & CEO',
-        image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=800'
+        name: 'Alizah',
+        role: 'Founder',
+        image: '/images/Alizah.PNG'
     },
     coFounder: {
-        name: 'Sarah Chen',
-        role: 'Co-Founder & Creative Director',
-        image: 'https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=800'
+        name: 'Siddharth',
+        role: 'Co-Founder',
+        image: '/images/Siddharth.PNG'
     }
 };
