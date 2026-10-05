@@ -2,11 +2,11 @@ import Navigation from '@/components/navigation';
 import HeroSection from '@/components/hero-section';
 import AboutSection from '@/components/about-section';
 import KPIsSection from '@/components/kpis-section';
-import AchievementsSection from '@/components/achievements-section';
 import ServicesSection from '@/components/services-section';
 import CaseStudiesSection from '@/components/case-studies-section';
 import ClientsSection from '@/components/clients-section';
-import PortfolioSection from '@/components/portfolio-section';
+import PressSection from '@/components/press-section';
+import GraphicsSection from '@/components/graphics-section';
 import ContactSection from '@/components/contact-section';
 import Footer from '@/components/footer';
 
@@ -32,8 +32,8 @@ export default function Home() {
         image: 'https://erayaexperience.com/logo-small.png',
         description:
           'We craft human-first brand experiences that merge strategy, storytelling, and premium execution. From social media management to Pan-India ROI marketing.',
-        telephone: '+919272166475',
-        email: 'ino.erayaexp@gmail.com',
+        telephone: '+918208664702',
+        email: 'info.erayaexp@gmail.com',
         priceRange: '$$',
         address: {
           '@type': 'PostalAddress',
@@ -61,51 +61,33 @@ export default function Home() {
         ],
         sameAs: ['https://www.instagram.com/erayaexperience/'],
         knowsAbout: [
-          'Social Media Management',
+          'Graphic Design',
+          'Logo Design',
+          'Photoshoots',
+          'Social Media Marketing',
+          'Meta Ads',
+          'Google Ads',
           'Influencer Marketing',
-          'Performance Marketing',
-          'Paid Advertising',
-          'Creative Photoshoots',
-          'Out-Of-Home & Hoardings Advertising',
-          'B2B Strategy',
-          'ROI Marketing',
+          'Brand Kits',
+          'Web Design',
+          'SEO',
         ],
         hasOfferCatalog: {
           '@type': 'OfferCatalog',
           name: 'Marketing & Creative Services',
           itemListElement: [
-            {
+            ...[
+              ['Graphic & Logo Design', 'Logos, posters and campaign graphics, recognised in a second and remembered long after.'],
+              ['Photoshoots', 'Food, drinks, fashion and lifestyle shoots that make the product the hero of every frame.'],
+              ['Social Media Marketing', 'Pages planned around the audience and the goal: consistent, aesthetic and on brand.'],
+              ['Meta & Google Ads', 'Paid campaigns built around return, with every rupee tracked.'],
+              ['Influencer Marketing', 'The right creators, matched to the audience so people talk, share and show up.'],
+              ['Brand Kits', 'Logo, colours, type and branded essentials in one complete kit.'],
+              ['Website & SEO', 'Fast, beautiful websites built to rank on Google and turn visitors into customers.'],
+            ].map(([name, description]) => ({
               '@type': 'Offer',
-              itemOffered: {
-                '@type': 'Service',
-                name: 'Social Media Management',
-                description: 'End-to-end brand management, curation, and organic community growth.',
-              },
-            },
-            {
-              '@type': 'Offer',
-              itemOffered: {
-                '@type': 'Service',
-                name: 'Influencer Marketing',
-                description: 'Curated creator alignments that cultivate authentic brand trust.',
-              },
-            },
-            {
-              '@type': 'Offer',
-              itemOffered: {
-                '@type': 'Service',
-                name: 'Performance & Paid Ads',
-                description: 'Hyper-targeted ad campaigns engineered for measurable ROI.',
-              },
-            },
-            {
-              '@type': 'Offer',
-              itemOffered: {
-                '@type': 'Service',
-                name: 'Hoardings & Offline Presence',
-                description: 'Strategic out-of-home advertising bridging digital and physical landscapes.',
-              },
-            },
+              itemOffered: { '@type': 'Service', name, description },
+            })),
           ],
         },
       },
@@ -123,11 +105,11 @@ export default function Home() {
         <HeroSection />
         <KPIsSection />
         <AboutSection />
-        <AchievementsSection />
+        <PressSection />
         <ServicesSection />
         <CaseStudiesSection />
+        <GraphicsSection />
         <ClientsSection />
-        <PortfolioSection />
         <ContactSection />
         <Footer />
       </main>

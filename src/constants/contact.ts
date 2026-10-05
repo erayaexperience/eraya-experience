@@ -1,32 +1,27 @@
-import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
+import { FiMail, FiPhone } from 'react-icons/fi';
 
 export const contactInfo = [
     {
-        icon: FiMapPin,
-        title: 'Location',
-        details: 'Porvorim, Goa',
-        description: 'Visit our studio'
-    },
-    {
         icon: FiMail,
         title: 'Email',
-        details: 'ino.erayaexp@gmail.com',
+        details: 'info.erayaexp@gmail.com',
         description: 'Drop us a line anytime'
     },
     {
         icon: FiPhone,
         title: 'Phone',
-        details: '+91 9272166475',
+        details: '+91 8208664702',
         description: 'Call us for immediate support'
     }
 ];
 
 export const serviceOptions = [
-    'Social Media Management',
+    'Graphic & Logo Design',
+    'Photoshoots',
+    'Social Media Marketing',
+    'Meta & Google Ads',
     'Influencer Marketing',
-    'Hoardings & Offline Marketing',
-    'Performance Marketing',
-    'Website/SEO Development',
-    'Event Curation/B2B',
-    'Complete Digital Marketing Package'
+    'Brand Kits',
+    'Website & SEO',
+    'The Full Package'
 ];

@@ -20,7 +20,7 @@
   --color-border: rgb(var(--border));
   --color-input: rgb(var(--input));
   --color-ring: rgb(var(--ring));
-  --color-eraya-navy: rgb(var(--eraya-navy));
+  --color-eraya-ink: rgb(var(--eraya-ink));
   --color-eraya-beige: rgb(var(--eraya-beige));
   --color-eraya-black: rgb(var(--eraya-black));
 
@@ -34,7 +34,6 @@
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.06);
 
-  /* Fluid Semantic Spacing - Pro Way */
   --spacing-section: clamp(4rem, 8vw, 8rem);
   --spacing-inner: clamp(2.5rem, 5vw, 5rem);
   --spacing-component: clamp(1.5rem, 3vw, 3rem);
@@ -57,20 +56,20 @@ body {
 
 @layer base {
   :root {
-    --background: 245 245 247;
+    --background: 248 246 242;
     --foreground: 29 29 31;
     --card: 255 255 255;
     --card-foreground: 29 29 31;
     --popover: 255 255 255;
     --popover-foreground: 29 29 31;
     --primary: 214 182 133;
-    --primary-foreground: 22 36 81;
-    --secondary: 22 36 81;
+    --primary-foreground: 17 17 17;
+    --secondary: 17 17 17;
     --secondary-foreground: 255 255 255;
-    --muted: 229 229 234;
+    --muted: 236 233 227;
     --muted-foreground: 99 99 102;
     --accent: 214 182 133;
-    --accent-foreground: 22 36 81;
+    --accent-foreground: 17 17 17;
     --destructive: 255 69 58;
     --destructive-foreground: 255 255 255;
     --border: 214 182 133;
@@ -78,7 +77,7 @@ body {
     --ring: 214 182 133;
     --radius: 20px;
 
-    --eraya-navy: 22 36 81;
+    --eraya-ink: 17 17 17;
     --eraya-beige: 214 182 133;
     --eraya-black: 29 29 31;
   }
@@ -99,8 +98,6 @@ body {
     color: #1d1d1f;
   }
 
-
-
   h1,
   h2,
   h3,
@@ -119,7 +116,6 @@ body {
     text-wrap: balance;
   }
 
-  /* Clean Card Effects */
   .liquid-glass {
     background: #ffffff;
     border: 1px solid #e5e5e7;
@@ -141,22 +137,6 @@ body {
 
   .liquid-card:hover {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  }
-
-  /* Optional subtle glass noise without heavy assets */
-  .glass-noise {
-    position: relative;
-  }
-
-  .glass-noise::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      radial-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 1px);
-    background-size: 3px 3px;
-    opacity: 0.3;
-    pointer-events: none;
   }
 
   .hairline-border {
@@ -199,7 +179,7 @@ body {
   .glass-dark {
     backdrop-filter: blur(18px) saturate(140%);
     -webkit-backdrop-filter: blur(18px) saturate(140%);
-    background: rgba(22, 36, 81, 0.86);
+    background: rgba(17, 17, 17, 0.86);
     border: 1px solid rgba(255, 255, 255, 0.22);
   }
 
@@ -219,12 +199,12 @@ body {
 
   .modern-button-secondary {
     @apply bg-secondary text-secondary-foreground border border-secondary/80 hover:bg-secondary/90;
-    box-shadow: 0 4px 12px rgba(22, 36, 81, 0.08);
+    box-shadow: 0 4px 12px rgba(17, 17, 17, 0.08);
   }
 
   .modern-button-secondary:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(22, 36, 81, 0.1);
+    box-shadow: 0 6px 16px rgba(17, 17, 17, 0.1);
   }
 
   .modern-card {
@@ -245,7 +225,6 @@ body {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
   }
 
-  /* Standard Layout Utility */
   .container-modern {
     @apply max-w-7xl mx-auto px-6 md:px-8 lg:px-12;
   }
@@ -370,7 +349,7 @@ body {
 
   .gradient-border {
     position: relative;
-    background: linear-gradient(135deg, rgba(214, 182, 133, 0.1), rgba(22, 36, 81, 0.1));
+    background: linear-gradient(135deg, rgba(214, 182, 133, 0.1), rgba(17, 17, 17, 0.1));
     border-radius: var(--radius);
   }
 
@@ -379,7 +358,7 @@ body {
     position: absolute;
     inset: 0;
     padding: 1px;
-    background: linear-gradient(135deg, rgba(214, 182, 133, 0.3), rgba(22, 36, 81, 0.3));
+    background: linear-gradient(135deg, rgba(214, 182, 133, 0.3), rgba(17, 17, 17, 0.3));
     border-radius: inherit;
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     mask-composite: xor;
@@ -398,7 +377,6 @@ body {
   }
 }
 
-/* Liquid Glass Animations */
 @keyframes liquidRotate {
   0% {
     transform: rotate(0deg);
@@ -545,7 +523,6 @@ body {
   animation: scaleIn 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -563,24 +540,20 @@ body {
   background: rgba(214, 182, 133, 0.85);
 }
 
-/* Selection styling */
 ::selection {
   background: rgba(214, 182, 133, 0.35);
-  color: rgb(var(--eraya-navy));
+  color: rgb(var(--eraya-ink));
 }
 
-/* Smooth scroll behavior */
 html {
   scroll-behavior: smooth;
 }
 
-/* Focus styles */
 *:focus-visible {
   outline: 2px solid rgb(var(--primary));
   outline-offset: 2px;
 }
 
-/* Loading states */
 .loading-shimmer {
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 200% 100%;
@@ -597,7 +570,6 @@ html {
   }
 }
 
-/* NumberFlow Suffix Styles for KPIs counter */
 number-flow::part(suffix) {
   color: rgb(var(--primary));
   opacity: 0.85;
@@ -618,14 +590,12 @@ number-flow[data-suffix="+"]::part(suffix) {
   margin-left: 0.01em;
 }
 
-/* Responsive typography */
 @media (max-width: 768px) {
   .section-padding {
     @apply py-16 md:py-20;
   }
 }
 
-/* High contrast mode support */
 @media (prefers-contrast: high) {
 
   .shadow,
@@ -634,11 +604,10 @@ number-flow[data-suffix="+"]::part(suffix) {
   .shadow-lg,
   .shadow-xl,
   .shadow-2xl {
-    box-shadow: 0 0 0 2px rgba(22, 36, 81, 0.8) !important;
+    box-shadow: 0 0 0 2px rgba(17, 17, 17, 0.8) !important;
   }
 }
 
-/* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
 
   *,
@@ -648,4 +617,49 @@ number-flow[data-suffix="+"]::part(suffix) {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+html {
+  scrollbar-gutter: stable;
+}
+
+html:has(dialog[open]:modal) {
+  overflow: hidden;
+}
+
+html body[data-scroll-locked] {
+  overflow-x: hidden !important;
+  overflow-y: visible !important;
+  margin-right: 0 !important;
+  padding-right: 0 !important;
+}
+
+@keyframes gallery-left {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes gallery-right {
+  from { transform: translateX(-50%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes select-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+
+@utility glass-gold {
+  border: 1px solid rgb(var(--primary) / 0.45);
+  background-image: linear-gradient(135deg, rgb(var(--primary) / 0.4), rgb(var(--primary) / 0.2) 50%, rgb(var(--primary) / 0.05));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.5);
+  backdrop-filter: blur(12px) saturate(1.5);
+}
+
+@utility glass-gold-light {
+  border: 1px solid rgb(var(--primary) / 0.3);
+  background-image: linear-gradient(135deg, rgb(var(--primary) / 0.2), rgb(255 255 255 / 0.62) 55%, rgb(255 255 255 / 0.5));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  backdrop-filter: blur(24px) saturate(1.5);
 }

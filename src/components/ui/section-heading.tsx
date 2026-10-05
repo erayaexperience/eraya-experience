@@ -101,7 +101,6 @@ export function SectionHeading({
         );
     }
 
-    // layout === "split" (Default)
     return (
         <div className={cn("flex flex-col md:flex-row md:items-end justify-between gap-8 mb-20 lg:mb-28", className)}>
             <motion.div

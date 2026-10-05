@@ -9,11 +9,10 @@ const AboutSection = () => {
   return (
     <section id="about" className="bg-white py-(--spacing-section) border-b border-zinc-200 overflow-hidden">
       <div className="container-modern px-6 md:px-12 relative">
-        <div className="relative max-w-6xl mx-auto min-h-150 lg:min-h-175 flex items-center justify-center">
+        <div className="relative max-w-6xl mx-auto grid grid-cols-2 gap-4 sm:gap-6 xl:block xl:min-h-175">
 
-          {/* Founder Portrait - Top Right Alignment (High Precision) */}
           <motion.div
-            className="absolute -top-12 -right-4 lg:right-0 w-44 md:w-56 lg:w-64 z-20"
+            className="row-start-2 col-start-1 justify-self-end w-full max-w-56 z-20 xl:absolute xl:-top-12 xl:right-0 xl:w-64 xl:max-w-none"
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true }}
@@ -26,18 +25,17 @@ const AboutSection = () => {
                 fill
                 style={{ objectPosition: 'center top' }}
                 className="object-cover object-top transition-transform duration-700 scale-100 group-hover:scale-105"
-                sizes="(max-width: 768px) 176px, 256px"
+                sizes="(max-width: 1279px) 224px, 256px"
               />
-              <div className="absolute bottom-0 left-0 right-0 p-4 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              <div className="absolute bottom-0 left-0 right-0 p-4 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-100 xl:opacity-0 xl:group-hover:opacity-100 transition-opacity duration-500">
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/70 mb-0.5">{aboutContent.founder.role}</p>
                 <p className="text-xs font-semibold text-white">{aboutContent.founder.name}</p>
               </div>
             </div>
           </motion.div>
 
-          {/* Co-Founder Portrait - Bottom Left Alignment (High Precision) */}
           <motion.div
-            className="absolute -bottom-12 -left-4 lg:left-0 w-44 md:w-56 lg:w-64 z-20"
+            className="row-start-2 col-start-2 justify-self-start w-full max-w-56 z-20 xl:absolute xl:-bottom-12 xl:left-0 xl:w-64 xl:max-w-none"
             initial={{ opacity: 0, scale: 0.95, y: -20 }}
             whileInView={{ opacity: 1, scale: 1, y: 0 }}
             viewport={{ once: true }}
@@ -50,19 +48,18 @@ const AboutSection = () => {
                 fill
                 style={{ objectPosition: 'center top' }}
                 className="object-cover object-top transition-transform duration-700 scale-100 group-hover:scale-105"
-                sizes="(max-width: 768px) 176px, 256px"
+                sizes="(max-width: 1279px) 224px, 256px"
               />
-              <div className="absolute bottom-0 left-0 right-0 p-4 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+              <div className="absolute bottom-0 left-0 right-0 p-4 bg-linear-to-t from-black/80 via-black/20 to-transparent opacity-100 xl:opacity-0 xl:group-hover:opacity-100 transition-opacity duration-500">
                 <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/70 mb-0.5">{aboutContent.coFounder.role}</p>
                 <p className="text-xs font-semibold text-white">{aboutContent.coFounder.name}</p>
               </div>
             </div>
           </motion.div>
 
-          {/* Standardized Central Narrative Header */}
-          <div className="absolute inset-0 flex items-center justify-center">
+          <div className="col-span-2 row-start-1 mb-8 flex justify-center xl:absolute xl:inset-0 xl:mb-0 xl:items-center">
             <SectionHeading
-              subtitle="Our Agency"
+              subtitle="Who We Are"
               title={
                 <>
                   {aboutContent.title.split(' ').slice(0, -1).join(' ')} <br />

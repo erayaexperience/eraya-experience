@@ -3,100 +3,118 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FiMenu, FiX, FiArrowRight } from "react-icons/fi";
+import { FiArrowRight } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { Button } from "./ui/button";
 import { navItems } from "@/constants/navigation";
 import { cn } from "@/lib/utils";
+import { getLenis } from "@/lib/lenis";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [activeSection, setActiveSection] = useState<string>("");
   const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    const sectionIds = ["about", "press", "services", "case-studies", "portfolio", "contact"];
+    let sections: { href: string; top: number; bottom: number }[] = [];
+    let threshold = 0;
+    let pageEnd = 0;
     let ticking = false;
 
-    const handleScroll = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const scrollY = window.scrollY;
-          const headerHeight = navRef.current?.offsetHeight || 0;
-          // Hero is h-screen, so its end is at window.innerHeight
-          // Header bottom touches hero end when scrollY = window.innerHeight - headerHeight
-          const threshold = window.innerHeight - headerHeight;
-
-          setScrolled(scrollY >= threshold);
-
-          const doc = document.documentElement;
-          const totalScrollable = doc.scrollHeight - window.innerHeight;
-          const nextProgress =
-            totalScrollable > 0 ? Math.min(scrollY / totalScrollable, 1) : 0;
-          setScrollProgress(nextProgress);
-
-          // Scroll spy: identify currently visible section
-          const sectionIds = ['about', 'services', 'case-studies', 'portfolio', 'contact'];
-          const scrollPosition = scrollY + 160;
-          let current = "";
-          for (const id of sectionIds) {
-            const el = document.getElementById(id);
-            if (el) {
-              const top = el.offsetTop;
-              const height = el.offsetHeight;
-              if (scrollPosition >= top && scrollPosition < top + height) {
-                current = `#${id}`;
-              }
-            }
-          }
-          if (window.innerHeight + Math.round(scrollY) >= doc.scrollHeight - 80) {
-            current = "#contact";
-          }
-          setActiveSection(current);
-
-          ticking = false;
-        });
-        ticking = true;
-      }
+    const measure = () => {
+      sections = sectionIds.flatMap((id) => {
+        const el = document.getElementById(id);
+        if (!el) return [];
+        const box = el.parentElement?.classList.contains("pin-spacer") ? el.parentElement : el;
+        const top = box.getBoundingClientRect().top + window.scrollY;
+        return [{ href: `#${id}`, top, bottom: top + box.offsetHeight }];
+      });
+      threshold = window.innerHeight - (navRef.current?.offsetHeight ?? 0);
+      pageEnd = document.documentElement.scrollHeight - window.innerHeight - 80;
     };
 
-    handleScroll(); // Call once on mount to set initial state
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    window.addEventListener("resize", handleScroll); // Threshold changes on resize
+    const update = () => {
+      ticking = false;
+      const scrollY = window.scrollY;
+      setScrolled(scrollY >= threshold);
+      const probe = scrollY + 160;
+      let current = sections.find((section) => probe >= section.top && probe < section.bottom)?.href ?? "";
+      if (scrollY >= pageEnd) current = "#contact";
+      setActiveSection(current);
+    };
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(update);
+    };
+    const remeasure = () => {
+      measure();
+      update();
+    };
+
+    remeasure();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", remeasure);
+    window.addEventListener("load", remeasure);
+    ScrollTrigger.addEventListener("refresh", remeasure);
+    const observer = new ResizeObserver(remeasure);
+    observer.observe(document.body);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleScroll);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", remeasure);
+      window.removeEventListener("load", remeasure);
+      ScrollTrigger.removeEventListener("refresh", remeasure);
+      observer.disconnect();
     };
-  }, []); // Empty dependency array means this effect runs once on mount and cleans up on unmount
+  }, []);
 
-  const itemVariants: Variants = {
-    closed: { opacity: 0, x: -20 },
+  useEffect(() => {
+    if (!isOpen) return;
+    getLenis()?.stop();
+    return () => getLenis()?.start();
+  }, [isOpen]);
+
+  const closeMenu = () => {
+    getLenis()?.start();
+    setIsOpen(false);
+  };
+
+  const menuVariants: Variants = {
+    closed: { opacity: 0, transition: { duration: 0.25, ease: "easeOut" } },
     open: {
       opacity: 1,
-      x: 0,
-      transition: { type: "tween", duration: 0.3 },
+      transition: { duration: 0.3, ease: "easeOut", staggerChildren: 0.05, delayChildren: 0.05 },
     },
   };
 
+  const itemVariants: Variants = {
+    closed: { opacity: 0, y: 16, transition: { duration: 0.15 } },
+    open: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } },
+  };
+
+  const onLight = scrolled || isOpen;
+
   return (
+    <>
     <motion.nav
       ref={navRef}
       className={cn(
         "fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-out",
-        scrolled
-          ? "bg-white/75 backdrop-blur-lg border-b border-black/5 shadow-[0_1px_3px_rgba(0,0,0,0.02)] supports-backdrop-filter:bg-white/60"
+        scrolled && !isOpen
+          ? "bg-[rgb(251_248_242/0.78)] backdrop-blur-lg backdrop-saturate-150 border-b border-primary/20 shadow-[0_1px_3px_rgba(0,0,0,0.02)]"
           : "bg-transparent border-b border-transparent"
       )}
     >
       <div className="container-modern">
         <div className="flex items-center justify-between py-3 lg:py-4">
-          {/* Logo */}
           <motion.div>
             <Link href="/" className="flex items-center">
-              {/* Desktop Logo */}
               <Image
                 src="/logo.png"
                 alt="ERAYA Logo"
@@ -104,11 +122,10 @@ const Navigation = () => {
                 height={40}
                 className={cn(
                   "hidden lg:block transition-all duration-300",
-                  !scrolled && "invert brightness-[2] grayscale"
+                  !onLight && "invert brightness-[2] grayscale"
                 )}
                 priority
               />
-              {/* Mobile/Tablet Logo */}
               <Image
                 src="/logo-small.png"
                 alt="ERAYA Logo Small"
@@ -116,16 +133,15 @@ const Navigation = () => {
                 height={48}
                 className={cn(
                   "block lg:hidden h-12 w-12 object-contain transition-all duration-300",
-                  !scrolled && "invert brightness-[2] grayscale"
+                  !onLight && "invert brightness-[2] grayscale"
                 )}
                 priority
               />
             </Link>
           </motion.div>
 
-          {/* Desktop Navigation */}
           <motion.div
-            className="hidden lg:flex items-center space-x-12"
+            className="hidden lg:flex items-center space-x-8 xl:space-x-12"
           >
             {navItems.map((item) => {
               const isActive = activeSection === item.href;
@@ -167,94 +183,95 @@ const Navigation = () => {
                 href="#contact"
                 className="inline-flex items-center gap-2 cursor-pointer"
               >
-                Get Started
+                Let&apos;s Talk
                 <FiArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Link>
             </Button>
           </motion.div>
 
-          {/* Mobile menu button */}
           <button
-            className="lg:hidden h-12 w-12 flex items-center justify-center p-3 rounded-xl border border-border/40 bg-white/80 backdrop-blur-md text-secondary transition-all duration-150 hover:bg-white active:translate-y-[1px] cursor-pointer"
+            className={cn(
+              "lg:hidden relative z-60 h-12 w-12 flex items-center justify-center rounded-2xl transition-[color,filter,scale] duration-300 active:scale-95 cursor-pointer hover:brightness-110",
+              onLight ? "text-foreground" : "text-white"
+            )}
             onClick={() => setIsOpen(!isOpen)}
-            aria-label="Toggle navigation menu"
+            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={isOpen}
           >
-            <AnimatePresence mode="wait">
-              {isOpen ? (
-                <motion.div
-                  key="close"
-                  initial={{ rotate: -90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: 90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <FiX className={cn("h-6 w-6", scrolled ? "text-foreground" : "text-white")} />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key="menu"
-                  initial={{ rotate: 90, opacity: 0 }}
-                  animate={{ rotate: 0, opacity: 1 }}
-                  exit={{ rotate: -90, opacity: 0 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <FiMenu className={cn("h-6 w-6", scrolled ? "text-foreground" : "text-white")} />
-                </motion.div>
+            <span
+              aria-hidden
+              className={cn(
+                "absolute inset-0 rounded-2xl glass-gold transition-opacity duration-300",
+                onLight ? "opacity-0" : "opacity-100"
               )}
-            </AnimatePresence>
+            />
+            <span
+              aria-hidden
+              className={cn(
+                "absolute inset-0 rounded-2xl glass-gold-light transition-opacity duration-300",
+                onLight ? "opacity-100" : "opacity-0"
+              )}
+            />
+            <span aria-hidden className="relative block h-4 w-5">
+              <span
+                className={cn(
+                  "absolute top-0.5 left-0 h-0.5 w-5 rounded-full bg-current transition-[translate,rotate] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                  isOpen && "translate-y-[5px] rotate-45"
+                )}
+              />
+              <span
+                className={cn(
+                  "absolute top-[7px] left-0 h-0.5 w-5 rounded-full bg-current transition-[opacity,scale] duration-200",
+                  isOpen && "scale-x-0 opacity-0"
+                )}
+              />
+              <span
+                className={cn(
+                  "absolute bottom-0.5 left-0 h-0.5 w-5 rounded-full bg-current transition-[translate,rotate] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]",
+                  isOpen && "-translate-y-[5px] -rotate-45"
+                )}
+              />
+            </span>
           </button>
         </div>
       </div>
+    </motion.nav>
 
-      {/* Mobile Navigation Overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
             key="mobile-menu"
-            initial={{ y: "-100%", opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: "-100%", opacity: 0 }}
-            transition={{ duration: 0.4, ease: [0.42, 0, 0.58, 1] }}
-            className="fixed inset-0 z-50 bg-white/90 backdrop-blur-3xl border-b border-white/40 lg:hidden flex flex-col items-center justify-center space-y-8 p-6"
+            variants={menuVariants}
+            initial="closed"
+            animate="open"
+            exit="closed"
+            className="fixed inset-0 z-40 bg-linear-to-b from-[rgb(251_248_242/0.97)] to-[rgb(243_233_215/0.97)] backdrop-blur-md lg:hidden flex flex-col items-center justify-center space-y-8 p-6"
           >
             {navItems.map((item) => {
               const isActive = activeSection === item.href;
               return (
-                <motion.div
-                  key={item.name}
-                  variants={itemVariants}
-                  initial="closed"
-                  animate="open"
-                  exit="closed"
-                  whileHover={{ x: 10 }}
-                >
+                <motion.div key={item.name} variants={itemVariants}>
                   <Link
                     href={item.href}
                     className={cn(
-                      "block text-2xl font-semibold transition-all duration-300 cursor-pointer",
-                      isActive ? "text-primary" : "text-foreground hover:text-foreground/70"
+                      "block text-2xl font-semibold transition-colors duration-300 cursor-pointer",
+                      isActive ? "text-primary" : "text-foreground hover:text-primary"
                     )}
-                    onClick={() => setIsOpen(false)}
+                    onClick={closeMenu}
                   >
                     {item.name}
                   </Link>
                 </motion.div>
               );
             })}
-            <motion.div
-              variants={itemVariants}
-              initial="closed"
-              animate="open"
-              exit="closed"
-              className="w-full"
-            >
+            <motion.div variants={itemVariants} className="w-full">
               <Button asChild variant="secondary" className="group w-full justify-center">
                 <Link
                   href="#contact"
                   className="inline-flex items-center gap-3 cursor-pointer"
-                  onClick={() => setIsOpen(false)}
+                  onClick={closeMenu}
                 >
-                  Get Started
+                  Let&apos;s Talk
                   <FiArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </Button>
@@ -262,7 +279,7 @@ const Navigation = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.nav>
+    </>
   );
 };
 

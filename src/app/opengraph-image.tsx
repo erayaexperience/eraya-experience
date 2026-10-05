@@ -27,7 +27,6 @@ export default async function Image() {
           fontFamily: 'sans-serif',
         }}
       >
-        {/* Top Header with Monogram */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
           <div
             style={{
@@ -72,7 +71,6 @@ export default async function Image() {
           </div>
         </div>
 
-        {/* Hero Narrative */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px', maxWidth: '960px' }}>
           <h1
             style={{
@@ -98,7 +96,6 @@ export default async function Image() {
           </p>
         </div>
 
-        {/* Footer Metrics & Domain */}
         <div
           style={{
             display: 'flex',

@@ -1,7 +1,8 @@
+import 'lenis/dist/lenis.css';
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { GeistSans } from 'geist/font/sans';
-import { Toaster } from '@/components/ui/toaster';
+import { SmoothScroll } from '@/components/smooth-scroll';
 import { Playfair_Display } from 'next/font/google';
 
 const playfair = Playfair_Display({
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
     template: '%s | Eraya Experience',
   },
   description:
-    'Eraya Experience is a premier digital marketing agency based in Goa, India. We deliver high-impact social media management, influencer marketing, performance advertising, hoardings, and ROI-driven brand growth.',
+    'Eraya Experience is a premier digital marketing agency based in Goa, India. We deliver graphic and logo design, photoshoots, social media marketing, Meta and Google ads, influencer marketing, brand kits, and websites and SEO.',
   keywords: [
     'digital marketing agency Goa',
     'social media management Goa',
@@ -99,10 +100,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-smooth scroll-pt-24">
+    <html lang="en" className="scroll-pt-24">
       <body className={`${GeistSans.variable} ${playfair.variable} font-sans antialiased text-foreground bg-background selection:bg-primary/30 selection:text-foreground`}>
+        <SmoothScroll />
         {children}
-        <Toaster />
       </body>
     </html>
   );
