@@ -7,7 +7,7 @@ import { caseStudies, type CaseStudy } from "@/constants/case-studies";
 import { SectionHeading } from "./ui/section-heading";
 import { FiChevronDown } from "react-icons/fi";
 import { cn } from "@/lib/utils";
-import { getLenis } from "@/lib/lenis";
+import { getLenis, scrollToElement } from "@/lib/lenis";
 
 const glass = 'glass-gold';
 
@@ -91,11 +91,11 @@ const CaseStudiesSection = () => {
   const visible = showAll ? caseStudies : caseStudies.slice(0, INITIAL_COUNT);
 
   const toggle = () => {
-    if (showAll) {
-      const top = (sectionRef.current?.getBoundingClientRect().top ?? 0) + window.scrollY - 80;
+    const section = sectionRef.current;
+    if (showAll && section) {
       const lenis = getLenis();
-      if (lenis) lenis.scrollTo(top, { duration: 0.8 });
-      else window.scrollTo({ top, behavior: "smooth" });
+      if (lenis) scrollToElement(lenis, section);
+      else section.scrollIntoView({ behavior: "smooth" });
     }
     setShowAll((value) => !value);
   };

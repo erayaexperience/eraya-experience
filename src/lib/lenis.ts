@@ -1,5 +1,6 @@
 import type Lenis from "lenis";
 import type { VirtualScrollData } from "lenis";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 let instance: Lenis | null = null;
 
@@ -24,4 +25,26 @@ export const runScrollInterceptors = (data: VirtualScrollData) => {
     if (interceptor(data) === false) return false;
   }
   return true;
+};
+
+const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
+
+// Long in-page jumps cut straight to within a screen of the target and glide the rest of the
+// way, so a nav click doesn't play every scroll animation it passes on the way there.
+export const scrollToElement = (lenis: Lenis, target: Element) => {
+  const padding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+  const margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;
+  const destination = target.getBoundingClientRect().top + window.scrollY - padding - margin;
+  const runway = window.innerHeight;
+  const distance = destination - lenis.animatedScroll;
+
+  if (Math.abs(distance) > runway) {
+    lenis.scrollTo(destination - Math.sign(distance) * runway, { immediate: true });
+    ScrollTrigger.update();
+    for (const trigger of ScrollTrigger.getAll()) {
+      const scrub = trigger.getTween();
+      if (scrub) scrub.progress(1);
+    }
+  }
+  lenis.scrollTo(destination, { duration: 1, easing: easeOutQuart });
 };

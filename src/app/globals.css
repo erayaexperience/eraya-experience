@@ -48,6 +48,8 @@ body {
 }
 
 :root {
+  /* Height of the fixed navigation bar: 3rem logo + 1.5rem padding + 1px border. */
+  --header-height: calc(4.5rem + 1px);
   --glass-bg: rgba(255, 255, 255, 0.85);
   --glass-border: rgba(0, 0, 0, 0.06);
   --glass-inner: rgba(255, 255, 255, 0.95);

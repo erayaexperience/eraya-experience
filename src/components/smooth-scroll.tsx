@@ -4,7 +4,7 @@ import { useLayoutEffect } from "react";
 import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { setLenis, runScrollInterceptors } from "@/lib/lenis";
+import { setLenis, runScrollInterceptors, scrollToElement } from "@/lib/lenis";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,10 +14,26 @@ export function SmoothScroll() {
 
     const lenis = new Lenis({
       lerp: 0.09,
-      anchors: true,
       prevent: (node) => node instanceof Element && !!node.closest("dialog"),
       virtualScroll: runScrollInterceptors,
     });
+
+    // Handle same-page hash links here, in the capture phase, so neither the browser nor
+    // next/link starts a competing scroll. The scroll waits a frame for click handlers such
+    // as the mobile menu's close to run first.
+    const onClick = (event: MouseEvent) => {
+      if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
+      if (!(link instanceof HTMLAnchorElement)) return;
+      const url = new URL(link.href);
+      if (!url.hash || url.origin !== location.origin || url.pathname !== location.pathname) return;
+      const target = document.getElementById(decodeURIComponent(url.hash.slice(1)));
+      if (!target) return;
+      event.preventDefault();
+      history.pushState(null, "", url.hash);
+      requestAnimationFrame(() => scrollToElement(lenis, target));
+    };
+    window.addEventListener("click", onClick, { capture: true });
 
     setLenis(lenis);
     if (process.env.NODE_ENV === "development") (window as unknown as { lenis?: Lenis }).lenis = lenis;
@@ -43,6 +59,7 @@ export function SmoothScroll() {
 
     return () => {
       window.clearTimeout(refreshTimer);
+      window.removeEventListener("click", onClick, { capture: true });
       observer.disconnect();
       gsap.ticker.remove(tick);
       setLenis(null);

@@ -29,9 +29,8 @@ const Navigation = () => {
       sections = sectionIds.flatMap((id) => {
         const el = document.getElementById(id);
         if (!el) return [];
-        const box = el.parentElement?.classList.contains("pin-spacer") ? el.parentElement : el;
-        const top = box.getBoundingClientRect().top + window.scrollY;
-        return [{ href: `#${id}`, top, bottom: top + box.offsetHeight }];
+        const top = el.getBoundingClientRect().top + window.scrollY;
+        return [{ href: `#${id}`, top, bottom: top + el.offsetHeight }];
       });
       threshold = window.innerHeight - (navRef.current?.offsetHeight ?? 0);
       pageEnd = document.documentElement.scrollHeight - window.innerHeight - 80;
