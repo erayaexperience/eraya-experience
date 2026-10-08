@@ -87,6 +87,7 @@ export function SectionHeading({
                         <span className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/60">
                             {subtitle}
                         </span>
+                        <span className="w-8 h-px bg-primary" />
                     </div>
                 )}
                 <h2 className="text-3xl sm:text-4xl font-semibold text-secondary leading-tight tracking-tight">

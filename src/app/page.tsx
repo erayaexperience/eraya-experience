@@ -54,7 +54,7 @@ export default function Home() {
           },
           {
             '@type': 'Person',
-            name: 'Siddharth',
+            name: 'Siddharth Gopal',
             jobTitle: 'Co-Founder',
             image: 'https://erayaexperience.com/images/Siddharth.PNG',
           },

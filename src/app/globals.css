@@ -610,16 +610,15 @@ number-flow[data-suffix="+"]::part(suffix) {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
+/* Suppress native WebKit play button overlay on background videos (e.g. Safari Low Power Mode) */
+video::-webkit-media-controls-start-playback-button,
+video::-webkit-media-controls {
+  display: none !important;
+  -webkit-appearance: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
+
 html {
   scrollbar-gutter: stable;
 }

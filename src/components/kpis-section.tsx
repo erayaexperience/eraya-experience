@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from 'react';
-import { animate, motion, useInView, useMotionValue, useReducedMotion, useTransform } from 'framer-motion';
+import { animate, motion, useInView, useMotionValue, useTransform } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -14,8 +14,8 @@ const optimised = (src: string) => `/_next/image?url=${encodeURIComponent(src)}&
 
 const figures = [
     '/images/services/influencer-marketing.jpg',
-    '/images/graphics/lilliput-sundowner-by-the-beach.jpg',
-    '/images/graphics/lilliput-mixtape-friday.jpg',
+    '/images/graphics/sukkha-tandoori.jpg',
+    '/images/services/brand-kits.jpg',
     '/images/services/photoshoots.jpg',
 ];
 
@@ -78,30 +78,27 @@ const Stat = ({ index, start, still }: { index: number; start: boolean; still: b
 const KPIsSection = () => {
     const sectionRef = useRef<HTMLElement>(null);
     const rowRef = useRef<HTMLUListElement>(null);
-    const still = !!useReducedMotion();
     const inView = useInView(rowRef, { once: true, amount: 0.3 });
 
     useGSAP(
         () => {
-            const mm = gsap.matchMedia();
-            mm.add('(prefers-reduced-motion: no-preference)', () => {
-                gsap.fromTo(
-                    rowRef.current,
-                    { rotateX: 24 },
-                    {
-                        rotateX: 0,
-                        ease: 'none',
-                        scrollTrigger: { trigger: sectionRef.current, start: 'top bottom', end: 'center center', scrub: true },
-                    }
-                );
-            });
+            if (!rowRef.current || !sectionRef.current) return;
+            gsap.fromTo(
+                rowRef.current,
+                { rotateX: 24 },
+                {
+                    rotateX: 0,
+                    ease: 'none',
+                    scrollTrigger: { trigger: sectionRef.current, start: 'top bottom', end: 'center center', scrub: true },
+                }
+            );
         },
         { scope: sectionRef }
     );
 
     return (
         <section ref={sectionRef} id="kpis" className="relative overflow-hidden bg-background py-section">
-            <div className="pointer-events-none absolute top-1/2 left-1/2 h-[60rem] w-[60rem] -translate-1/2 bg-[radial-gradient(closest-side,rgb(var(--primary)/0.12),transparent)]" />
+            <div className="pointer-events-none absolute top-1/2 left-1/2 h-240 w-240 -translate-1/2 bg-[radial-gradient(closest-side,rgb(var(--primary)/0.12),transparent)]" />
 
             <div className="container-modern relative grid items-center gap-12 md:gap-16 lg:grid-cols-12 lg:gap-10">
                 <SectionHeading
@@ -123,7 +120,7 @@ const KPIsSection = () => {
                         className="grid origin-top grid-cols-2 gap-x-4 gap-y-12 sm:gap-x-8 md:grid-cols-4 md:gap-x-6"
                     >
                         {stats.map((stat, index) => (
-                            <Stat key={stat.label} index={index} start={inView} still={still} />
+                            <Stat key={stat.label} index={index} start={inView} still={false} />
                         ))}
                     </ul>
                 </div>

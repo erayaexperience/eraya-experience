@@ -204,33 +204,4 @@ export const caseStudies: CaseStudy[] = [
     highlights: ['Identity for a wooden construction brand built to last'],
     services: ['Brand Design', 'Logo Design'],
   },
-  {
-    id: 'b2b-brand',
-    title: 'B2B Brand',
-    subtitle: 'Growing lead volume',
-    category: 'Lead Generation',
-    description:
-      'The goal was to grow lead volume. Our campaign delivered 203 high-intent leads.',
-    image: 'https://images.pexels.com/photos/327540/pexels-photo-327540.jpeg?auto=compress&cs=tinysrgb&w=1600',
-    metrics: [
-      { label: 'High-intent leads', value: '203' },
-    ],
-    highlights: ['203 high-intent leads'],
-    services: ['Performance Marketing', 'Lead Generation'],
-  },
-  {
-    id: 'fnb-brand',
-    title: 'F&B Brand',
-    subtitle: 'Beating a staff shortage',
-    category: 'Hiring Ads',
-    description:
-      'Hit by staff shortages, the business needed people fast. Our hiring ad brought an immediate surge of 29 candidates, and the roles were filled.',
-    image: 'https://images.pexels.com/photos/20509791/pexels-photo-20509791.jpeg?auto=compress&cs=tinysrgb&w=1600',
-    metrics: [
-      { label: 'Candidates', value: '29' },
-      { label: 'Staffing', value: 'Successful' },
-    ],
-    highlights: ['29 candidates from one hiring ad', 'Successful staffing'],
-    services: ['Performance Marketing', 'Recruitment Ads'],
-  },
 ];

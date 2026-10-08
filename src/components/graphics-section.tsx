@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { FiArrowRight } from "react-icons/fi";
 import { graphics } from "@/constants/graphics";
 import { SectionHeading } from "./ui/section-heading";
@@ -28,15 +28,14 @@ const rows = [
 const GraphicsSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const stageRef = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion();
 
   const { scrollYProgress } = useScroll({ target: stageRef, offset: ["start end", "end start"] });
   const rotateX = useTransform(scrollYProgress, [0, 0.5, 1], [26, 14, 6]);
 
   return (
     <section id="portfolio" className="relative overflow-hidden bg-background py-section">
-      <div className="pointer-events-none absolute top-28 left-[calc(25%+15rem)] h-[56rem] w-[56rem] -translate-1/2 bg-[radial-gradient(closest-side,rgb(var(--primary)/0.16),transparent)]" />
-      <div className="pointer-events-none absolute right-[calc(20%+17rem)] bottom-28 h-[64rem] w-[64rem] translate-1/2 bg-[radial-gradient(closest-side,rgb(var(--primary)/0.12),transparent)]" />
+      <div className="pointer-events-none absolute top-28 left-[calc(25%+15rem)] h-224 w-4xl -translate-1/2 bg-[radial-gradient(closest-side,rgb(var(--primary)/0.16),transparent)]" />
+      <div className="pointer-events-none absolute right-[calc(20%+17rem)] bottom-28 h-256 w-5xl translate-1/2 bg-[radial-gradient(closest-side,rgb(var(--primary)/0.12),transparent)]" />
 
       <div className="container-modern relative">
         <SectionHeading
@@ -57,14 +56,14 @@ const GraphicsSection = () => {
         className="relative perspective-[1600px]"
       >
         <motion.div
-          style={reduceMotion ? undefined : { rotateX, rotateZ: -5 }}
+          style={{ rotateX, rotateZ: -5 }}
           className="-mx-[12%] flex origin-top flex-col gap-4 pt-4 pb-10 md:gap-6 md:pt-6 md:pb-16"
         >
           {rows.map((row, rowIndex) => (
-            <div key={rowIndex} className="group/row overflow-x-clip motion-reduce:overflow-x-auto">
+            <div key={rowIndex} className="group/row overflow-x-clip">
               <div
                 className={cn(
-                  "flex w-max gap-4 md:gap-6 group-hover/row:[animation-play-state:paused] motion-reduce:animate-none",
+                  "flex w-max gap-4 md:gap-6 group-hover/row:[animation-play-state:paused]",
                   row.animation
                 )}
               >

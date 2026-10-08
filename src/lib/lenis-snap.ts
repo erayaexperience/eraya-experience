@@ -57,15 +57,13 @@ export function snapWithLenis(trigger: ScrollTrigger, snapTo: SnapTo) {
     gliding = false;
     arm(WHEEL_QUIET_MS);
   };
-  const onHold = (event: PointerEvent | TouchEvent) => {
-    if ("pointerType" in event && event.pointerType !== "mouse") return;
+  const onHold = () => {
     held = true;
     gliding = false;
     window.clearTimeout(timer);
   };
   const onRelease = (event: PointerEvent | TouchEvent) => {
-    if ("pointerType" in event && event.pointerType !== "mouse") return;
-    if ("touches" in event && event.touches.length) return;
+    if ("touches" in event && event.touches.length > 0) return;
     held = false;
     arm(NATIVE_QUIET_MS);
   };
@@ -77,6 +75,7 @@ export function snapWithLenis(trigger: ScrollTrigger, snapTo: SnapTo) {
   window.addEventListener("touchcancel", onRelease, { passive: true });
   window.addEventListener("pointerdown", onHold, { passive: true });
   window.addEventListener("pointerup", onRelease, { passive: true });
+  window.addEventListener("pointercancel", onRelease, { passive: true });
 
   return () => {
     window.clearTimeout(timer);
@@ -87,5 +86,6 @@ export function snapWithLenis(trigger: ScrollTrigger, snapTo: SnapTo) {
     window.removeEventListener("touchcancel", onRelease);
     window.removeEventListener("pointerdown", onHold);
     window.removeEventListener("pointerup", onRelease);
+    window.removeEventListener("pointercancel", onRelease);
   };
 }

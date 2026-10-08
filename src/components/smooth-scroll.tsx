@@ -10,8 +10,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 export function SmoothScroll() {
   useLayoutEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
     const lenis = new Lenis({
       lerp: 0.09,
       prevent: (node) => node instanceof Element && !!node.closest("dialog"),

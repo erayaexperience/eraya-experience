@@ -16,7 +16,7 @@ export const aboutContent = {
         image: '/images/Alizah.PNG'
     },
     coFounder: {
-        name: 'Siddharth',
+        name: 'Siddharth Gopal',
         role: 'Co-Founder',
         image: '/images/Siddharth.PNG'
     }

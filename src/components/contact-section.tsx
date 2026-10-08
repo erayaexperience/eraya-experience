@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { FiCheckCircle, FiArrowRight, FiArrowUpRight } from 'react-icons/fi';
 import { FaInstagram } from 'react-icons/fa';
-import { motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from 'framer-motion';
+import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
@@ -33,7 +33,6 @@ const ContactSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const releasePageScroll = useRef<(() => void) | null>(null);
   useEffect(() => () => releasePageScroll.current?.(), []);
-  const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ['start end', 'end start'] });
   const wallY = useTransform(scrollYProgress, [0, 1], ['-8%', '8%']);
 
@@ -118,12 +117,12 @@ const ContactSection = () => {
     <section ref={sectionRef} id="contact" className="relative overflow-hidden bg-background py-section">
       <motion.div
         aria-hidden
-        style={reduceMotion ? undefined : { y: wallY }}
+        style={{ y: wallY }}
         className="pointer-events-none absolute inset-0 flex -rotate-6 scale-125 flex-col justify-center gap-6 opacity-50"
       >
         {wallRows.map((row, rowIndex) => (
           <div key={rowIndex} className="overflow-x-clip">
-            <div className={cn('flex w-max gap-6 motion-reduce:animate-none', row.animation)}>
+            <div className={cn('flex w-max gap-6', row.animation)}>
               {[0, 1].map((copy) =>
                 [...row.order, ...row.order].map((graphicIndex, position) => {
                   const graphic = graphics[graphicIndex];
@@ -156,6 +155,7 @@ const ContactSection = () => {
           <div className="mb-6 inline-flex items-center gap-3">
             <span className="h-px w-8 bg-primary" />
             <span className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/60">Get in Touch</span>
+            <span className="h-px w-8 bg-primary" />
           </div>
           <h2 className="text-4xl font-semibold leading-[1.05] tracking-tight text-secondary sm:text-5xl lg:text-[56px]">
             Let&apos;s Build Your <span className="block font-serif italic text-primary">Digital Legacy</span>
@@ -218,7 +218,7 @@ const ContactSection = () => {
           transition={{ duration: 0.8, delay: 0.15 }}
           className="lg:col-span-7"
         >
-          <div className="relative overflow-hidden rounded-[2rem] glass-gold-light p-7 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.25)] md:p-10">
+          <div className="relative overflow-hidden rounded-4xl glass-gold-light p-7 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.25)] md:p-10">
             <AnimatePresence mode="wait">
               {isSubmitted ? (
                 <motion.div

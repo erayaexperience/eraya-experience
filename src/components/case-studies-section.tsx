@@ -71,7 +71,7 @@ const gridCard: CardConfig = {
     )),
 };
 
-const FEATURED = new Set([0, 6, 10]);
+const FEATURED = new Set([0, 6]);
 const INITIAL_COUNT = 5;
 
 const layoutFor = (index: number, visible: number): CardConfig => {
@@ -151,13 +151,13 @@ const CaseStudiesSection = () => {
                 />
                 <div
                   className={cn(
-                    "absolute inset-0 bg-linear-to-t transition-colors duration-300",
+                    "absolute inset-0 bg-linear-to-t",
                     study.lightImage
-                      ? "from-black from-45% via-black/85 via-65% to-black/10"
-                      : "from-black/90 via-black/60 to-transparent group-hover:via-black/70"
+                      ? "from-black/95 from-30% via-black/75 via-60% to-black/10"
+                      : "from-black/90 from-25% via-black/55 via-60% to-transparent"
                   )}
                 />
-                <div className="absolute inset-x-0 top-0 h-48 bg-linear-to-b from-black/55 to-transparent" />
+                <div className="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-black/45 to-transparent" />
                 <div className={cn("absolute top-6 left-6 z-10 rounded-full px-4 py-2", glass)}>
                   <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/72">
                     {study.category}
