@@ -7,6 +7,7 @@ export type PressItem = {
     alt: string;
     width: number;
     height: number;
+    href?: string;
 };
 
 export const pressItems: PressItem[] = [
@@ -19,6 +20,7 @@ export const pressItems: PressItem[] = [
         alt: 'Goa Times, The Times of India article "Goa agency taps into rise of collaborative marketing" featuring Eraya Experience',
         width: 482,
         height: 788,
+        href: '/Times%20of%20India_Goa.pdf',
     },
     {
         publication: 'ItsGoa',
@@ -28,6 +30,7 @@ export const pressItems: PressItem[] = [
         alt: 'ItsGoa entrepreneur feature on Eraya Experience LLP',
         width: 1320,
         height: 1313,
+        href: 'https://itsgoa.com/eraya-experience-llp',
     },
     {
         publication: 'ItsGoa',
@@ -37,5 +40,6 @@ export const pressItems: PressItem[] = [
         alt: 'ItsGoa cover feature on Alizah Alam, founder of Eraya Experience',
         width: 1320,
         height: 1322,
+        href: 'https://issuu.com/itsgoa/docs/goa_tycoon_-_november_issue_2025',
     },
 ];

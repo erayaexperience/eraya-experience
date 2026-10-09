@@ -3,20 +3,22 @@
 import { useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
-import { FiArrowRight } from "react-icons/fi";
+import { FiArrowRight, FiArrowUpRight } from "react-icons/fi";
 import { pressItems, type PressItem } from "@/constants/press";
 import { SectionHeading } from "./ui/section-heading";
 import { Lightbox, type LightboxItem } from "./ui/lightbox";
 import { cn } from "@/lib/utils";
 
-const lightboxItems: LightboxItem[] = pressItems.map((item) => ({
-  src: item.src,
-  alt: item.alt,
-  width: item.width,
-  height: item.height,
-  title: item.headline,
-  caption: [item.publication, item.section, item.date].filter(Boolean).join(" · "),
-}));
+const lightboxItems: LightboxItem[] = pressItems
+  .filter((item) => !item.href)
+  .map((item) => ({
+    src: item.src,
+    alt: item.alt,
+    width: item.width,
+    height: item.height,
+    title: item.headline,
+    caption: [item.publication, item.section, item.date].filter(Boolean).join(" · "),
+  }));
 
 const order = [1, 0, 2];
 const layout = [
@@ -45,35 +47,79 @@ const PressCard = ({
       style={still ? undefined : { y }}
       className={cn("w-[72vw] max-w-xs shrink-0 snap-start max-sm:transform-none! sm:w-auto sm:max-w-none", slot === 1 && "sm:-mt-6 md:-mt-10")}
     >
-      <button
-        type="button"
-        onClick={onOpen}
-        aria-label={`Open ${item.publication}: ${item.headline}`}
-        style={{ "--tilt": `${layout[slot].tilt}deg` } as CSSProperties}
-        className="group relative block aspect-square w-full cursor-pointer overflow-hidden rounded-3xl bg-secondary/10 ring-1 ring-black/5 transition-[rotate,translate] duration-500 ease-out hover:-translate-y-2 sm:rotate-(--tilt) sm:hover:rotate-0!"
-      >
-        <Image
-          src={item.src}
-          alt={item.alt}
-          fill
-          sizes="(min-width: 640px) 33vw, 72vw"
-          className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
-        />
-      </button>
+      {item.href ? (
+        <a
+          href={item.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`Read ${item.publication}: ${item.headline} (opens in a new tab)`}
+          style={{ "--tilt": `${layout[slot].tilt}deg` } as CSSProperties}
+          className="group relative block aspect-square w-full cursor-pointer overflow-hidden rounded-3xl bg-secondary/10 ring-1 ring-black/5 transition-[rotate,translate] duration-500 ease-out hover:-translate-y-2 sm:rotate-(--tilt) sm:hover:rotate-0!"
+        >
+          <Image
+            src={item.src}
+            alt={item.alt}
+            fill
+            sizes="(min-width: 640px) 33vw, 72vw"
+            className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
+          />
+        </a>
+      ) : (
+        <button
+          type="button"
+          onClick={onOpen}
+          aria-label={`Open ${item.publication}: ${item.headline}`}
+          style={{ "--tilt": `${layout[slot].tilt}deg` } as CSSProperties}
+          className="group relative block aspect-square w-full cursor-pointer overflow-hidden rounded-3xl bg-secondary/10 ring-1 ring-black/5 transition-[rotate,translate] duration-500 ease-out hover:-translate-y-2 sm:rotate-(--tilt) sm:hover:rotate-0!"
+        >
+          <Image
+            src={item.src}
+            alt={item.alt}
+            fill
+            sizes="(min-width: 640px) 33vw, 72vw"
+            className="object-cover object-top transition-transform duration-700 ease-out group-hover:scale-105"
+          />
+        </button>
+      )}
 
       <div className="mt-6 text-left md:mt-7">
         <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-primary">
           {item.publication} · {item.section}
         </p>
-        <h3 className="mt-2 font-serif text-xl leading-snug text-secondary italic sm:text-base md:text-xl lg:text-2xl">{item.headline}</h3>
-        <button
-          type="button"
-          onClick={onOpen}
-          className="group mt-4 inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-secondary transition-colors hover:text-primary"
-        >
-          Read the feature
-          <FiArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-        </button>
+        <h3 className="mt-2 font-serif text-xl leading-snug text-secondary italic sm:text-base md:text-xl lg:text-2xl">
+          {item.href ? (
+            <a
+              href={item.href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="transition-colors hover:text-primary"
+            >
+              {item.headline}
+            </a>
+          ) : (
+            item.headline
+          )}
+        </h3>
+        {item.href ? (
+          <a
+            href={item.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group mt-4 inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-secondary transition-colors hover:text-primary"
+          >
+            Read the feature
+            <FiArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          </a>
+        ) : (
+          <button
+            type="button"
+            onClick={onOpen}
+            className="group mt-4 inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-secondary transition-colors hover:text-primary"
+          >
+            Read the feature
+            <FiArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+          </button>
+        )}
       </div>
     </motion.article>
   );
@@ -84,6 +130,15 @@ const PressSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
+
+  const handleOpenLightbox = (item: PressItem) => {
+    const lightboxIndex = pressItems
+      .filter((p) => !p.href)
+      .findIndex((p) => p.src === item.src);
+    if (lightboxIndex !== -1) {
+      setOpenIndex(lightboxIndex);
+    }
+  };
 
   return (
     <section ref={sectionRef} id="press" className="relative overflow-hidden bg-background py-section">
@@ -104,19 +159,24 @@ const PressSection = () => {
       </div>
 
       <div className="relative flex snap-x snap-mandatory scroll-px-6 gap-5 overflow-x-auto overscroll-x-contain px-6 pt-2 pb-6 [scrollbar-width:none] sm:mx-auto sm:grid sm:max-w-7xl sm:grid-cols-3 sm:gap-5 sm:overflow-visible sm:px-8 sm:pt-8 md:gap-10 md:pt-10 lg:gap-14 lg:px-12">
-        {order.map((index, slot) => (
-          <PressCard
-            key={pressItems[index].src}
-            item={pressItems[index]}
-            slot={slot}
-            progress={scrollYProgress}
-            still={!!reduceMotion}
-            onOpen={() => setOpenIndex(index)}
-          />
-        ))}
+        {order.map((index, slot) => {
+          const item = pressItems[index];
+          return (
+            <PressCard
+              key={item.src}
+              item={item}
+              slot={slot}
+              progress={scrollYProgress}
+              still={!!reduceMotion}
+              onOpen={() => handleOpenLightbox(item)}
+            />
+          );
+        })}
       </div>
 
-      <Lightbox items={lightboxItems} index={openIndex} onIndexChange={setOpenIndex} label="Press feature" />
+      {lightboxItems.length > 0 && (
+        <Lightbox items={lightboxItems} index={openIndex} onIndexChange={setOpenIndex} label="Press feature" />
+      )}
     </section>
   );
 };
