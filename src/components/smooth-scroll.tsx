@@ -16,9 +16,6 @@ export function SmoothScroll() {
       virtualScroll: runScrollInterceptors,
     });
 
-    // Handle same-page hash links here, in the capture phase, so neither the browser nor
-    // next/link starts a competing scroll. The scroll waits a frame for click handlers such
-    // as the mobile menu's close to run first.
     const onClick = (event: MouseEvent) => {
       if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const link = event.target instanceof Element ? event.target.closest("a[href]") : null;
@@ -55,9 +52,18 @@ export function SmoothScroll() {
     observer.observe(document.body);
     document.fonts?.ready.then(scheduleRefresh);
 
+    ScrollTrigger.clearScrollMemory("manual");
+    const landOnHash = () => {
+      const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+      if (target) requestAnimationFrame(() => scrollToElement(lenis, target));
+    };
+    if (document.readyState === "complete") landOnHash();
+    else window.addEventListener("load", landOnHash, { once: true });
+
     return () => {
       window.clearTimeout(refreshTimer);
       window.removeEventListener("click", onClick, { capture: true });
+      window.removeEventListener("load", landOnHash);
       observer.disconnect();
       gsap.ticker.remove(tick);
       setLenis(null);

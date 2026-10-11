@@ -29,8 +29,6 @@ export const runScrollInterceptors = (data: VirtualScrollData) => {
 
 const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
 
-// Long in-page jumps cut straight to within a screen of the target and glide the rest of the
-// way, so a nav click doesn't play every scroll animation it passes on the way there.
 export const scrollToElement = (lenis: Lenis, target: Element) => {
   const padding = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
   const margin = parseFloat(getComputedStyle(target).scrollMarginTop) || 0;

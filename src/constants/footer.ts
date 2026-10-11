@@ -19,8 +19,10 @@ export const navColumns = [
         links: [
             { name: 'About', href: '#about' },
             { name: 'Press', href: '#press' },
+            { name: 'Events', href: '#events' },
             { name: 'Case Studies', href: '#case-studies' },
             { name: 'Portfolio', href: '#portfolio' },
+            { name: 'FAQ', href: '#faq' },
             { name: 'Contact', href: '#contact' },
         ],
     },

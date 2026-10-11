@@ -1,144 +1,190 @@
 "use client";
 
-import { useRef, useState, useCallback, type CSSProperties } from 'react';
+import { useRef, useState, useCallback, useEffect, type CSSProperties } from 'react';
 import Image from 'next/image';
+import type Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { cn } from '@/lib/utils';
+import { getLenis, addScrollInterceptor } from '@/lib/lenis';
 import { snapWithLenis } from '@/lib/lenis-snap';
+import { services } from '@/constants/services';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
-
-const pexels = (id: number) =>
-  `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=1200`;
-
-type Service = {
-  title: string;
-  eyebrow: string;
-  description: string;
-  image: string;
-  imagePosition?: string;
-};
-
-const services: Service[] = [
-  {
-    title: 'Graphic & Logo Design',
-    eyebrow: 'Identity that sticks',
-    description: 'Logos, posters and campaign graphics with a point of view, recognised in a second and remembered long after.',
-    image: '/images/graphics/lilliput-saturday-blockbuster-tv.jpg',
-  },
-  {
-    title: 'Photoshoots',
-    eyebrow: 'Content worth stopping for',
-    description: 'Food, drinks, fashion and lifestyle shoots, styled and lit so your product is the hero of every frame.',
-    image: '/images/services/photoshoots.jpg',
-  },
-  {
-    title: 'Social Media Marketing',
-    eyebrow: 'Feeds with a strategy',
-    description: 'Pages planned around your audience and your goals. Consistent, aesthetic and always on brand.',
-    image: '/images/graphics/sukkha-instagram-feed.jpg',
-    imagePosition: 'center 30%',
-  },
-  {
-    title: 'Meta & Google Ads',
-    eyebrow: 'Paid media, measured',
-    description: 'Ads built around one number: your return. Every rupee tracked, every campaign sharpened.',
-    image: pexels(6569661),
-  },
-  {
-    title: 'Influencer Marketing',
-    eyebrow: 'Voices people trust',
-    description: 'The right creators for your brand, matched to your audience so people talk, share and show up.',
-    image: '/images/services/influencer-marketing.jpg',
-    imagePosition: 'center 35%',
-  },
-  {
-    title: 'Brand Kits',
-    eyebrow: 'Everything, on brand',
-    description: 'Logo, colours, type and branded essentials in one complete kit, so you look the same everywhere you show up.',
-    image: '/images/services/brand-kits.jpg',
-    imagePosition: '55% center',
-  },
-  {
-    title: 'Website & SEO',
-    eyebrow: 'Found, then chosen',
-    description: 'Fast, beautiful websites built to rank on Google and turn visitors into customers.',
-    image: pexels(574077),
-  },
-];
 
 const LAST = services.length - 1;
 const STEP = 360 / services.length;
 const GAP = 0.05;
 const RADIUS = (1 + GAP) / (2 * Math.tan(Math.PI / services.length));
 
-// Desktop scroll choreography
 const HOLD = 0.2;
 const LEAD = 0.3;
 const SWING = 0.5;
 const SPAN = LAST + 2 * LEAD;
 
+const GESTURE_QUIET_MS = 200;
+const SWIPE_DISTANCE = 30;
+
 const clampCard = gsap.utils.clamp(0, LAST);
+const clampDuration = gsap.utils.clamp(0.65, 1.2);
+const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+const cardScroll = (trigger: ScrollTrigger, card: number) =>
+  trigger.start + ((card + LEAD) / SPAN) * (trigger.end - trigger.start);
+const cardAt = (trigger: ScrollTrigger, scroll: number) =>
+  ((scroll - trigger.start) / (trigger.end - trigger.start)) * SPAN - LEAD;
+
+const stepFrom = (position: number, direction: number) => {
+  const shown = clampCard(position);
+  const next = direction > 0 ? Math.floor(shown + HOLD) + 1 : Math.ceil(shown - HOLD) - 1;
+  return next < 0 || next > LAST ? null : next;
+};
+
+const restingScroll = (lenis: Lenis) => (lenis.isScrolling === 'smooth' ? lenis.targetScroll : lenis.animatedScroll);
+
+const isPrevented = (event: Event) =>
+  event.target instanceof Element && !!event.target.closest('dialog, [data-lenis-prevent]');
 
 const ServicesSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
   const swingRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<ScrollTrigger | null>(null);
   const [active, setActive] = useState(0);
 
-  const isAnimatingRef = useRef(false);
-  const activeRef = useRef(active);
-  activeRef.current = active;
+  const goToCard = useCallback((index: number) => {
+    const trigger = triggerRef.current;
+    if (!trigger) return;
+    const card = clampCard(index);
+    const target = cardScroll(trigger, card);
+    setActive(card);
 
-  // Discrete mobile 1-card navigation with gesture throttling
-  const goToCard = useCallback((targetIndex: number) => {
-    const next = clampCard(targetIndex);
-    if (next === activeRef.current && !isAnimatingRef.current) return;
-    const ring = ringRef.current;
-    if (!ring) return;
-
-    isAnimatingRef.current = true;
-    setActive(next);
-    gsap.to(ring, {
-      rotationY: -next * STEP,
-      duration: 0.5,
-      ease: 'power2.out',
-      overwrite: 'auto',
-      onComplete: () => {
-        isAnimatingRef.current = false;
-      },
-    });
+    const lenis = getLenis();
+    if (!lenis) {
+      window.scrollTo({ top: target, behavior: 'smooth' });
+      return;
+    }
+    const cards = Math.abs(target - lenis.animatedScroll) / ((trigger.end - trigger.start) / SPAN);
+    lenis.scrollTo(target, { programmatic: false, duration: clampDuration(0.5 + 0.15 * cards), easing: easeOutCubic });
   }, []);
 
-  // Mobile horizontal swipe handling: strictly 1 card advancement per swipe
-  const touchStartX = useRef<number | null>(null);
-  const touchStartY = useRef<number | null>(null);
+  useEffect(() => {
+    let locked = false;
+    let lockedAt = 0;
+    let lastSpeed = 0;
+    let quietTimer: number | undefined;
+    let touch: { x: number; y: number; mode: 'pending' | 'step' | 'native'; stepped: boolean } | null = null;
 
-  const onTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-    touchStartY.current = e.touches[0].clientY;
-  };
+    const consume = (event: Event) => {
+      if (event.cancelable) event.preventDefault();
+      return false;
+    };
 
-  const onTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null || touchStartY.current === null) return;
-    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
-    const deltaY = e.changedTouches[0].clientY - touchStartY.current;
-    touchStartX.current = null;
-    touchStartY.current = null;
+    const keepLocked = () => {
+      window.clearTimeout(quietTimer);
+      quietTimer = window.setTimeout(() => {
+        locked = false;
+      }, GESTURE_QUIET_MS);
+    };
+    const lock = () => {
+      locked = true;
+      lockedAt = performance.now();
+      keepLocked();
+    };
 
-    // Trigger only if horizontal swipe intent is clear
-    if (Math.abs(deltaX) > 35 && Math.abs(deltaX) > Math.abs(deltaY) * 1.2) {
-      if (deltaX < 0) {
-        goToCard(activeRef.current + 1);
-      } else {
-        goToCard(activeRef.current - 1);
+    const onWheel = (event: WheelEvent, deltaY: number, trigger: ScrollTrigger, lenis: Lenis) => {
+      if (event.ctrlKey || isPrevented(event)) return true;
+
+      const speed = Math.abs(deltaY);
+      if (locked && speed > 15 && speed > lastSpeed * 2 && performance.now() - lockedAt > 300) locked = false;
+      lastSpeed = speed;
+      if (locked) keepLocked();
+      if (deltaY === 0) return true;
+
+      const direction = Math.sign(deltaY);
+      const rest = restingScroll(lenis);
+      const first = cardScroll(trigger, 0);
+      const last = cardScroll(trigger, LAST);
+
+      if (direction > 0 ? rest < first - 1 : rest > last + 1) {
+        const entry = direction > 0 ? first : last;
+        lock();
+        if (direction > 0 ? rest + deltaY < entry : rest + deltaY > entry) return true;
+        lenis.scrollTo(entry, { programmatic: false, lerp: lenis.options.lerp });
+        return consume(event);
       }
-    }
-  };
+      if (rest < first - 1 || rest > last + 1) {
+        lock();
+        return true;
+      }
+      if (locked) return consume(event);
+
+      lock();
+      const next = stepFrom(cardAt(trigger, rest), direction);
+      if (next === null) return true;
+      goToCard(next);
+      return consume(event);
+    };
+
+    const onTouch = (event: TouchEvent, trigger: ScrollTrigger, lenis: Lenis) => {
+      if (event.type === 'touchstart') {
+        const point = event.touches[0];
+        touch =
+          event.touches.length === 1 && !isPrevented(event)
+            ? { x: point.clientX, y: point.clientY, mode: 'pending', stepped: false }
+            : null;
+        return true;
+      }
+      if (!touch) return true;
+      if (event.type !== 'touchmove') {
+        const owned = touch.mode === 'step';
+        touch = null;
+        return !owned;
+      }
+      if (event.touches.length > 1) {
+        touch = null;
+        return true;
+      }
+
+      const point = event.touches[0];
+      const dx = point.clientX - touch.x;
+      const dy = point.clientY - touch.y;
+      const vertical = Math.abs(dy) >= Math.abs(dx);
+      const direction = -Math.sign(vertical ? dy : dx);
+
+      if (touch.mode === 'pending') {
+        if (dx === 0 && dy === 0) return true;
+        const rest = restingScroll(lenis);
+        const pinned = rest >= trigger.start - 1 && rest <= trigger.end + 1;
+        const leaving = vertical && stepFrom(cardAt(trigger, rest), direction) === null;
+        touch.mode = event.cancelable && pinned && !leaving ? 'step' : 'native';
+      }
+      if (touch.mode === 'native') return true;
+
+      if (!touch.stepped && Math.max(Math.abs(dx), Math.abs(dy)) >= SWIPE_DISTANCE) {
+        touch.stepped = true;
+        const next = stepFrom(cardAt(trigger, restingScroll(lenis)), direction);
+        if (next !== null) goToCard(next);
+      }
+      return consume(event);
+    };
+
+    const unsubscribe = addScrollInterceptor((data) => {
+      const trigger = triggerRef.current;
+      const lenis = getLenis();
+      if (!trigger || !lenis || lenis.isStopped) return true;
+      const { event } = data;
+      return event instanceof WheelEvent ? onWheel(event, data.deltaY, trigger, lenis) : onTouch(event, trigger, lenis);
+    });
+
+    return () => {
+      unsubscribe();
+      window.clearTimeout(quietTimer);
+    };
+  }, [goToCard]);
 
   useGSAP(
     () => {
@@ -148,58 +194,56 @@ const ServicesSection = () => {
       const ring = ringRef.current;
       if (!section || !stage || !swing || !ring) return;
 
-      const mm = gsap.matchMedia();
-
-      // Desktop: Cinematic pinned scroll scrub
-      mm.add('(min-width: 1024px)', () => {
-        const turns = gsap.timeline({
-          defaults: { ease: 'sine.inOut', duration: 1 - 2 * HOLD },
-          scrollTrigger: {
-            trigger: section,
-            start: 'top top',
-            end: () => `+=${section.offsetHeight - stage.offsetHeight}`,
-            scrub: 0.5,
-            invalidateOnRefresh: true,
-          },
-          onUpdate: () => {
-            const next = clampCard(Math.round(-Number(gsap.getProperty(ring, 'rotationY')) / STEP));
+      const turns = gsap.timeline({
+        defaults: { ease: 'sine.inOut', duration: 1 - 2 * HOLD },
+        scrollTrigger: {
+          trigger: section,
+          start: 'top top',
+          end: () => `+=${section.offsetHeight - stage.offsetHeight}`,
+          scrub: 0.5,
+          invalidateOnRefresh: true,
+          onUpdate: (self) => {
+            const lenis = getLenis();
+            const next = clampCard(Math.round(cardAt(self, lenis ? restingScroll(lenis) : self.scroll())));
             setActive((prev) => (prev !== next ? next : prev));
           },
-        });
+        },
+      });
 
-        for (let card = 1; card <= LAST; card++) {
-          turns.to(ring, { rotationY: -card * STEP }, LEAD + card - 1 + HOLD);
+      const trigger = turns.scrollTrigger!;
+      triggerRef.current = trigger;
+
+      for (let card = 1; card <= LAST; card++) {
+        turns.to(ring, { rotationY: -card * STEP }, LEAD + card - 1 + HOLD);
+      }
+      turns.set({}, {}, SPAN);
+
+      gsap.fromTo(
+        swing,
+        { rotationY: SWING * STEP },
+        { rotationY: 0, ease: 'power2.out', scrollTrigger: { trigger: section, start: 'top bottom', end: 'top top', scrub: 0.5 } }
+      );
+      gsap.fromTo(
+        swing,
+        { rotationY: 0 },
+        {
+          rotationY: -SWING * STEP,
+          ease: 'power2.in',
+          immediateRender: false,
+          scrollTrigger: { trigger: section, start: 'bottom bottom', end: 'bottom top', scrub: 0.5 },
         }
-        turns.set({}, {}, SPAN);
+      );
 
-        gsap.fromTo(
-          swing,
-          { rotationY: SWING * STEP },
-          { rotationY: 0, ease: 'power2.out', scrollTrigger: { trigger: section, start: 'top bottom', end: 'top top', scrub: 0.5 } }
-        );
-        gsap.fromTo(
-          swing,
-          { rotationY: 0 },
-          {
-            rotationY: -SWING * STEP,
-            ease: 'power2.in',
-            immediateRender: false,
-            scrollTrigger: { trigger: section, start: 'bottom bottom', end: 'bottom top', scrub: 0.5 },
-          }
-        );
-
-        return snapWithLenis(turns.scrollTrigger!, (progress, direction) => {
-          const position = clampCard(progress * SPAN - LEAD);
-          if (Math.abs(position - Math.round(position)) <= HOLD) return null;
-          return ((direction > 0 ? Math.ceil(position) : Math.floor(position)) + LEAD) / SPAN;
-        });
+      const releaseSnap = snapWithLenis(trigger, (progress, direction) => {
+        const position = clampCard(progress * SPAN - LEAD);
+        if (Math.abs(position - Math.round(position)) <= HOLD) return null;
+        return ((direction > 0 ? Math.ceil(position) : Math.floor(position)) + LEAD) / SPAN;
       });
 
-      // Mobile: Ensure clean orientation without residual scroll offsets
-      mm.add('(max-width: 1023px)', () => {
-        gsap.set(swing, { rotationY: 0 });
-        gsap.set(ring, { rotationY: -activeRef.current * STEP });
-      });
+      return () => {
+        releaseSnap();
+        triggerRef.current = null;
+      };
     },
     { scope: sectionRef }
   );
@@ -209,33 +253,32 @@ const ServicesSection = () => {
       ref={sectionRef}
       id="services"
       style={{ '--span': SPAN } as CSSProperties}
-      className="relative bg-white py-16 sm:py-24 lg:py-0 lg:[--card:40svh] lg:h-[calc(100svh+var(--span)*var(--card))] lg:scroll-mt-[calc(var(--header-height)*-1)]"
+      className="relative bg-white py-0 [--card:60svh] sm:[--card:65svh] lg:[--card:70svh] h-[calc(100svh+var(--span)*var(--card))] scroll-mt-[calc(var(--header-height)*-1)]"
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-linear-to-b from-background to-white sm:h-32" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-background to-white sm:h-32" />
 
-      <div ref={stageRef} className="relative overflow-hidden lg:sticky lg:top-0 lg:h-svh">
+      <div ref={stageRef} className="sticky top-0 h-svh overflow-hidden flex flex-col justify-center">
         <div className="pointer-events-none absolute top-[60%] left-1/2 h-200 w-200 -translate-1/2 bg-[radial-gradient(closest-side,rgb(var(--primary)/0.16),transparent)] lg:h-288 lg:w-6xl" />
 
-        <div className="container-modern relative grid h-full content-center items-center gap-8 pt-4 pb-6 sm:gap-10 sm:pt-12 lg:grid-cols-12 lg:gap-10 lg:py-0">
-          {/* Service Information */}
+        <div className="container-modern relative grid h-full content-center items-center gap-4 pt-[calc(var(--header-height)+0.5rem)] pb-6 sm:gap-6 lg:grid-cols-12 lg:gap-10 lg:py-0 max-lg:[@media(max-height:760px)]:gap-2 max-lg:[@media(max-height:760px)]:pb-4">
           <div className="text-center lg:col-span-5 lg:text-left">
-            <div className="mb-4 inline-flex items-center gap-3">
+            <div className="mb-4 inline-flex items-center gap-3 max-lg:[@media(max-height:760px)]:mb-2">
               <span className="h-px w-8 bg-primary" />
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/60">Core Expertise</span>
               <span className="h-px w-8 bg-primary" />
             </div>
             <h2 className="text-3xl font-semibold leading-[1.08] tracking-tight text-secondary sm:text-5xl lg:text-[44px] xl:text-[56px]">
-              The Feeling Is <span className="font-serif italic text-primary">Mutual</span>
+              Our Services, <br className="hidden lg:block" />
+              <span className="whitespace-nowrap font-serif italic text-primary">Done Right</span>
             </h2>
 
-            {/* Active Service Card Text with Smooth Transitions */}
-            <div className="mt-6 grid sm:mt-8 lg:mt-12">
+            <div className="mt-6 grid sm:mt-8 lg:mt-12 max-lg:[@media(max-height:760px)]:mt-3">
               {services.map((service, index) => (
                 <div
                   key={service.title}
                   className={cn(
-                    'col-start-1 row-start-1 transition-[opacity,translate] ease-[cubic-bezier(0.16,1,0.3,1)]',
+                    'col-start-1 row-start-1 transition-[opacity,translate] ease-out-expo',
                     index === active
                       ? 'translate-y-0 opacity-100 delay-100 duration-500'
                       : 'pointer-events-none opacity-0 duration-200',
@@ -260,8 +303,7 @@ const ServicesSection = () => {
               ))}
             </div>
 
-            {/* Mobile Navigation Controls (1-swipe / 1-tap per turn) */}
-            <div className="mt-6 flex items-center justify-center gap-4 lg:hidden">
+            <div className="mt-6 flex items-center justify-center gap-4 lg:hidden max-lg:[@media(max-height:760px)]:mt-3">
               <button
                 type="button"
                 onClick={() => goToCard(active - 1)}
@@ -272,7 +314,6 @@ const ServicesSection = () => {
                 <FiChevronLeft className="h-5 w-5" />
               </button>
 
-              {/* Dots Indicator */}
               <div className="flex items-center gap-1.5">
                 {services.map((service, index) => (
                   <button
@@ -300,12 +341,9 @@ const ServicesSection = () => {
             </div>
           </div>
 
-          {/* 3D Cylindrical Ring Stage */}
           <div
             aria-hidden
-            onTouchStart={onTouchStart}
-            onTouchEnd={onTouchEnd}
-            className="relative order-first h-[38svh] touch-pan-y perspective-[1600px] [--panel-h:28svh] [--panel-w:min(60vw,15rem)] sm:h-[42svh] sm:[--panel-h:31svh] sm:[--panel-w:16rem] lg:order-0 lg:col-span-7 lg:h-[72svh] lg:[--panel-h:54svh] lg:[--panel-w:clamp(14rem,19vw,19rem)]"
+            className="relative order-first h-[35svh] sm:h-[42svh] perspective-[1600px] [--panel-h:25svh] [--panel-w:min(56vw,14rem)] sm:[--panel-h:31svh] sm:[--panel-w:16rem] lg:order-0 lg:col-span-7 lg:h-[72svh] lg:[--panel-h:54svh] lg:[--panel-w:clamp(14rem,19vw,19rem)] max-lg:[@media(max-height:760px)]:h-[30svh] max-lg:[@media(max-height:760px)]:[--panel-h:22svh]"
           >
             <div className="absolute inset-0 transform-3d transform-[rotateX(-6deg)]">
               <div ref={swingRef} className="absolute inset-0 transform-3d will-change-transform">

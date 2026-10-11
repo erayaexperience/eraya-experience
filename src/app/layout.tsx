@@ -4,53 +4,52 @@ import type { Metadata, Viewport } from 'next';
 import { GeistSans } from 'geist/font/sans';
 import { SmoothScroll } from '@/components/smooth-scroll';
 import { Playfair_Display } from 'next/font/google';
+import { SITE_URL, site } from '@/lib/site';
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
+  style: ['normal', 'italic'],
   variable: '--font-playfair',
   display: 'swap',
 });
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#09090b' },
-  ],
+  themeColor: '#f8f6f2',
+  colorScheme: 'only light',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://erayaexperience.com'),
+  metadataBase: new URL(SITE_URL),
   title: {
-    default: 'Eraya Experience | Digital Marketing Agency Goa & Pan India',
-    template: '%s | Eraya Experience',
+    default: site.title,
+    template: `%s | ${site.name}`,
   },
-  description:
-    'Eraya Experience is a premier digital marketing agency based in Goa, India. We deliver graphic and logo design, photoshoots, social media marketing, Meta and Google ads, influencer marketing, brand kits, and websites and SEO.',
+  description: site.description,
   keywords: [
     'digital marketing agency Goa',
-    'social media management Goa',
-    'influencer marketing agency India',
-    'performance marketing',
     'creative agency Goa',
-    'brand strategy consultants',
-    'ROI marketing',
-    'Goa advertising agency',
+    'social media marketing Goa',
+    'influencer marketing agency India',
+    'Meta and Google ads agency',
+    'graphic and logo design Goa',
+    'photoshoots Goa',
+    'brand kits',
+    'website and SEO Goa',
     'Eraya Experience',
-    'Pan India brand campaigns',
   ],
-  authors: [{ name: 'Eraya Experience', url: 'https://erayaexperience.com' }],
-  creator: 'Eraya Experience',
-  publisher: 'Eraya Experience',
+  authors: [{ name: site.name, url: SITE_URL }],
+  creator: site.name,
+  publisher: site.legalName,
   formatDetection: {
     email: false,
     address: false,
     telephone: false,
   },
   alternates: {
-    canonical: 'https://erayaexperience.com',
+    canonical: '/',
   },
   icons: {
     icon: [
@@ -58,27 +57,21 @@ export const metadata: Metadata = {
       { url: '/icon.png', sizes: '500x500', type: 'image/png' },
     ],
     shortcut: '/favicon.ico',
-    apple: [
-      { url: '/apple-icon.png', sizes: '500x500', type: 'image/png' },
-    ],
+    apple: [{ url: '/apple-icon.png', sizes: '500x500', type: 'image/png' }],
   },
   manifest: '/manifest.webmanifest',
   openGraph: {
-    title: 'Eraya Experience | Digital Marketing Agency Goa & Pan India',
-    description:
-      'We craft human-first brand experiences that merge strategy, storytelling, and premium execution. Proven 4.8x average ROI across Pan-India brands.',
-    url: 'https://erayaexperience.com',
-    siteName: 'Eraya Experience',
+    title: site.title,
+    description: site.shareDescription,
+    url: '/',
+    siteName: site.name,
     locale: 'en_IN',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Eraya Experience | Digital Marketing Agency Goa & Pan India',
-    description:
-      'We craft human-first brand experiences that merge strategy, storytelling, and premium execution. Proven 4.8x average ROI across Pan-India brands.',
-    creator: '@erayaexperience',
-    site: '@erayaexperience',
+    title: site.title,
+    description: site.shareDescription,
   },
   robots: {
     index: true,
@@ -100,7 +93,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="scroll-pt-(--header-height)">
+    <html lang="en-IN" className="scroll-pt-(--header-height)">
       <body className={`${GeistSans.variable} ${playfair.variable} font-sans antialiased text-foreground bg-background selection:bg-primary/30 selection:text-foreground`}>
         <SmoothScroll />
         {children}

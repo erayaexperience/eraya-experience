@@ -1,13 +1,9 @@
-import { MetadataRoute } from 'next';
+import type { MetadataRoute } from 'next';
+import { SITE_URL } from '@/lib/site';
 
 export default function robots(): MetadataRoute.Robots {
-    return {
-        rules: {
-            userAgent: '*',
-            allow: '/',
-            disallow: ['/private/'],
-        },
-        sitemap: 'https://erayaexperience.com/sitemap.xml',
-        host: 'https://erayaexperience.com',
-    };
+  return {
+    rules: { userAgent: '*', allow: '/' },
+    sitemap: `${SITE_URL}/sitemap.xml`,
+  };
 }

@@ -54,7 +54,7 @@ const Footer = () => {
                 Let&apos;s build something <span className="font-serif italic text-primary">unmistakable</span>
               </h3>
               <p className="mt-2 text-sm font-light text-white/60">
-                Tell us about the next product, platform, or campaign you want to bring to life.
+                Tell us about the next product, platform or campaign you want to bring to life.
               </p>
               <Link
                 href="#contact"

@@ -7,8 +7,8 @@ export default function manifest(): MetadataRoute.Manifest {
     description: 'We craft human-first brand experiences that merge strategy, storytelling, and premium execution across Goa and Pan-India.',
     start_url: '/',
     display: 'standalone',
-    background_color: '#ffffff',
-    theme_color: '#09090b',
+    background_color: '#f8f6f2',
+    theme_color: '#f8f6f2',
     icons: [
       {
         src: '/icon.png',

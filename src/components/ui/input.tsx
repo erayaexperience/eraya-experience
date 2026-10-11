@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
+import { fieldBase, fieldLabel } from './field';
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -12,11 +13,9 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const inputElement = (
       <input
         type={type}
-        className={cn(
-          'flex h-11 w-full rounded-2xl border border-border bg-background/30 px-6 text-base text-foreground placeholder-foreground/30 transition-[border-color,background-color] duration-200 focus:border-primary focus:outline-none disabled:cursor-not-allowed disabled:opacity-50',
-          className
-        )}
+        className={cn('flex h-12', fieldBase, className)}
         ref={ref}
+        title=""
         {...props}
       />
     );
@@ -27,7 +26,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
     return (
       <div className="flex flex-col gap-2 w-full">
-        <label htmlFor={props.id} className={cn("text-[10px] font-bold uppercase tracking-widest text-secondary/60 ml-1", labelClassName)}>
+        <label htmlFor={props.id} className={cn(fieldLabel, labelClassName)}>
           {label}
         </label>
         {inputElement}

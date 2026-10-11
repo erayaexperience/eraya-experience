@@ -9,9 +9,9 @@ export const stats = [
 
 export const aboutContent = {
     title: 'We Make Brands Unmissable',
-    description: "We're a creative marketing agency for brands that want to be noticed, and remembered. Design, photoshoots, social media, paid ads, influencers, brand kits and websites, all under one roof, and all measured by the only thing that counts: real, trackable growth.",
+    description: "We're a creative marketing agency for brands that want to be noticed and remembered. Design, photoshoots, social media, paid ads, influencers, brand kits and websites, all under one roof, and all measured by the only thing that counts: real, trackable growth.",
     founder: {
-        name: 'Alizah',
+        name: 'Alizah Alam',
         role: 'Founder',
         image: '/images/Alizah.PNG'
     },

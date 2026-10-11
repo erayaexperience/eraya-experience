@@ -1,7 +1,6 @@
 import type { ScrollTrigger } from "gsap/ScrollTrigger";
 import { getLenis } from "./lenis";
 
-// Returns the progress to snap to, or null to leave the scroll where it came to rest.
 type SnapTo = (progress: number, direction: number) => number | null;
 
 const WHEEL_QUIET_MS = 90;
@@ -10,10 +9,6 @@ const NATIVE_QUIET_MS = 140;
 const clamp = (min: number, max: number, value: number) => Math.min(max, Math.max(min, value));
 const smoothstep = (t: number) => t * t * (3 - 2 * t);
 
-// ScrollTrigger's own snap waits out Lenis's easing tail and then fights it for a frame, so this
-// snaps through Lenis instead. Wheel scrolling snaps from where Lenis is already heading and keeps
-// its speed, so the motion carries straight through; touch and other native scrolling snap once
-// they have come to rest, never mid-gesture.
 export function snapWithLenis(trigger: ScrollTrigger, snapTo: SnapTo) {
   let held = false;
   let gliding = false;
@@ -37,6 +32,7 @@ export function snapWithLenis(trigger: ScrollTrigger, snapTo: SnapTo) {
     const slope = smooth ? clamp(0, 2.5, (trigger.getVelocity() * duration) / distance) : 0;
     gliding = true;
     lenis.scrollTo(scroll + distance, {
+      programmatic: false,
       duration,
       easing: (t) => slope * (t * t * t - 2 * t * t + t) + smoothstep(t),
       onComplete: () => {

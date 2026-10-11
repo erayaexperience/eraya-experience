@@ -2,7 +2,7 @@
 
 import { useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
-import { motion, useReducedMotion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { FiArrowRight, FiArrowUpRight } from "react-icons/fi";
 import { pressItems, type PressItem } from "@/constants/press";
 import { SectionHeading } from "./ui/section-heading";
@@ -31,21 +31,19 @@ const PressCard = ({
   item,
   slot,
   progress,
-  still,
   onOpen,
 }: {
   item: PressItem;
   slot: number;
   progress: MotionValue<number>;
-  still: boolean;
   onOpen: () => void;
 }) => {
   const y = useTransform(progress, [0, 1], layout[slot].drift);
 
   return (
     <motion.article
-      style={still ? undefined : { y }}
-      className={cn("w-[72vw] max-w-xs shrink-0 snap-start max-sm:transform-none! sm:w-auto sm:max-w-none", slot === 1 && "sm:-mt-6 md:-mt-10")}
+      style={{ y }}
+      className={cn("w-[72vw] max-w-xs shrink-0 snap-center max-sm:transform-none! sm:w-auto sm:max-w-none", slot === 1 && "sm:-mt-6 md:-mt-10")}
     >
       {item.href ? (
         <a
@@ -128,7 +126,6 @@ const PressCard = ({
 const PressSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
-  const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "end start"] });
 
   const handleOpenLightbox = (item: PressItem) => {
@@ -142,7 +139,7 @@ const PressSection = () => {
 
   return (
     <section ref={sectionRef} id="press" className="relative overflow-hidden bg-background py-section">
-      <div className="pointer-events-none absolute top-1/3 left-1/2 h-[60rem] w-[60rem] -translate-x-1/2 -translate-y-1/4 bg-[radial-gradient(closest-side,rgb(var(--primary)/0.12),transparent)]" />
+      <div className="pointer-events-none absolute top-1/3 left-1/2 h-240 w-240 -translate-x-1/2 -translate-y-1/4 bg-[radial-gradient(closest-side,rgb(var(--primary)/0.12),transparent)]" />
 
       <div className="container-modern relative">
         <SectionHeading
@@ -158,7 +155,7 @@ const PressSection = () => {
         />
       </div>
 
-      <div className="relative flex snap-x snap-mandatory scroll-px-6 gap-5 overflow-x-auto overscroll-x-contain px-6 pt-2 pb-6 [scrollbar-width:none] sm:mx-auto sm:grid sm:max-w-7xl sm:grid-cols-3 sm:gap-5 sm:overflow-visible sm:px-8 sm:pt-8 md:gap-10 md:pt-10 lg:gap-14 lg:px-12">
+      <div className="relative flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[calc((100vw-min(72vw,20rem))/2)] pt-2 pb-6 [scrollbar-width:none] sm:mx-auto sm:grid sm:max-w-7xl sm:grid-cols-3 sm:gap-5 sm:overflow-visible sm:px-8 sm:pt-8 md:gap-10 md:pt-10 lg:gap-14 lg:px-12">
         {order.map((index, slot) => {
           const item = pressItems[index];
           return (
@@ -167,7 +164,6 @@ const PressSection = () => {
               item={item}
               slot={slot}
               progress={scrollYProgress}
-              still={!!reduceMotion}
               onOpen={() => handleOpenLightbox(item)}
             />
           );

@@ -8,6 +8,7 @@ import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion'
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
+import { fieldLabel } from './ui/field';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { addScrollInterceptor } from '@/lib/lenis';
 import { cn } from '@/lib/utils';
@@ -111,8 +112,6 @@ const ContactSection = () => {
     }));
   };
 
-  const fieldClass = 'border-black/10 bg-white/60 focus:bg-white';
-
   return (
     <section ref={sectionRef} id="contact" className="relative overflow-hidden bg-background py-section">
       <motion.div
@@ -169,22 +168,22 @@ const ContactSection = () => {
               const href = contactHref(info.title, info.details);
               const content = (
                 <>
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full glass-gold-light text-primary transition-colors duration-300 group-hover:bg-secondary group-hover:text-primary">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full glass-gold-light text-primary">
                     <info.icon className="h-4.5 w-4.5" />
                   </span>
                   <span className="min-w-0 flex-1">
-                    <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground/45">{info.title}</span>
-                    <span className="mt-0.5 block truncate text-lg font-medium text-secondary">{info.details}</span>
+                    <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground/45 transition-colors duration-300 group-hover:text-foreground/70">{info.title}</span>
+                    <span className="mt-0.5 block truncate text-lg font-medium text-secondary transition-colors duration-300 group-hover:text-primary">{info.details}</span>
                   </span>
                   {href && (
-                    <FiArrowUpRight className="h-5 w-5 shrink-0 text-primary opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100" />
+                    <FiArrowUpRight className="h-5 w-5 shrink-0 text-primary opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" />
                   )}
                 </>
               );
               return (
                 <li key={info.title}>
                   {href ? (
-                    <a href={href} className="group flex items-center gap-5 py-4">{content}</a>
+                    <a href={href} className="group flex items-center gap-5 py-4 transition-colors">{content}</a>
                   ) : (
                     <div className="group flex items-center gap-5 py-4">{content}</div>
                   )}
@@ -196,16 +195,16 @@ const ContactSection = () => {
                 href="https://instagram.com/erayaexperience"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center gap-5 py-4"
+                className="group flex items-center gap-5 py-4 transition-colors"
               >
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full glass-gold-light text-primary transition-colors duration-300 group-hover:bg-secondary">
+                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full glass-gold-light text-primary">
                   <FaInstagram className="h-4.5 w-4.5" />
                 </span>
                 <span className="flex-1">
-                  <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground/45">Instagram</span>
-                  <span className="mt-0.5 block text-lg font-medium text-secondary">@erayaexperience</span>
+                  <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground/45 transition-colors duration-300 group-hover:text-foreground/70">Instagram</span>
+                  <span className="mt-0.5 block text-lg font-medium text-secondary transition-colors duration-300 group-hover:text-primary">@erayaexperience</span>
                 </span>
-                <FiArrowUpRight className="h-5 w-5 shrink-0 text-primary opacity-0 transition-all duration-300 group-hover:translate-x-0.5 group-hover:opacity-100" />
+                <FiArrowUpRight className="h-5 w-5 shrink-0 text-primary opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" />
               </a>
             </li>
           </ul>
@@ -218,7 +217,7 @@ const ContactSection = () => {
           transition={{ duration: 0.8, delay: 0.15 }}
           className="lg:col-span-7"
         >
-          <div className="relative overflow-hidden rounded-4xl glass-gold-light p-7 shadow-[0_40px_100px_-30px_rgba(0,0,0,0.25)] md:p-10">
+          <div className="relative overflow-hidden rounded-[calc(var(--pad)+var(--inner)+1px)] glass-gold-light p-(--pad) shadow-[0_40px_100px_-30px_rgba(0,0,0,0.25)] [--inner:0.75rem] [--pad:1.75rem] md:[--pad:2.5rem]">
             <AnimatePresence mode="wait">
               {isSubmitted ? (
                 <motion.div
@@ -261,7 +260,6 @@ const ContactSection = () => {
                       onChange={handleChange}
                       placeholder="Your name"
                       label="Name"
-                      className={fieldClass}
                     />
                     <Input
                       id="email"
@@ -272,7 +270,6 @@ const ContactSection = () => {
                       onChange={handleChange}
                       placeholder="you@brand.com"
                       label="Email"
-                      className={fieldClass}
                     />
                   </div>
 
@@ -284,10 +281,9 @@ const ContactSection = () => {
                       onChange={handleChange}
                       placeholder="Your brand or company"
                       label="Brand"
-                      className={fieldClass}
                     />
                     <div className="flex flex-col gap-2">
-                      <label htmlFor="service" className="ml-1 text-[10px] font-bold uppercase tracking-widest text-secondary/60">What do you need?</label>
+                      <label htmlFor="service" className={fieldLabel}>What do you need?</label>
                       <Select
                         value={formData.service}
                         onValueChange={(service) => setFormData((prev) => ({ ...prev, service }))}
@@ -296,7 +292,7 @@ const ContactSection = () => {
                           releasePageScroll.current = open ? addScrollInterceptor(() => false) : null;
                         }}
                       >
-                        <SelectTrigger id="service" className={fieldClass}>
+                        <SelectTrigger id="service">
                           <SelectValue placeholder="Choose a service" />
                         </SelectTrigger>
                         <SelectContent>
@@ -309,7 +305,7 @@ const ContactSection = () => {
                   </div>
 
                   <div className="flex flex-col gap-2">
-                    <label htmlFor="message" className="ml-1 text-[10px] font-bold uppercase tracking-widest text-secondary/60">Tell us more</label>
+                    <label htmlFor="message" className={fieldLabel}>Tell us more</label>
                     <Textarea
                       id="message"
                       name="message"
@@ -318,8 +314,7 @@ const ContactSection = () => {
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="What are you launching, and what does success look like?"
-                      className="resize-none rounded-2xl border-black/10 bg-white/60 p-6 text-base placeholder:text-foreground/30 focus:bg-white"
-                    />
+                                          />
                   </div>
 
                   <input
@@ -339,7 +334,7 @@ const ContactSection = () => {
                     </p>
                   )}
 
-                  <Button type="submit" variant="secondary" size="lg" className="group w-full" disabled={isSubmitting}>
+                  <Button type="submit" variant="secondary" size="lg" className="group w-full rounded-(--inner)" disabled={isSubmitting}>
                     {isSubmitting ? (
                       <span className="flex items-center gap-3">
                         <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/20 border-t-white" />

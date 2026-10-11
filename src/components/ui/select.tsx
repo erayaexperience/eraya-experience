@@ -4,6 +4,7 @@ import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
 import { FiCheck, FiChevronDown } from "react-icons/fi";
 import { cn } from "@/lib/utils";
+import { fieldBase } from "./field";
 
 function Select(props: React.ComponentProps<typeof SelectPrimitive.Root>) {
   return <SelectPrimitive.Root data-slot="select" {...props} />;
@@ -18,7 +19,8 @@ function SelectTrigger({ className, children, ...props }: React.ComponentProps<t
     <SelectPrimitive.Trigger
       data-slot="select-trigger"
       className={cn(
-        "group flex h-11 w-full cursor-pointer items-center justify-between gap-2 rounded-2xl border border-border bg-background/30 px-6 text-left text-base text-foreground outline-none transition-[border-color,background-color] duration-200 focus:border-primary data-placeholder:text-foreground/30 data-[state=open]:border-primary disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+        fieldBase,
+        "group flex h-12 cursor-pointer items-center justify-between gap-2 text-left data-placeholder:text-foreground/35 data-[state=open]:border-primary data-[state=open]:bg-white [&>span]:line-clamp-1",
         className
       )}
       {...props}
@@ -45,7 +47,7 @@ function SelectContent({
         position={position}
         sideOffset={8}
         className={cn(
-          "relative z-50 max-h-(--radix-select-content-available-height) min-w-32 origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-2xl border border-primary/25 bg-[rgb(255_252_246/0.97)] p-1.5 text-foreground shadow-[0_24px_60px_-24px_rgba(0,0,0,0.3)] backdrop-blur-xl data-[state=open]:animate-[select-in_160ms_ease-out]",
+          "relative z-50 max-h-(--radix-select-content-available-height) min-w-32 origin-(--radix-select-content-transform-origin) overflow-x-hidden overflow-y-auto rounded-(--r) border border-primary/25 bg-[rgb(255_252_246/0.97)] p-(--p) text-foreground [--p:0.375rem] [--r:1rem] backdrop-blur-xl data-[state=open]:animate-[select-in_160ms_ease-out]",
           position === "popper" && "w-(--radix-select-trigger-width)",
           className
         )}
@@ -62,7 +64,7 @@ function SelectItem({ className, children, ...props }: React.ComponentProps<type
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        "relative flex w-full cursor-pointer items-center rounded-xl py-2.5 pr-10 pl-4 text-sm text-foreground/80 outline-none select-none transition-colors data-highlighted:bg-primary/15 data-highlighted:text-secondary data-[state=checked]:font-semibold data-[state=checked]:text-secondary data-disabled:pointer-events-none data-disabled:opacity-50",
+        "relative flex w-full cursor-pointer items-center rounded-[calc(var(--r)-var(--p)-1px)] py-2.5 pr-10 pl-4 text-sm text-foreground/80 outline-none select-none transition-colors data-highlighted:bg-primary/15 data-highlighted:text-secondary data-[state=checked]:font-semibold data-[state=checked]:text-secondary data-disabled:pointer-events-none data-disabled:opacity-50",
         className
       )}
       {...props}
