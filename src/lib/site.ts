@@ -1,4 +1,7 @@
-export const SITE_URL = "https://erayaexperience.com";
+const productionHost = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? (productionHost ? `https://${productionHost}` : "https://erayaexperience.com");
 
 export const site = {
   name: "Eraya Experience",
