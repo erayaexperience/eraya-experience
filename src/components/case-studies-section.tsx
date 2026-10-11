@@ -30,11 +30,11 @@ const featureCard: CardConfig = {
   titleContainer: "max-w-152",
   titleClass: "mb-4 max-w-xl text-2xl font-semibold tracking-tight text-white md:text-3xl",
   descClass: "max-w-xl text-sm font-light leading-relaxed text-white/92 md:text-base",
-  metricsContainer: "mt-6 flex flex-wrap gap-3",
+  metricsContainer: "mt-6 grid grid-cols-2 gap-3 md:flex md:flex-wrap",
   padding: "p-8 md:p-10",
   renderMetrics: (study) =>
     study.metrics.slice(0, 3).map((metric) => (
-      <div key={metric.label} className={cn("rounded-2xl px-4 py-3", glass)}>
+      <div key={metric.label} className={cn("rounded-2xl px-4 py-3 last:odd:col-span-2", glass)}>
         <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">{metric.label}</p>
         <p className="mt-1 text-base font-semibold tracking-tight text-white">{metric.value}</p>
       </div>
@@ -120,7 +120,7 @@ const CaseStudiesSection = () => {
             }
             description="Real brands, real numbers. This is what happens when sharp strategy meets standout creative."
             layout="center"
-            className="mb-0"
+            className="mb-0 md:mb-0"
           />
         </motion.div>
 
@@ -154,7 +154,7 @@ const CaseStudiesSection = () => {
                     "absolute inset-0 bg-linear-to-t",
                     study.lightImage
                       ? "from-black/95 from-30% via-black/75 via-60% to-black/10"
-                      : "from-black/90 from-25% via-black/55 via-60% to-transparent"
+                      : "from-black/85 from-25% via-black/50 via-60% to-black/5"
                   )}
                 />
                 <div className="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-black/45 to-transparent" />
@@ -164,8 +164,8 @@ const CaseStudiesSection = () => {
                   </p>
                 </div>
                 <div className={cn("relative z-10 text-white", config.padding, "pt-20 md:pt-20")}>
-                  <div className={config.titleContainer}>
-                    <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-white/78">
+                  <div className={cn(config.titleContainer, "[text-shadow:0_1px_14px_rgb(0_0_0/0.5)]")}>
+                    <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-white">
                       {study.subtitle}
                     </p>
                     <h3 className={config.titleClass}>

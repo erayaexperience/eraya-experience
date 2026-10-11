@@ -14,6 +14,8 @@ export const site = {
   country: "IN",
   email: "info.erayaexp@gmail.com",
   telephone: "+918208664702",
+  phoneLabel: "+91 8208664702",
+  instagramHandle: "erayaexperience",
   instagram: "https://www.instagram.com/erayaexperience/",
   logo: { url: `${SITE_URL}/logo.png`, width: 1257, height: 447 },
   heroImage: `${SITE_URL}/images/hero-desktop-frame.webp`,

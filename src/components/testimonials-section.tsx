@@ -112,7 +112,7 @@ const Slide = ({ item }: { item: Testimonial }) => {
         </div>
       </div>
 
-      <figure className="lg:col-span-7 lg:col-start-6">
+      <figure className="text-center lg:col-span-7 lg:col-start-6 lg:text-left">
         <blockquote className="text-[clamp(1.75rem,7.4vw,2.25rem)] font-semibold leading-[1.1] tracking-[-0.04em] text-white sm:text-5xl lg:text-[clamp(2.75rem,3.5vw,3.5rem)]">
           <span aria-hidden className="font-serif font-normal text-primary lg:-ml-[0.45em]">
             &ldquo;
@@ -144,7 +144,7 @@ const Slide = ({ item }: { item: Testimonial }) => {
         <figcaption
           style={{ "--delay": "500ms" } as CSSProperties}
           className={cn(
-            "mt-10 flex flex-wrap items-end justify-between gap-x-10 gap-y-6 border-t border-white/12 pt-7",
+            "mt-10 flex flex-wrap items-end justify-center gap-x-10 gap-y-6 border-t border-white/12 pt-7 lg:justify-between",
             reveal,
             hidden,
             shown
@@ -156,7 +156,7 @@ const Slide = ({ item }: { item: Testimonial }) => {
               {item.clientRole}, {item.brand}
             </p>
           </div>
-          <div className="sm:text-right">
+          <div className="lg:text-right">
             <p className="text-[10px] font-semibold uppercase tracking-[0.24em] text-white/40">What we did</p>
             <p className="mt-2 font-serif text-base italic text-primary sm:text-lg">{item.service}</p>
           </div>
@@ -183,7 +183,7 @@ export default function TestimonialsSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.8, ease: EASE_OUT_EXPO }}
-            className="grid gap-6 lg:grid-cols-12 lg:items-end"
+            className="grid gap-6 text-center lg:grid-cols-12 lg:items-end lg:text-left"
           >
             <div className="lg:col-span-7">
               <div className="mb-6 inline-flex items-center gap-3">
@@ -195,7 +195,7 @@ export default function TestimonialsSection() {
                 Words From <span className="font-serif font-normal italic text-primary">Our Partners</span>
               </h2>
             </div>
-            <div className="flex flex-col gap-6 lg:col-span-5 lg:items-end lg:text-right">
+            <div className="flex flex-col items-center gap-6 lg:col-span-5 lg:items-end lg:text-right">
               <p className="text-base font-light leading-relaxed text-white/60 sm:text-lg lg:whitespace-nowrap">
                 Straight from the brands we build with, in their own words.
               </p>

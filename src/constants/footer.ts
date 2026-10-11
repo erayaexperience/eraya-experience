@@ -1,5 +1,6 @@
 import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
 import { FaInstagram } from 'react-icons/fa';
+import { site } from '@/lib/site';
 
 export const navColumns = [
     {
@@ -29,11 +30,11 @@ export const navColumns = [
 ];
 
 export const contactItems = [
-    { icon: FiMapPin, label: 'Porvorim, Goa' },
-    { icon: FiMail, label: 'info.erayaexp@gmail.com' },
-    { icon: FiPhone, label: '+91 8208664702' },
+    { icon: FiMapPin, label: `${site.locality}, ${site.region}` },
+    { icon: FiMail, label: site.email, href: `mailto:${site.email}` },
+    { icon: FiPhone, label: site.phoneLabel, href: `tel:${site.telephone}` },
 ];
 
 export const socialLinks = [
-    { icon: FaInstagram, href: 'https://instagram.com/erayaexperience', label: 'Instagram' },
+    { icon: FaInstagram, href: site.instagram, label: 'Instagram' },
 ];

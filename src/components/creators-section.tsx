@@ -7,7 +7,7 @@ import { FiArrowUpRight } from "react-icons/fi";
 import { creators, instagramUrl, type Creator } from "@/constants/creators";
 import { SectionHeading } from "./ui/section-heading";
 import { scrimBottom } from "./ui/card-scrim";
-import { CROSSFADE, EASE_OUT_EXPO, HOVER_INTENT } from "@/lib/motion";
+import { cardReveal, CROSSFADE, HOVER_INTENT, rowReveal } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 const drift = [
@@ -109,10 +109,8 @@ const Cover = ({
         onMouseLeave={stop}
         onFocus={() => start(0)}
         onBlur={stop}
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-80px" }}
-        transition={{ duration: 1, delay: index * 0.12, ease: EASE_OUT_EXPO }}
+        custom={index}
+        variants={cardReveal}
         className="group relative block aspect-[3/4.2] cursor-pointer overflow-hidden rounded-(--r) bg-secondary [--r:1.5rem] shadow-[0_30px_60px_-30px_rgba(0,0,0,0.45)] outline-none select-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-4 focus-visible:ring-offset-background"
       >
         <div className="absolute inset-0 transition-transform duration-1200 ease-out-expo group-hover:scale-[1.04]">
@@ -185,15 +183,16 @@ export default function CreatorsSection() {
           }
           description="The tastemakers, culture curators and visual storytellers behind our brand campaigns."
           layout="center"
-          className="mb-12 md:mb-16"
         />
       </div>
 
-      <div className="relative flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[calc((100vw-min(78vw,20rem))/2)] pt-2 pb-8 [scrollbar-width:none] md:mx-auto md:grid md:max-w-7xl md:grid-cols-3 md:gap-6 md:overflow-visible md:px-8 lg:gap-8 lg:px-12">
+      <motion.div
+        {...rowReveal}
+        className="relative flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[calc((100vw-min(78vw,20rem))/2)] pt-2 pb-8 [scrollbar-width:none] md:mx-auto md:grid md:max-w-7xl md:grid-cols-3 md:gap-6 md:overflow-visible md:px-8 lg:gap-8 lg:px-12">
         {creators.map((creator, index) => (
           <Cover key={creator.id} creator={creator} index={index} progress={scrollYProgress} />
         ))}
-      </div>
+      </motion.div>
 
       <div className="container-modern relative mt-8 flex justify-center md:mt-12">
         <a

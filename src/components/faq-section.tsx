@@ -1,10 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { FiPlus } from "react-icons/fi";
 import { faqs } from "@/constants/faq";
 import { SectionHeading } from "./ui/section-heading";
+import { cn } from "@/lib/utils";
 
 export default function FaqSection() {
+  const [open, setOpen] = useState<number | null>(null);
+
   return (
     <section id="faq" className="relative overflow-hidden bg-background py-section">
       <div className="pointer-events-none absolute top-1/2 left-1/2 h-240 w-240 -translate-1/2 bg-[radial-gradient(closest-side,rgb(var(--primary)/0.1),transparent)]" />
@@ -19,23 +23,59 @@ export default function FaqSection() {
           }
           description="What brands usually ask before we start working together."
           layout="center"
-          className="mb-12 md:mb-16"
         />
 
         <div className="mx-auto max-w-3xl border-t border-secondary/10">
-          {faqs.map((faq) => (
-            <details key={faq.question} name="faq" className="faq-item group border-b border-secondary/10">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-6 text-left outline-none [&::-webkit-details-marker]:hidden sm:py-7">
-                <h3 className="text-lg font-semibold tracking-tight text-secondary transition-colors duration-300 group-hover:text-primary group-open:text-primary sm:text-xl">
-                  {faq.question}
+          {faqs.map((faq, index) => {
+            const isOpen = open === index;
+            return (
+              <div key={faq.question} className="border-b border-secondary/10">
+                <h3>
+                  <button
+                    type="button"
+                    id={`faq-q-${index}`}
+                    aria-expanded={isOpen}
+                    aria-controls={`faq-a-${index}`}
+                    onClick={() => setOpen(isOpen ? null : index)}
+                    className="group flex w-full cursor-pointer items-center justify-between gap-6 py-5 text-left"
+                  >
+                    <span
+                      className={cn(
+                        "text-lg font-semibold tracking-tight text-secondary transition-colors duration-300 group-hover:text-primary sm:text-xl",
+                        isOpen && "text-primary"
+                      )}
+                    >
+                      {faq.question}
+                    </span>
+                    <span
+                      className={cn(
+                        "flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-secondary/10 text-primary transition-[rotate,background-color,border-color,color] duration-500 ease-in-out",
+                        isOpen && "rotate-45 border-primary bg-primary text-secondary"
+                      )}
+                    >
+                      <FiPlus className="h-4 w-4" />
+                    </span>
+                  </button>
                 </h3>
-                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-secondary/10 text-primary transition-[rotate,background-color,border-color] duration-500 ease-out-expo group-open:rotate-45 group-open:border-primary group-open:bg-primary group-open:text-secondary">
-                  <FiPlus className="h-4 w-4" />
-                </span>
-              </summary>
-              <p className="max-w-2xl pb-7 text-base font-light leading-relaxed text-foreground/70 sm:text-lg">{faq.answer}</p>
-            </details>
-          ))}
+                <div
+                  id={`faq-a-${index}`}
+                  role="region"
+                  aria-labelledby={`faq-q-${index}`}
+                  inert={!isOpen}
+                  className={cn(
+                    "grid transition-[grid-template-rows,opacity] duration-500 ease-in-out",
+                    isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+                  )}
+                >
+                  <div className="overflow-hidden">
+                    <p className="max-w-2xl pb-6 text-base font-light leading-relaxed text-foreground/70 sm:text-lg">
+                      {faq.answer}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>

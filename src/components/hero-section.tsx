@@ -3,8 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
-const FADE = 300;
-
 const HeroSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [ready, setReady] = useState(false);
@@ -18,7 +16,6 @@ const HeroSection = () => {
 
     let revealed = false;
     let onScreen = true;
-    let timer: number | undefined;
 
     const begin = () => {
       video.pause();
@@ -26,10 +23,8 @@ const HeroSection = () => {
         "seeked",
         () => {
           setReady(true);
-          timer = window.setTimeout(() => {
-            revealed = true;
-            if (onScreen) video.play().catch(() => {});
-          }, FADE);
+          revealed = true;
+          if (onScreen) video.play().catch(() => {});
         },
         { once: true }
       );
@@ -52,7 +47,6 @@ const HeroSection = () => {
 
     return () => {
       observer.disconnect();
-      window.clearTimeout(timer);
       video.removeEventListener("playing", begin);
     };
   }, []);
@@ -70,7 +64,7 @@ const HeroSection = () => {
         preload="auto"
         aria-hidden
         className={cn(
-          "pointer-events-none absolute inset-0 h-full w-full object-cover transition-opacity duration-300 ease-out",
+          "pointer-events-none absolute inset-0 h-full w-full object-cover",
           ready ? "opacity-100" : "opacity-0"
         )}
       >

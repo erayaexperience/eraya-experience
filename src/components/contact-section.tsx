@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { FiCheckCircle, FiArrowRight, FiArrowUpRight } from 'react-icons/fi';
-import { FaInstagram } from 'react-icons/fa';
 import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -12,23 +11,17 @@ import { fieldLabel } from './ui/field';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { addScrollInterceptor } from '@/lib/lenis';
 import { cn } from '@/lib/utils';
+import { site } from '@/lib/site';
 
 import { contactInfo, serviceOptions } from '@/constants/contact';
 import { graphics } from '@/constants/graphics';
 
 const WEB3FORMS_ACCESS_KEY = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
-const ENQUIRY_INBOX = 'info.erayaexp@gmail.com';
 
 const wallRows = [
   { order: [0, 8, 1, 10, 2, 11, 3], animation: 'animate-[gallery-left_180s_linear_infinite]' },
   { order: [4, 9, 6, 12, 7, 13, 5], animation: 'animate-[gallery-right_200s_linear_infinite]' },
 ];
-
-const contactHref = (title: string, details: string) => {
-  if (title === 'Email') return `mailto:${details}`;
-  if (title === 'Phone') return `tel:${details.replace(/\s+/g, '')}`;
-  return undefined;
-};
 
 const ContactSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -63,7 +56,7 @@ const ContactSection = () => {
     if (formData.service) lines.push(`Service: ${formData.service}`);
     lines.push('', formData.message);
     const body = lines.join('\n');
-    window.location.href = `mailto:${ENQUIRY_INBOX}?subject=${encodeURIComponent(`New enquiry from ${formData.name}`)}&body=${encodeURIComponent(body)}`;
+    window.location.href = `mailto:${site.email}?subject=${encodeURIComponent(`New enquiry from ${formData.name}`)}&body=${encodeURIComponent(body)}`;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -149,7 +142,7 @@ const ContactSection = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.8 }}
-          className="lg:col-span-5"
+          className="text-center lg:col-span-5 lg:text-left"
         >
           <div className="mb-6 inline-flex items-center gap-3">
             <span className="h-px w-8 bg-primary" />
@@ -159,15 +152,18 @@ const ContactSection = () => {
           <h2 className="text-4xl font-semibold leading-[1.05] tracking-tight text-secondary sm:text-5xl lg:text-[56px]">
             Let&apos;s Build Your <span className="block font-serif italic text-primary">Digital Legacy</span>
           </h2>
-          <p className="mt-6 max-w-md text-lg font-light leading-relaxed text-foreground/70">
+          <p className="mx-auto mt-6 max-w-md text-lg font-light lg:mx-0 leading-relaxed text-foreground/70">
             Got a brand, a launch or a big idea? Tell us where you want to go, and we&apos;ll show you how to get there.
           </p>
 
-          <ul className="mt-10 divide-y divide-secondary/10 border-y border-secondary/10">
-            {contactInfo.map((info) => {
-              const href = contactHref(info.title, info.details);
-              const content = (
-                <>
+          <ul className="mt-10 divide-y divide-secondary/10 border-y border-secondary/10 text-left">
+            {contactInfo.map((info) => (
+              <li key={info.title}>
+                <a
+                  href={info.href}
+                  {...(info.external && { target: '_blank', rel: 'noopener noreferrer' })}
+                  className="group flex items-center gap-5 py-4"
+                >
                   <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full glass-gold-light text-primary">
                     <info.icon className="h-4.5 w-4.5" />
                   </span>
@@ -175,38 +171,10 @@ const ContactSection = () => {
                     <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground/45 transition-colors duration-300 group-hover:text-foreground/70">{info.title}</span>
                     <span className="mt-0.5 block truncate text-lg font-medium text-secondary transition-colors duration-300 group-hover:text-primary">{info.details}</span>
                   </span>
-                  {href && (
-                    <FiArrowUpRight className="h-5 w-5 shrink-0 text-primary opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" />
-                  )}
-                </>
-              );
-              return (
-                <li key={info.title}>
-                  {href ? (
-                    <a href={href} className="group flex items-center gap-5 py-4 transition-colors">{content}</a>
-                  ) : (
-                    <div className="group flex items-center gap-5 py-4">{content}</div>
-                  )}
-                </li>
-              );
-            })}
-            <li>
-              <a
-                href="https://instagram.com/erayaexperience"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-5 py-4 transition-colors"
-              >
-                <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full glass-gold-light text-primary">
-                  <FaInstagram className="h-4.5 w-4.5" />
-                </span>
-                <span className="flex-1">
-                  <span className="block text-[10px] font-semibold uppercase tracking-[0.2em] text-foreground/45 transition-colors duration-300 group-hover:text-foreground/70">Instagram</span>
-                  <span className="mt-0.5 block text-lg font-medium text-secondary transition-colors duration-300 group-hover:text-primary">@erayaexperience</span>
-                </span>
-                <FiArrowUpRight className="h-5 w-5 shrink-0 text-primary opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" />
-              </a>
-            </li>
+                  <FiArrowUpRight className="h-5 w-5 shrink-0 text-primary opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:opacity-100" />
+                </a>
+              </li>
+            ))}
           </ul>
         </motion.div>
 
@@ -217,7 +185,7 @@ const ContactSection = () => {
           transition={{ duration: 0.8, delay: 0.15 }}
           className="lg:col-span-7"
         >
-          <div className="relative overflow-hidden rounded-[calc(var(--pad)+var(--inner)+1px)] glass-gold-light p-(--pad) shadow-[0_40px_100px_-30px_rgba(0,0,0,0.25)] [--inner:0.75rem] [--pad:1.75rem] md:[--pad:2.5rem]">
+          <div className="relative overflow-hidden rounded-4xl glass-gold-light p-(--pad) shadow-[0_40px_100px_-30px_rgba(0,0,0,0.25)] [--inner:0.75rem] [--pad:1.25rem] md:[--pad:2rem]">
             <AnimatePresence mode="wait">
               {isSubmitted ? (
                 <motion.div
@@ -242,7 +210,7 @@ const ContactSection = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  className="flex flex-col gap-6"
+                  className="flex flex-col gap-5"
                 >
                   <div>
                     <h3 className="text-2xl font-semibold tracking-tight text-secondary md:text-3xl">
@@ -251,7 +219,7 @@ const ContactSection = () => {
                     <p className="mt-2 text-sm font-light text-foreground/60">Share a few details and we&apos;ll take it from there.</p>
                   </div>
 
-                  <div className="grid gap-6 sm:grid-cols-2">
+                  <div className="grid gap-5 sm:grid-cols-2">
                     <Input
                       id="name"
                       name="name"
@@ -273,7 +241,7 @@ const ContactSection = () => {
                     />
                   </div>
 
-                  <div className="grid gap-6 sm:grid-cols-2">
+                  <div className="grid gap-5 sm:grid-cols-2">
                     <Input
                       id="company"
                       name="company"
@@ -309,12 +277,12 @@ const ContactSection = () => {
                     <Textarea
                       id="message"
                       name="message"
-                      rows={5}
+                      rows={4}
                       required
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="What are you launching, and what does success look like?"
-                                          />
+                    />
                   </div>
 
                   <input
@@ -330,7 +298,7 @@ const ContactSection = () => {
                   {sendFailed && (
                     <p role="alert" className="rounded-2xl border border-red-200 bg-red-50/80 px-5 py-3 text-sm text-red-700">
                       We couldn&apos;t send your message just now. Please try again, or email us at{' '}
-                      <a href={`mailto:${ENQUIRY_INBOX}`} className="font-semibold underline">{ENQUIRY_INBOX}</a>.
+                      <a href={`mailto:${site.email}`} className="font-semibold underline">{site.email}</a>.
                     </p>
                   )}
 

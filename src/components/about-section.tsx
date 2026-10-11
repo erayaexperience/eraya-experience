@@ -69,7 +69,7 @@ const AboutSection = () => {
               }
               description={aboutContent.description}
               layout="center"
-              className="relative z-10 w-full max-w-lg lg:max-w-xl px-4 sm:px-6 mb-0"
+              className="relative z-10 w-full max-w-lg lg:max-w-xl px-4 sm:px-6 mb-0 md:mb-0"
             />
           </div>
 

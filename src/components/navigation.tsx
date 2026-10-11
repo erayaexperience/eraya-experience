@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FiArrowRight, FiArrowUpRight, FiChevronDown } from "react-icons/fi";
+import { FiArrowRight, FiArrowUpRight, FiChevronDown, FiMenu, FiX } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { Button } from "./ui/button";
@@ -218,18 +218,7 @@ const Navigation = () => {
                 width={124}
                 height={44}
                 className={cn(
-                  "hidden lg:block h-11 w-auto transition-all duration-300",
-                  !onLight && "invert brightness-[2] grayscale"
-                )}
-                priority
-              />
-              <Image
-                src="/logo-small.png"
-                alt="ERAYA Logo Small"
-                width={40}
-                height={40}
-                className={cn(
-                  "block lg:hidden h-10 w-10 object-contain transition-all duration-300",
+                  "h-10 w-auto transition-[filter] duration-300 lg:h-11",
                   !onLight && "invert brightness-[2] grayscale"
                 )}
                 priority
@@ -348,7 +337,7 @@ const Navigation = () => {
 
           <button
             className={cn(
-              "lg:hidden relative z-60 h-10 w-10 flex items-center justify-center rounded-xl transition-[color,filter,scale] duration-300 active:scale-95 cursor-pointer hover:brightness-110",
+              "lg:hidden relative z-60 h-10 w-10 flex items-center justify-center rounded-full transition-[color,scale] duration-300 active:scale-95 cursor-pointer",
               onLight ? "text-foreground" : "text-white"
             )}
             onClick={() => setIsOpen(!isOpen)}
@@ -358,37 +347,31 @@ const Navigation = () => {
             <span
               aria-hidden
               className={cn(
-                "absolute inset-0 rounded-xl glass-gold transition-opacity duration-300",
+                "absolute inset-0 rounded-full glass-gold transition-opacity duration-300",
                 onLight ? "opacity-0" : "opacity-100"
               )}
             />
             <span
               aria-hidden
               className={cn(
-                "absolute inset-0 rounded-xl glass-gold-light transition-opacity duration-300",
+                "absolute inset-0 rounded-full glass-gold-light transition-opacity duration-300",
                 onLight ? "opacity-100" : "opacity-0"
               )}
             />
-            <span aria-hidden className="relative block h-4 w-5">
-              <span
-                className={cn(
-                  "absolute top-0.5 left-0 h-0.5 w-5 rounded-full bg-current transition-[translate,rotate] duration-300 ease-out-expo",
-                  isOpen && "translate-y-1.25 rotate-45"
-                )}
-              />
-              <span
-                className={cn(
-                  "absolute top-1.75 left-0 h-0.5 w-5 rounded-full bg-current transition-[opacity,scale] duration-200",
-                  isOpen && "scale-x-0 opacity-0"
-                )}
-              />
-              <span
-                className={cn(
-                  "absolute bottom-0.5 left-0 h-0.5 w-5 rounded-full bg-current transition-[translate,rotate] duration-300 ease-out-expo",
-                  isOpen && "-translate-y-1.25 -rotate-45"
-                )}
-              />
-            </span>
+            <FiMenu
+              aria-hidden
+              className={cn(
+                "absolute h-5 w-5 transition-[opacity,rotate,scale] duration-300 ease-in-out",
+                isOpen ? "rotate-90 scale-75 opacity-0" : "opacity-100"
+              )}
+            />
+            <FiX
+              aria-hidden
+              className={cn(
+                "absolute h-5 w-5 transition-[opacity,rotate,scale] duration-300 ease-in-out",
+                isOpen ? "opacity-100" : "-rotate-90 scale-75 opacity-0"
+              )}
+            />
           </button>
         </div>
       </div>

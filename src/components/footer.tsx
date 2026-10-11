@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { FiArrowUpRight } from 'react-icons/fi';
 import { navColumns, contactItems, socialLinks } from '@/constants/footer';
+import { cn } from '@/lib/utils';
 
 
 const Footer = () => {
@@ -12,10 +13,10 @@ const Footer = () => {
       <div className="pointer-events-none absolute top-20 right-20 h-[56rem] w-[56rem] translate-x-1/2 -translate-y-1/2 bg-[radial-gradient(closest-side,rgb(var(--primary)/0.08),transparent)]" />
 
       <div className="container-modern relative pt-16 pb-8">
-        <div className="grid gap-12 lg:grid-cols-12">
-          <div className="space-y-6 lg:col-span-4">
-            <Link href="/" className="inline-block transition-opacity hover:opacity-80">
-              <Image src="/logo.png" alt="ERAYA Logo" width={140} height={35} className="h-auto brightness-0 invert" />
+        <div className="grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-12 lg:gap-12">
+          <div className="col-span-2 space-y-6 lg:col-span-4">
+            <Link href="#top" aria-label="Eraya Experience, back to top" className="inline-block transition-opacity hover:opacity-80">
+              <Image src="/logo.png" alt="Eraya Experience" width={140} height={35} className="h-auto brightness-0 invert" />
             </Link>
             <p className="max-w-sm text-sm font-light leading-relaxed text-white/60">
               Strategy, storytelling and standout creative for brands that want to be remembered.
@@ -23,10 +24,16 @@ const Footer = () => {
             <ul className="space-y-3">
               {contactItems.map((item) => {
                 const Icon = item.icon;
+                const Tag = item.href ? 'a' : 'span';
                 return (
-                  <li key={item.label} className="flex items-center gap-3 text-sm text-white/80">
-                    <Icon className="h-4 w-4 text-primary" />
-                    {item.label}
+                  <li key={item.label}>
+                    <Tag
+                      href={item.href}
+                      className={cn('inline-flex items-center gap-3 text-sm text-white/80 transition-colors', item.href && 'hover:text-primary')}
+                    >
+                      <Icon className="h-4 w-4 text-primary" />
+                      {item.label}
+                    </Tag>
                   </li>
                 );
               })}
@@ -48,7 +55,7 @@ const Footer = () => {
             </div>
           ))}
 
-          <div className="lg:col-span-4">
+          <div className="col-span-2 lg:col-span-4">
             <div className="glass-gold rounded-3xl p-6 sm:p-8">
               <h3 className="text-xl font-medium text-white">
                 Let&apos;s build something <span className="font-serif italic text-primary">unmistakable</span>

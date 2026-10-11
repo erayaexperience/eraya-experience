@@ -6,7 +6,6 @@ import type Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { cn } from '@/lib/utils';
 import { getLenis, addScrollInterceptor } from '@/lib/lenis';
 import { snapWithLenis } from '@/lib/lenis-snap';
@@ -302,48 +301,11 @@ const ServicesSection = () => {
                 </div>
               ))}
             </div>
-
-            <div className="mt-6 flex items-center justify-center gap-4 lg:hidden max-lg:[@media(max-height:760px)]:mt-3">
-              <button
-                type="button"
-                onClick={() => goToCard(active - 1)}
-                disabled={active === 0}
-                aria-label="Previous service"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white/80 text-secondary shadow-sm transition hover:bg-white active:scale-95 disabled:pointer-events-none disabled:opacity-30"
-              >
-                <FiChevronLeft className="h-5 w-5" />
-              </button>
-
-              <div className="flex items-center gap-1.5">
-                {services.map((service, index) => (
-                  <button
-                    key={service.title}
-                    type="button"
-                    onClick={() => goToCard(index)}
-                    aria-label={`Go to ${service.title}`}
-                    className={cn(
-                      'h-2 rounded-full transition-all duration-300',
-                      index === active ? 'w-6 bg-primary' : 'w-2 bg-black/15 hover:bg-black/30'
-                    )}
-                  />
-                ))}
-              </div>
-
-              <button
-                type="button"
-                onClick={() => goToCard(active + 1)}
-                disabled={active === LAST}
-                aria-label="Next service"
-                className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white/80 text-secondary shadow-sm transition hover:bg-white active:scale-95 disabled:pointer-events-none disabled:opacity-30"
-              >
-                <FiChevronRight className="h-5 w-5" />
-              </button>
-            </div>
           </div>
 
           <div
             aria-hidden
-            className="relative order-first h-[35svh] sm:h-[42svh] perspective-[1600px] [--panel-h:25svh] [--panel-w:min(56vw,14rem)] sm:[--panel-h:31svh] sm:[--panel-w:16rem] lg:order-0 lg:col-span-7 lg:h-[72svh] lg:[--panel-h:54svh] lg:[--panel-w:clamp(14rem,19vw,19rem)] max-lg:[@media(max-height:760px)]:h-[30svh] max-lg:[@media(max-height:760px)]:[--panel-h:22svh]"
+            className="relative order-first h-[40svh] sm:h-[42svh] perspective-[1600px] [--panel-h:29svh] [--panel-w:min(56vw,14rem)] sm:[--panel-h:31svh] sm:[--panel-w:16rem] lg:order-0 lg:col-span-7 lg:h-[72svh] lg:[--panel-h:54svh] lg:[--panel-w:clamp(14rem,19vw,19rem)] max-lg:[@media(max-height:760px)]:h-[30svh] max-lg:[@media(max-height:760px)]:[--panel-h:22svh]"
           >
             <div className="absolute inset-0 transform-3d transform-[rotateX(-6deg)]">
               <div ref={swingRef} className="absolute inset-0 transform-3d will-change-transform">

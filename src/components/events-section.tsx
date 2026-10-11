@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect, type TouchEvent } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { events, type EventItem } from "@/constants/events";
@@ -8,8 +8,9 @@ import { SectionHeading } from "./ui/section-heading";
 import { Lightbox, type LightboxItem } from "./ui/lightbox";
 import { scrimBottom } from "./ui/card-scrim";
 import { cn } from "@/lib/utils";
-import { EASE_OUT_EXPO, HOVER_INTENT } from "@/lib/motion";
+import { cardReveal, EASE_OUT_EXPO, rowReveal } from "@/lib/motion";
 
+const FIRST_CHANGE = 500;
 const PHOTO_DWELL = 1800;
 
 function EventBentoCard({
@@ -22,56 +23,59 @@ function EventBentoCard({
   onOpenLightbox: (photoIndex: number) => void;
 }) {
   const [currentPhoto, setCurrentPhoto] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
-  const touchStartX = useRef<number | null>(null);
+  const [isActive, setIsActive] = useState(false);
+  const cardRef = useRef<HTMLElement>(null);
   const intent = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const images = event.images;
   const activeImage = images[currentPhoto];
 
+  const start = () => {
+    clearTimeout(intent.current);
+    intent.current = setTimeout(() => {
+      setIsActive(true);
+      setCurrentPhoto((prev) => (prev + 1) % images.length);
+    }, FIRST_CHANGE);
+  };
+
+  const stop = () => {
+    clearTimeout(intent.current);
+    setIsActive(false);
+    setCurrentPhoto(0);
+  };
+
   useEffect(() => {
-    if (!isHovered) return;
+    if (!isActive) return;
     const timer = setInterval(() => {
       setCurrentPhoto((prev) => (prev + 1) % images.length);
     }, PHOTO_DWELL);
 
     return () => clearInterval(timer);
-  }, [isHovered, images.length]);
+  }, [isActive, images.length]);
 
-  useEffect(() => () => clearTimeout(intent.current), []);
+  useEffect(() => {
+    const card = cardRef.current;
+    if (!card || !window.matchMedia("(hover: none)").matches) return () => clearTimeout(intent.current);
 
-  const handleTouchStart = (e: TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX;
-  };
+    const observer = new IntersectionObserver(([entry]) => (entry.intersectionRatio >= 0.75 ? start() : stop()), {
+      threshold: [0, 0.75],
+    });
+    observer.observe(card);
 
-  const handleTouchEnd = (e: TouchEvent) => {
-    if (touchStartX.current === null) return;
-    const deltaX = e.changedTouches[0].clientX - touchStartX.current;
-    touchStartX.current = null;
-    if (deltaX < -35) {
-      setCurrentPhoto((prev) => (prev + 1) % images.length);
-    } else if (deltaX > 35) {
-      setCurrentPhoto((prev) => (prev - 1 + images.length) % images.length);
-    }
-  };
+    return () => {
+      observer.disconnect();
+      clearTimeout(intent.current);
+    };
+  }, []);
 
   return (
-    <article
+    <motion.article
+      ref={cardRef}
+      custom={index}
+      variants={cardReveal}
       onClick={() => onOpenLightbox(currentPhoto)}
-      onMouseEnter={() => {
-        clearTimeout(intent.current);
-        intent.current = setTimeout(() => {
-          setIsHovered(true);
-          setCurrentPhoto((prev) => (prev + 1) % images.length);
-        }, HOVER_INTENT);
-      }}
-      onMouseLeave={() => {
-        clearTimeout(intent.current);
-        setIsHovered(false);
-        setCurrentPhoto(0);
-      }}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
+      onMouseEnter={start}
+      onMouseLeave={stop}
       role="button"
       tabIndex={0}
       onKeyDown={(e) => {
@@ -82,7 +86,7 @@ function EventBentoCard({
       }}
       aria-label={`Open ${event.title} gallery`}
       className={cn(
-        "group relative flex h-130 sm:h-140 lg:h-150 w-[80vw] max-w-[22rem] shrink-0 snap-center flex-col justify-between overflow-hidden rounded-4xl border border-border/80 bg-secondary shadow-[0_20px_50px_rgba(0,0,0,0.14)] cursor-pointer select-none transition-all duration-500 hover:border-primary/80 hover:shadow-[0_25px_60px_rgba(214,182,133,0.22)] md:w-auto md:max-w-none"
+        "group relative flex h-130 sm:h-140 lg:h-150 w-[80vw] max-w-[22rem] shrink-0 snap-center flex-col justify-between overflow-hidden rounded-4xl border border-border/80 bg-secondary shadow-[0_20px_50px_rgba(0,0,0,0.14)] cursor-pointer select-none transition-[border-color,box-shadow] duration-500 hover:border-primary/80 hover:shadow-[0_25px_60px_rgba(214,182,133,0.22)] md:w-auto md:max-w-none"
       )}
     >
       <div className="absolute inset-0 pointer-events-none">
@@ -174,7 +178,7 @@ function EventBentoCard({
           </div>
         )}
       </div>
-    </article>
+    </motion.article>
   );
 }
 
@@ -227,10 +231,9 @@ export default function EventsSection() {
           }
           description="From historic opera house conclaves to creator sundowners and city-wide marathons."
           layout="center"
-          className="mb-12 md:mb-16"
         />
 
-        <div className="relative -mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[calc((100vw-min(80vw,22rem))/2)] pt-2 pb-6 [scrollbar-width:none] md:mx-auto md:grid md:max-w-7xl md:grid-cols-3 md:gap-6 md:overflow-visible md:px-6 lg:gap-8 lg:px-8">
+        <motion.div {...rowReveal} className="relative -mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[calc((100vw-min(80vw,22rem))/2)] pt-2 pb-6 [scrollbar-width:none] md:mx-auto md:grid md:max-w-7xl md:grid-cols-3 md:gap-6 md:overflow-visible md:px-6 lg:gap-8 lg:px-8">
           {events.map((event, index) => (
             <EventBentoCard
               key={event.id}
@@ -239,7 +242,7 @@ export default function EventsSection() {
               onOpenLightbox={(photoIndex) => openLightbox(index, photoIndex)}
             />
           ))}
-        </div>
+        </motion.div>
       </div>
 
       <Lightbox

@@ -1,18 +1,11 @@
 import { FiMail, FiPhone } from 'react-icons/fi';
+import { FaInstagram } from 'react-icons/fa';
+import { site } from '@/lib/site';
 
 export const contactInfo = [
-    {
-        icon: FiMail,
-        title: 'Email',
-        details: 'info.erayaexp@gmail.com',
-        description: 'Drop us a line anytime'
-    },
-    {
-        icon: FiPhone,
-        title: 'Phone',
-        details: '+91 8208664702',
-        description: 'Call us for immediate support'
-    }
+    { icon: FiMail, title: 'Email', details: site.email, href: `mailto:${site.email}` },
+    { icon: FiPhone, title: 'Phone', details: site.phoneLabel, href: `tel:${site.telephone}` },
+    { icon: FaInstagram, title: 'Instagram', details: `@${site.instagramHandle}`, href: site.instagram, external: true },
 ];
 
 export const serviceOptions = [
