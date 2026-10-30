@@ -92,23 +92,11 @@ const GraphicsSection = () => {
                             loading="eager"
                             className="object-cover"
                           />
-                          <span className="pointer-events-none absolute inset-x-0 bottom-0 overflow-hidden [@media(hover:none)]:hidden transition-[clip-path] duration-300 ease-out [clip-path:inset(100%_0_0_0)] group-hover/tile:[clip-path:inset(0)] group-focus-visible/tile:[clip-path:inset(0)]">
-                            <span aria-hidden className="absolute inset-x-0 bottom-0 hidden h-44 group-hover/tile:block group-focus-visible/tile:block md:h-60 lg:h-72">
-                              <Image
-                                src={graphic.src}
-                                alt=""
-                                fill
-                                sizes="(min-width: 1024px) 260px, (min-width: 768px) 200px, 150px"
-                                className="scale-110 object-cover blur-md"
-                              />
+                          <span className="pointer-events-none absolute inset-x-0 bottom-0 block translate-y-full glass bg-black/30 px-3 py-2.5 text-left opacity-0 transition-[translate,opacity] duration-300 ease-out [--glass-blur:14px] [@media(hover:none)]:hidden group-hover/tile:translate-y-0 group-hover/tile:opacity-100 group-focus-visible/tile:translate-y-0 group-focus-visible/tile:opacity-100 md:px-4 md:py-3">
+                            <span className="block text-[9px] font-semibold uppercase tracking-[0.2em] text-primary md:text-[10px]">
+                              {graphic.brand}
                             </span>
-                            <span aria-hidden className="absolute inset-0 bg-linear-to-br from-primary/35 via-black/40 to-black/55" />
-                            <span className="relative block border-t border-primary/45 px-3 py-2.5 text-left md:px-4 md:py-3">
-                              <span className="block text-[9px] font-semibold uppercase tracking-[0.2em] text-primary md:text-[10px]">
-                                {graphic.brand}
-                              </span>
-                              <span className="mt-0.5 block text-xs font-medium text-white md:text-sm">{graphic.title}</span>
-                            </span>
+                            <span className="mt-0.5 block text-xs font-medium text-white md:text-sm">{graphic.title}</span>
                           </span>
                         </span>
                       </button>

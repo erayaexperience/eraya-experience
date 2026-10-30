@@ -4,16 +4,22 @@ import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+type NetworkInformation = { saveData?: boolean; effectiveType?: string };
+
+const constrainedNetwork = () => {
+  const connection = (navigator as Navigator & { connection?: NetworkInformation }).connection;
+  return Boolean(connection?.saveData || connection?.effectiveType?.endsWith("2g"));
+};
+
 const HeroSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const { scrollY } = useScroll();
-  const covered = useTransform(scrollY, (y) => (typeof window === "undefined" ? 0 : Math.min(y / window.innerHeight, 1)));
-  const dim = useTransform(covered, [0, 1], [0, 0.6]);
+  const dim = useTransform(scrollY, (y) => (typeof window === "undefined" ? 0 : Math.min(y / (window.innerHeight || 1), 1) * 0.6));
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
-    if (!video) return;
+    if (!video || constrainedNetwork()) return;
 
     video.muted = true;
     video.defaultMuted = true;
@@ -65,7 +71,7 @@ const HeroSection = () => {
         muted
         loop
         playsInline
-        preload="auto"
+        preload="none"
         aria-hidden
         className={cn(
           "pointer-events-none absolute inset-0 h-full w-full object-cover",

@@ -77,11 +77,15 @@ export function LiquidGlassFilter() {
     const filters = new WeakMap<Element, SVGFilterElement>();
     let count = 0;
 
-    const render = (element: HTMLElement) => {
+    const measure = (element: HTMLElement) => {
       const width = Math.round(element.offsetWidth);
       const height = Math.round(element.offsetHeight);
-      if (!width || !height) return;
       const radius = Math.min(parseFloat(getComputedStyle(element).borderTopLeftRadius) || 0, width / 2, height / 2);
+      return { element, width, height, radius };
+    };
+
+    const apply = ({ element, width, height, radius }: ReturnType<typeof measure>) => {
+      if (!width || !height) return;
       const bezel = Math.max(4, Math.min(24, height * 0.3, width * 0.3));
 
       let filter = filters.get(element);
@@ -107,29 +111,35 @@ export function LiquidGlassFilter() {
       filter.lastElementChild!.setAttribute("scale", String(Math.round(bezel * 1.6)));
     };
 
+    const render = (elements: HTMLElement[]) => elements.map(measure).forEach(apply);
+
     const tracked = new WeakSet<Element>();
-    const resize = new ResizeObserver((entries) => entries.forEach((entry) => render(entry.target as HTMLElement)));
-    const reveal = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          reveal.unobserve(entry.target);
-          resize.observe(entry.target);
-        }),
-      { rootMargin: "200px" }
-    );
+    const resize = new ResizeObserver((entries) => render(entries.map((entry) => entry.target as HTMLElement)));
+    const start = (elements: HTMLElement[]) => {
+      render(elements);
+      elements.forEach((element) => resize.observe(element));
+    };
+
+    const pending: HTMLElement[] = [];
+    let idle = 0;
+    const flush = () => {
+      idle = 0;
+      start(pending.splice(0));
+    };
     const nearViewport = (element: Element) => {
       const { top, bottom } = element.getBoundingClientRect();
       return bottom > -200 && top < window.innerHeight + 200;
     };
-    const track = (root: ParentNode) =>
+    const track = (root: ParentNode) => {
+      const near: HTMLElement[] = [];
       root.querySelectorAll<HTMLElement>(GLASS).forEach((element) => {
         if (tracked.has(element)) return;
         tracked.add(element);
-        if (!nearViewport(element)) return reveal.observe(element);
-        render(element);
-        resize.observe(element);
+        (nearViewport(element) ? near : pending).push(element);
       });
+      start(near);
+      if (pending.length) idle ||= requestIdleCallback(flush, { timeout: 1000 });
+    };
 
     track(document);
     const mutations = new MutationObserver((records) => {
@@ -142,7 +152,7 @@ export function LiquidGlassFilter() {
     mutations.observe(document.body, { subtree: true, childList: true, attributes: true, attributeFilter: ["class"] });
 
     return () => {
-      reveal.disconnect();
+      cancelIdleCallback(idle);
       resize.disconnect();
       mutations.disconnect();
     };
