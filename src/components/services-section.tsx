@@ -1,14 +1,14 @@
 "use client";
 
-import { useRef, useState, useCallback, useEffect, type CSSProperties } from 'react';
+import { useRef, useState, useCallback, type CSSProperties } from 'react';
 import Image from 'next/image';
 import type Lenis from 'lenis';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
 import { cn } from '@/lib/utils';
-import { getLenis, addScrollInterceptor } from '@/lib/lenis';
-import { snapWithLenis } from '@/lib/lenis-snap';
+import { getLenis } from '@/lib/lenis';
+import { useSnapSteps } from '@/lib/use-snap-steps';
 import { services } from '@/constants/services';
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
@@ -23,9 +23,6 @@ const LEAD = 0.3;
 const SWING = 0.5;
 const SPAN = LAST + 2 * LEAD;
 
-const GESTURE_QUIET_MS = 200;
-const SWIPE_DISTANCE = 30;
-
 const clampCard = gsap.utils.clamp(0, LAST);
 const clampDuration = gsap.utils.clamp(0.65, 1.2);
 const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
@@ -35,16 +32,7 @@ const cardScroll = (trigger: ScrollTrigger, card: number) =>
 const cardAt = (trigger: ScrollTrigger, scroll: number) =>
   ((scroll - trigger.start) / (trigger.end - trigger.start)) * SPAN - LEAD;
 
-const stepFrom = (position: number, direction: number) => {
-  const shown = clampCard(position);
-  const next = direction > 0 ? Math.floor(shown + HOLD) + 1 : Math.ceil(shown - HOLD) - 1;
-  return next < 0 || next > LAST ? null : next;
-};
-
 const restingScroll = (lenis: Lenis) => (lenis.isScrolling === 'smooth' ? lenis.targetScroll : lenis.animatedScroll);
-
-const isPrevented = (event: Event) =>
-  event.target instanceof Element && !!event.target.closest('dialog, [data-lenis-prevent]');
 
 const ServicesSection = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -70,120 +58,11 @@ const ServicesSection = () => {
     lenis.scrollTo(target, { programmatic: false, duration: clampDuration(0.5 + 0.15 * cards), easing: easeOutCubic });
   }, []);
 
-  useEffect(() => {
-    let locked = false;
-    let lockedAt = 0;
-    let lastSpeed = 0;
-    let quietTimer: number | undefined;
-    let touch: { x: number; y: number; mode: 'pending' | 'step' | 'native'; stepped: boolean } | null = null;
-
-    const consume = (event: Event) => {
-      if (event.cancelable) event.preventDefault();
-      return false;
-    };
-
-    const keepLocked = () => {
-      window.clearTimeout(quietTimer);
-      quietTimer = window.setTimeout(() => {
-        locked = false;
-      }, GESTURE_QUIET_MS);
-    };
-    const lock = () => {
-      locked = true;
-      lockedAt = performance.now();
-      keepLocked();
-    };
-
-    const onWheel = (event: WheelEvent, deltaY: number, trigger: ScrollTrigger, lenis: Lenis) => {
-      if (event.ctrlKey || isPrevented(event)) return true;
-
-      const speed = Math.abs(deltaY);
-      if (locked && speed > 15 && speed > lastSpeed * 2 && performance.now() - lockedAt > 300) locked = false;
-      lastSpeed = speed;
-      if (locked) keepLocked();
-      if (deltaY === 0) return true;
-
-      const direction = Math.sign(deltaY);
-      const rest = restingScroll(lenis);
-      const first = cardScroll(trigger, 0);
-      const last = cardScroll(trigger, LAST);
-
-      if (direction > 0 ? rest < first - 1 : rest > last + 1) {
-        const entry = direction > 0 ? first : last;
-        lock();
-        if (direction > 0 ? rest + deltaY < entry : rest + deltaY > entry) return true;
-        lenis.scrollTo(entry, { programmatic: false, lerp: lenis.options.lerp });
-        return consume(event);
-      }
-      if (rest < first - 1 || rest > last + 1) {
-        lock();
-        return true;
-      }
-      if (locked) return consume(event);
-
-      lock();
-      const next = stepFrom(cardAt(trigger, rest), direction);
-      if (next === null) return true;
-      goToCard(next);
-      return consume(event);
-    };
-
-    const onTouch = (event: TouchEvent, trigger: ScrollTrigger, lenis: Lenis) => {
-      if (event.type === 'touchstart') {
-        const point = event.touches[0];
-        touch =
-          event.touches.length === 1 && !isPrevented(event)
-            ? { x: point.clientX, y: point.clientY, mode: 'pending', stepped: false }
-            : null;
-        return true;
-      }
-      if (!touch) return true;
-      if (event.type !== 'touchmove') {
-        const owned = touch.mode === 'step';
-        touch = null;
-        return !owned;
-      }
-      if (event.touches.length > 1) {
-        touch = null;
-        return true;
-      }
-
-      const point = event.touches[0];
-      const dx = point.clientX - touch.x;
-      const dy = point.clientY - touch.y;
-      const vertical = Math.abs(dy) >= Math.abs(dx);
-      const direction = -Math.sign(vertical ? dy : dx);
-
-      if (touch.mode === 'pending') {
-        if (dx === 0 && dy === 0) return true;
-        const rest = restingScroll(lenis);
-        const pinned = rest >= trigger.start - 1 && rest <= trigger.end + 1;
-        const leaving = vertical && stepFrom(cardAt(trigger, rest), direction) === null;
-        touch.mode = event.cancelable && pinned && !leaving ? 'step' : 'native';
-      }
-      if (touch.mode === 'native') return true;
-
-      if (!touch.stepped && Math.max(Math.abs(dx), Math.abs(dy)) >= SWIPE_DISTANCE) {
-        touch.stepped = true;
-        const next = stepFrom(cardAt(trigger, restingScroll(lenis)), direction);
-        if (next !== null) goToCard(next);
-      }
-      return consume(event);
-    };
-
-    const unsubscribe = addScrollInterceptor((data) => {
-      const trigger = triggerRef.current;
-      const lenis = getLenis();
-      if (!trigger || !lenis || lenis.isStopped) return true;
-      const { event } = data;
-      return event instanceof WheelEvent ? onWheel(event, data.deltaY, trigger, lenis) : onTouch(event, trigger, lenis);
-    });
-
-    return () => {
-      unsubscribe();
-      window.clearTimeout(quietTimer);
-    };
-  }, [goToCard]);
+  const snapPoints = useCallback(() => {
+    const trigger = triggerRef.current;
+    return trigger ? services.map((_, card) => cardScroll(trigger, card)) : [];
+  }, []);
+  useSnapSteps(snapPoints);
 
   useGSAP(
     () => {
@@ -199,7 +78,7 @@ const ServicesSection = () => {
           trigger: section,
           start: 'top top',
           end: () => `+=${section.offsetHeight - stage.offsetHeight}`,
-          scrub: 0.5,
+          scrub: true,
           invalidateOnRefresh: true,
           onUpdate: (self) => {
             const lenis = getLenis();
@@ -233,14 +112,7 @@ const ServicesSection = () => {
         }
       );
 
-      const releaseSnap = snapWithLenis(trigger, (progress, direction) => {
-        const position = clampCard(progress * SPAN - LEAD);
-        if (Math.abs(position - Math.round(position)) <= HOLD) return null;
-        return ((direction > 0 ? Math.ceil(position) : Math.floor(position)) + LEAD) / SPAN;
-      });
-
       return () => {
-        releaseSnap();
         triggerRef.current = null;
       };
     },

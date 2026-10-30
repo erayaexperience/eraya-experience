@@ -5,7 +5,7 @@ import { events } from '@/constants/events';
 import { services } from '@/constants/services';
 import { SITE_URL } from '@/lib/site';
 
-const absolute = (path: string) => (path.startsWith('http') ? path : `${SITE_URL}${path}`);
+const absolute = (path: string) => (path.startsWith('http') ? path : `${SITE_URL}${path}`).replaceAll('&', '&amp;');
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const images = [

@@ -55,7 +55,7 @@ export function SmoothScroll() {
     ScrollTrigger.clearScrollMemory("manual");
     const landOnHash = () => {
       const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
-      if (target) requestAnimationFrame(() => scrollToElement(lenis, target));
+      if (target) requestAnimationFrame(() => scrollToElement(lenis, target, true));
     };
     const intro = document.querySelector(".intro");
     let introTimer: number | undefined;
