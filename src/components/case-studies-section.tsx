@@ -1,10 +1,11 @@
 "use client";
 
-import { useRef, useState, type ReactNode } from "react";
+import { useRef, useState, type CSSProperties, type ReactNode } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { caseStudies, type CaseStudy } from "@/constants/case-studies";
 import { SectionHeading } from "./ui/section-heading";
+import { ParallaxMedia } from "./ui/parallax-media";
 import { FiChevronDown } from "react-icons/fi";
 import { cn } from "@/lib/utils";
 import { getLenis, scrollToElement } from "@/lib/lenis";
@@ -19,7 +20,6 @@ type CardConfig = {
   titleClass: string;
   descClass: string;
   metricsContainer: string;
-  padding: string;
   renderMetrics: (study: CaseStudy) => ReactNode;
 };
 
@@ -30,11 +30,10 @@ const featureCard: CardConfig = {
   titleContainer: "max-w-152",
   titleClass: "mb-4 max-w-xl text-2xl font-semibold tracking-tight text-white md:text-3xl",
   descClass: "max-w-xl text-sm font-light leading-relaxed text-white/92 md:text-base",
-  metricsContainer: "mt-6 grid grid-cols-2 gap-3 md:flex md:flex-wrap",
-  padding: "p-8 md:p-10",
+  metricsContainer: "mt-6 grid grid-cols-2 gap-3 md:grid-cols-3",
   renderMetrics: (study) =>
     study.metrics.slice(0, 3).map((metric) => (
-      <div key={metric.label} className={cn("rounded-2xl px-4 py-3 last:odd:col-span-2", glass)}>
+      <div key={metric.label} className={cn("rounded-(--inner) px-4 py-3 last:odd:col-span-2 md:last:odd:col-span-1", glass)}>
         <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">{metric.label}</p>
         <p className="mt-1 text-base font-semibold tracking-tight text-white">{metric.value}</p>
       </div>
@@ -48,11 +47,10 @@ const listCard: CardConfig = {
   titleContainer: "max-w-sm",
   titleClass: "mb-4 text-2xl font-semibold leading-tight tracking-tight text-white",
   descClass: "mb-6 text-sm leading-relaxed text-white/92",
-  metricsContainer: "grid max-w-sm gap-3",
-  padding: "p-8 md:p-9",
+  metricsContainer: "grid gap-3",
   renderMetrics: (study) =>
     study.metrics.slice(0, 2).map((metric) => (
-      <div key={metric.label} className={cn("flex items-center justify-between gap-3 rounded-2xl px-4 py-3", glass)}>
+      <div key={metric.label} className={cn("flex items-center justify-between gap-3 rounded-(--inner) px-4 py-3", glass)}>
         <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-white/75">{metric.label}</p>
         <p className="text-base font-semibold tracking-tight text-white">{metric.value}</p>
       </div>
@@ -64,7 +62,7 @@ const gridCard: CardConfig = {
   metricsContainer: "grid grid-cols-[repeat(auto-fit,minmax(8.5rem,1fr))] gap-3",
   renderMetrics: (study) =>
     study.metrics.slice(0, 2).map((metric) => (
-      <div key={metric.label} className={cn("rounded-2xl px-4 py-4", glass)}>
+      <div key={metric.label} className={cn("rounded-(--inner) px-4 py-4", glass)}>
         <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-white/75">{metric.label}</p>
         <p className="mt-2 text-base font-semibold tracking-tight text-white">{metric.value}</p>
       </div>
@@ -131,39 +129,43 @@ const CaseStudiesSection = () => {
             return (
               <motion.article
                 key={study.title}
+                data-cursor="view"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: (index % 3) * 0.1 }}
                 className={cn(
-                  "group relative flex min-h-100 flex-col justify-end overflow-hidden rounded-3xl border border-border bg-secondary",
+                  "group relative flex min-h-100 flex-col justify-end overflow-hidden rounded-nest border border-border bg-secondary [--inner:1rem] [--pad:1rem]",
                   config.colSpan,
                   config.shadow
                 )}
               >
-                <Image
-                  src={study.image}
-                  alt={study.title}
-                  fill
-                  sizes={config.sizes}
-                  className="object-cover transition-transform duration-700 group-hover:scale-105"
-                  style={study.imagePosition ? { objectPosition: study.imagePosition } : undefined}
-                />
+                <ParallaxMedia>
+                  <Image
+                    src={study.image}
+                    alt={study.title}
+                    fill
+                    sizes={config.sizes}
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                    style={study.imagePosition ? { objectPosition: study.imagePosition } : undefined}
+                  />
+                </ParallaxMedia>
                 <div
+                  style={{ "--tint": study.tint ?? "0 0 0" } as CSSProperties}
                   className={cn(
                     "absolute inset-0 bg-linear-to-t",
                     study.lightImage
-                      ? "from-black/95 from-30% via-black/75 via-60% to-black/10"
-                      : "from-black/85 from-25% via-black/50 via-60% to-black/5"
+                      ? "from-[rgb(var(--tint)/0.95)] from-30% via-[rgb(var(--tint)/0.75)] via-60% to-[rgb(var(--tint)/0.1)]"
+                      : "from-[rgb(var(--tint)/0.88)] from-25% via-[rgb(var(--tint)/0.5)] via-60% to-[rgb(var(--tint)/0.05)]"
                   )}
                 />
-                <div className="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-black/45 to-transparent" />
-                <div className={cn("absolute top-6 left-6 z-10 rounded-full px-4 py-2", glass)}>
+                <div className="absolute inset-x-0 top-0 h-40 bg-linear-to-b from-black/40 to-transparent" />
+                <div className={cn("absolute top-(--pad) left-(--pad) z-10 rounded-full px-4 py-2", glass)}>
                   <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-white/72">
                     {study.category}
                   </p>
                 </div>
-                <div className={cn("relative z-10 text-white", config.padding, "pt-20 md:pt-20")}>
+                <div className={"relative z-10 p-(--pad) pt-20 text-white md:pt-20"}>
                   <div className={cn(config.titleContainer, "[text-shadow:0_1px_14px_rgb(0_0_0/0.5)]")}>
                     <p className="mb-3 text-[10px] font-semibold uppercase tracking-[0.22em] text-white">
                       {study.subtitle}
@@ -191,7 +193,7 @@ const CaseStudiesSection = () => {
               onClick={toggle}
               aria-expanded={showAll}
               className={cn(
-                "group inline-flex cursor-pointer items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors duration-300",
+                "tap group inline-flex cursor-pointer items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors duration-300",
                 showAll
                   ? "border border-secondary/15 bg-white text-secondary hover:border-primary hover:text-primary"
                   : "bg-primary text-secondary hover:bg-secondary hover:text-primary"

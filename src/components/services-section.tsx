@@ -312,6 +312,7 @@ const ServicesSection = () => {
                 <div ref={ringRef} className="absolute inset-0 transform-3d will-change-transform">
                   {services.map((service, index) => (
                     <article
+                      data-cursor="view"
                       key={service.title}
                       onClick={() => goToCard(index)}
                       style={{ transform: `rotateY(${index * STEP}deg) translateZ(calc(var(--panel-w) * ${RADIUS.toFixed(4)}))` }}

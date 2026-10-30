@@ -57,11 +57,29 @@ export function SmoothScroll() {
       const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
       if (target) requestAnimationFrame(() => scrollToElement(lenis, target));
     };
-    if (document.readyState === "complete") landOnHash();
+    const intro = document.querySelector(".intro");
+    let introTimer: number | undefined;
+    const release = () => {
+      window.clearTimeout(introTimer);
+      intro?.removeEventListener("animationend", onIntroEnd);
+      lenis.start();
+      landOnHash();
+    };
+    const onIntroEnd = (event: Event) => {
+      if ((event as AnimationEvent).animationName === "intro-done") release();
+    };
+
+    if (intro && getComputedStyle(intro).visibility !== "hidden") {
+      lenis.stop();
+      intro.addEventListener("animationend", onIntroEnd);
+      introTimer = window.setTimeout(release, 2200);
+    } else if (document.readyState === "complete") landOnHash();
     else window.addEventListener("load", landOnHash, { once: true });
 
     return () => {
       window.clearTimeout(refreshTimer);
+      window.clearTimeout(introTimer);
+      intro?.removeEventListener("animationend", onIntroEnd);
       window.removeEventListener("click", onClick, { capture: true });
       window.removeEventListener("load", landOnHash);
       observer.disconnect();

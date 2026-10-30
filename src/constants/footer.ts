@@ -1,5 +1,5 @@
 import { FiMail, FiPhone, FiMapPin } from 'react-icons/fi';
-import { FaInstagram } from 'react-icons/fa';
+import { FaInstagram, FaLinkedinIn } from 'react-icons/fa';
 import { site } from '@/lib/site';
 
 export const navColumns = [
@@ -37,4 +37,5 @@ export const contactItems = [
 
 export const socialLinks = [
     { icon: FaInstagram, href: site.instagram, label: 'Instagram' },
+    { icon: FaLinkedinIn, href: site.linkedin, label: 'LinkedIn' },
 ];

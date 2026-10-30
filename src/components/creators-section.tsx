@@ -102,6 +102,7 @@ const Cover = ({
     >
       <motion.a
         href={instagramUrl(creator)}
+        data-cursor="view"
         target="_blank"
         rel="noopener noreferrer"
         aria-label={`${creator.name} on Instagram, opens in a new tab`}
@@ -188,7 +189,7 @@ export default function CreatorsSection() {
 
       <motion.div
         {...rowReveal}
-        className="relative flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[calc((100vw-min(78vw,20rem))/2)] pt-2 pb-8 [scrollbar-width:none] md:mx-auto md:grid md:max-w-7xl md:grid-cols-3 md:gap-6 md:overflow-visible md:px-8 lg:gap-8 lg:px-12">
+        className="relative flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[calc((100vw-min(78vw,20rem))/2)] pt-2 pb-8 [scrollbar-width:none] md:mx-auto md:grid md:pb-0 md:max-w-7xl md:grid-cols-3 md:gap-6 md:overflow-visible md:px-8 lg:gap-8 lg:px-12">
         {creators.map((creator, index) => (
           <Cover key={creator.id} creator={creator} index={index} progress={scrollYProgress} />
         ))}
@@ -197,7 +198,7 @@ export default function CreatorsSection() {
       <div className="container-modern relative mt-8 flex justify-center md:mt-12">
         <a
           href="#contact"
-          className="group inline-flex items-center gap-2 text-sm font-semibold text-secondary transition-colors hover:text-primary"
+          className="tap group inline-flex items-center gap-2 text-sm font-semibold text-secondary transition-colors hover:text-primary"
         >
           Are you a creator? Join the network
           <FiArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

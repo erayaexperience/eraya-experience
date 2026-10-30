@@ -30,14 +30,14 @@ const MegaPanel = ({
   const [preview, setPreview] = useState(() => Math.max(0, links.findIndex((link) => link.href === activeSection)));
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 10, scale: 0.97, filter: "blur(6px)" }}
-      animate={{ opacity: 1, y: 0, scale: 1, filter: "blur(0px)" }}
-      exit={{ opacity: 0, y: 6, scale: 0.98, filter: "blur(4px)", transition: { duration: 0.15 } }}
-      transition={{ duration: 0.35, ease: EASE_OUT_EXPO }}
-      className="absolute top-full left-1/2 z-10 -translate-x-1/2 pt-4"
-    >
-      <div className="grid w-136 grid-cols-[10.5rem_1fr] gap-3 rounded-[1.75rem] border border-primary/30 bg-[rgb(251_248_242/0.985)] p-3 shadow-[0_30px_70px_-20px_rgba(0,0,0,0.35)] backdrop-blur-xl backdrop-saturate-150">
+    <div className="absolute top-full left-1/2 z-10 -translate-x-1/2 pt-4">
+      <motion.div
+        initial={{ opacity: 0, y: 10, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 6, scale: 0.98, transition: { duration: 0.15 } }}
+        transition={{ duration: 0.35, ease: EASE_OUT_EXPO }}
+        className="grid w-136 grid-cols-[10.5rem_1fr] gap-3 rounded-[1.75rem] border border-primary/30 glass-panel p-3 [--glass-shadow:0_30px_70px_-20px_rgba(0,0,0,0.35)]"
+      >
         <div className="relative overflow-hidden rounded-t-full rounded-b-2xl bg-secondary">
           {links.map((link, index) => (
             <Image
@@ -80,8 +80,8 @@ const MegaPanel = ({
             ))}
           </ul>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </div>
   );
 };
 
@@ -202,16 +202,21 @@ const Navigation = () => {
     <motion.nav
       ref={navRef}
       className={cn(
-        "fixed top-0 left-0 w-full z-50 transition-all duration-500 ease-out",
-        scrolled && !isOpen
-          ? "bg-[rgb(251_248_242/0.78)] backdrop-blur-lg backdrop-saturate-150 border-b border-primary/20 shadow-[0_1px_3px_rgba(0,0,0,0.02)]"
-          : "bg-transparent border-b border-transparent"
+        "fixed top-0 left-0 w-full z-50 border-b transition-colors duration-500 ease-out",
+        scrolled && !isOpen ? "border-primary/15" : "border-transparent"
       )}
     >
+      <div
+        aria-hidden
+        className={cn(
+          "pointer-events-none absolute inset-0 -z-10 glass-cream transition-opacity duration-500",
+          scrolled && !isOpen ? "opacity-100" : "opacity-0"
+        )}
+      />
       <div className="container-modern">
         <div className="flex items-center justify-between py-2.5 lg:grid lg:grid-cols-[1fr_auto_1fr] lg:gap-6 lg:py-3">
           <div className="flex">
-            <Link href="#top" aria-label="Eraya Experience, back to top" onClick={() => { setOpenMenu(null); if (isOpen) closeMenu(); }} className="inline-flex items-center">
+            <Link href="#top" aria-label="Eraya Experience, back to top" onClick={() => { setOpenMenu(null); if (isOpen) closeMenu(); }} className="tap inline-flex items-center">
               <Image
                 src="/logo.png"
                 alt="ERAYA Logo"
@@ -231,16 +236,20 @@ const Navigation = () => {
               setHovered(null);
               scheduleClose();
             }}
-            className={cn(
-              "hidden lg:flex items-center gap-0.5 rounded-full p-[3px] transition-colors duration-500",
-              scrolled ? "bg-white/55 ring-1 ring-primary/25" : "glass-gold"
-            )}
+            className="relative isolate hidden lg:flex items-center gap-0.5 p-[3px]"
           >
+            <li
+              aria-hidden
+              className={cn(
+                "pointer-events-none absolute inset-0 -z-10 rounded-full transition-colors duration-500",
+                scrolled ? "bg-white/45 ring-1 ring-primary/20" : "glass-clear"
+              )}
+            />
             {navGroups.map((group) => {
               const groupActive = isGroupActive(group, activeSection);
               const expanded = openMenu === group.name;
               const itemClass = cn(
-                "relative z-10 inline-flex cursor-pointer items-center gap-1.5 rounded-full px-4 py-2 text-sm font-medium transition-colors duration-300",
+                "relative z-10 inline-flex cursor-pointer items-center gap-1.5 rounded-full px-4 pt-[7.5px] pb-[8.5px] text-sm font-medium transition-colors duration-300",
                 scrolled
                   ? groupActive || expanded
                     ? "text-secondary"
@@ -291,7 +300,7 @@ const Navigation = () => {
                       className={itemClass}
                     >
                       {group.name}
-                      <FiChevronDown className={cn("h-3.5 w-3.5 opacity-70 transition-transform duration-300", expanded && "rotate-180")} />
+                      <FiChevronDown className={cn("-mt-px h-3.5 w-3.5 opacity-70 transition-transform duration-300", expanded && "rotate-180")} />
                     </button>
                   ) : (
                     <Link href={group.href} className={itemClass} onClick={() => setOpenMenu(null)}>
@@ -337,7 +346,7 @@ const Navigation = () => {
 
           <button
             className={cn(
-              "lg:hidden relative z-60 h-10 w-10 flex items-center justify-center rounded-full transition-[color,scale] duration-300 active:scale-95 cursor-pointer",
+              "lg:hidden relative z-60 h-11 w-11 flex items-center justify-center rounded-full transition-[color,scale] duration-300 active:scale-95 cursor-pointer",
               onLight ? "text-foreground" : "text-white"
             )}
             onClick={() => setIsOpen(!isOpen)}
@@ -347,7 +356,7 @@ const Navigation = () => {
             <span
               aria-hidden
               className={cn(
-                "absolute inset-0 rounded-full glass-gold transition-opacity duration-300",
+                "absolute inset-0 rounded-full glass-clear transition-opacity duration-300",
                 onLight ? "opacity-0" : "opacity-100"
               )}
             />
@@ -386,7 +395,7 @@ const Navigation = () => {
             animate="open"
             exit="closed"
             data-lenis-prevent
-            className="fixed inset-0 z-40 flex flex-col overflow-y-auto bg-linear-to-b from-[rgb(251_248_242/0.97)] to-[rgb(243_233_215/0.97)] px-6 pt-28 pb-8 backdrop-blur-md lg:hidden"
+            className="fixed inset-0 z-40 flex flex-col overflow-y-auto bg-linear-to-b from-[rgb(251_248_242/0.97)] to-[rgb(243_233_215/0.97)] px-6 pt-28 pb-8 glass-panel lg:hidden"
           >
             <div className="flex flex-col gap-2">
               {directLinks.map((group) => {

@@ -98,7 +98,7 @@ export function Lightbox({ items, index, onIndexChange, label }: LightboxProps) 
                 type="button"
                 onClick={() => dialogRef.current?.close()}
                 aria-label="Close"
-                className="fixed top-4 right-4 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full glass-gold text-white transition-[filter] hover:brightness-125"
+                className="fixed top-4 right-4 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full glass-gold text-white transition-colors hover:border-primary hover:text-primary"
             >
                 <FiX className="h-5 w-5" />
             </button>
@@ -109,7 +109,7 @@ export function Lightbox({ items, index, onIndexChange, label }: LightboxProps) 
                         type="button"
                         onClick={() => step(-1)}
                         aria-label="Previous"
-                        className="fixed top-1/2 left-2 flex h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full glass-gold text-white transition-[filter] hover:brightness-125 md:left-6"
+                        className="fixed top-1/2 left-2 flex h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full glass-gold text-white transition-colors hover:border-primary hover:text-primary md:left-6"
                     >
                         <FiChevronLeft className="h-5 w-5" />
                     </button>
@@ -117,7 +117,7 @@ export function Lightbox({ items, index, onIndexChange, label }: LightboxProps) 
                         type="button"
                         onClick={() => step(1)}
                         aria-label="Next"
-                        className="fixed top-1/2 right-2 flex h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full glass-gold text-white transition-[filter] hover:brightness-125 md:right-6"
+                        className="fixed top-1/2 right-2 flex h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full glass-gold text-white transition-colors hover:border-primary hover:text-primary md:right-6"
                     >
                         <FiChevronRight className="h-5 w-5" />
                     </button>

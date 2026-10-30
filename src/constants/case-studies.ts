@@ -7,6 +7,7 @@ export type CaseStudy = {
   image: string;
   imagePosition?: string;
   lightImage?: boolean;
+  tint?: string;
   metrics: Array<{ label: string; value: string }>;
   highlights: string[];
   services: string[];
@@ -17,6 +18,7 @@ export type CaseStudy = {
 export const caseStudies: CaseStudy[] = [
   {
     id: 'mission-rabies',
+    tint: '25 18 10',
     title: 'Mission Rabies',
     subtitle: 'National NGO rebrand',
     category: 'Social Media Marketing',
@@ -39,6 +41,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: 'snow-park-goa',
+    tint: '29 29 29',
     title: 'Snow Park Goa',
     subtitle: 'Entertainment venue growth campaign',
     category: 'Influencer Marketing',
@@ -64,6 +67,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: 'beach-walk-resort',
+    tint: '19 35 40',
     title: 'Beach Walk Resort',
     subtitle: 'Luxury resort paid campaigns',
     category: 'Performance Marketing',
@@ -89,6 +93,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: 'sukkha',
+    tint: '26 15 7',
     title: 'Sukkha',
     subtitle: 'Restaurant hiring in the off-season',
     category: 'Recruitment Ads',
@@ -109,6 +114,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: 'get-secured',
+    tint: '22 25 28',
     title: 'Get Secured',
     subtitle: 'Insurance brand kit',
     category: 'Brand Design',
@@ -129,6 +135,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: 'the-adhisha',
+    tint: '32 27 22',
     title: 'The Adhisha',
     subtitle: 'Yoga school, Rishikesh',
     category: 'Logo Design',
@@ -146,6 +153,7 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     id: 'fashion-label',
+    tint: '10 10 11',
     title: 'Fashion Label',
     subtitle: 'From zero sales to 189',
     category: 'Sales Ads',

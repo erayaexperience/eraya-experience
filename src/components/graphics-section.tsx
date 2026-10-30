@@ -80,6 +80,7 @@ const GraphicsSection = () => {
                         aria-hidden={isCopy || undefined}
                         tabIndex={isCopy ? -1 : undefined}
                         style={{ aspectRatio: `${graphic.width} / ${graphic.height}` }}
+                        data-cursor="view"
                         className="group/tile relative h-44 shrink-0 cursor-pointer rounded-xl outline-none md:h-60 md:rounded-2xl lg:h-72"
                       >
                         <span className="absolute inset-0 overflow-hidden rounded-xl bg-secondary/5 shadow-[0_24px_48px_-12px_rgba(0,0,0,0.28)] ring-1 ring-black/5 transition-[translate,scale,box-shadow] duration-500 ease-out group-hover/tile:-translate-y-3 group-hover/tile:scale-[1.06] group-hover/tile:shadow-[0_40px_70px_-15px_rgba(0,0,0,0.4)] group-focus-visible/tile:-translate-y-3 group-focus-visible/tile:scale-[1.06] group-focus-visible/tile:ring-2 group-focus-visible/tile:ring-primary md:rounded-2xl">

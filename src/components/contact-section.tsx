@@ -110,7 +110,7 @@ const ContactSection = () => {
       <motion.div
         aria-hidden
         style={{ y: wallY }}
-        className="pointer-events-none absolute inset-0 flex -rotate-6 scale-125 flex-col justify-center gap-6 opacity-50"
+        className="pointer-events-none absolute inset-0 flex -rotate-6 scale-125 flex-col justify-center gap-6 opacity-70"
       >
         {wallRows.map((row, rowIndex) => (
           <div key={rowIndex} className="overflow-x-clip">
@@ -133,7 +133,7 @@ const ContactSection = () => {
           </div>
         ))}
       </motion.div>
-      <div className="pointer-events-none absolute inset-0 bg-linear-to-r from-background via-background/85 to-background/40" />
+      <div className="pointer-events-none absolute inset-0 glass bg-linear-to-b from-white/75 via-white/55 to-white/20 [--glass-blur-scale:1] [--glass-blur:8px] lg:bg-linear-to-r lg:from-white/75 lg:via-white/55 lg:via-45% lg:to-white/10 [--glass-rim:0_0_#0000] [--glass-saturate:70%]" />
       <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-background via-transparent to-background" />
 
       <div className="container-modern relative grid items-center gap-14 lg:grid-cols-12 lg:gap-20">
@@ -164,7 +164,7 @@ const ContactSection = () => {
                   {...(info.external && { target: '_blank', rel: 'noopener noreferrer' })}
                   className="group flex items-center gap-5 py-4"
                 >
-                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full glass-gold-light text-primary">
+                  <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full glass-cream text-primary">
                     <info.icon className="h-4.5 w-4.5" />
                   </span>
                   <span className="min-w-0 flex-1">
@@ -185,7 +185,7 @@ const ContactSection = () => {
           transition={{ duration: 0.8, delay: 0.15 }}
           className="lg:col-span-7"
         >
-          <div className="relative overflow-hidden rounded-4xl glass-gold-light p-(--pad) shadow-[0_40px_100px_-30px_rgba(0,0,0,0.25)] [--inner:0.75rem] [--pad:1.25rem] md:[--pad:2rem]">
+          <div className="relative overflow-hidden rounded-4xl border border-black/5 bg-background p-(--pad) shadow-[0_40px_100px_-30px_rgba(0,0,0,0.25)] [--inner:0.75rem] [--pad:1.25rem] md:[--pad:2rem]">
             <AnimatePresence mode="wait">
               {isSubmitted ? (
                 <motion.div

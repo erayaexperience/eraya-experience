@@ -24,9 +24,11 @@ export default function Home() {
       />
       <main id="top" className="min-h-screen bg-white">
         <Navigation />
-        <HeroSection />
-        <KPIsSection />
-        <AboutSection />
+        <div className="relative">
+          <HeroSection />
+          <KPIsSection />
+          <AboutSection />
+        </div>
         <PressSection />
         <EventsSection />
         <CreatorsSection />

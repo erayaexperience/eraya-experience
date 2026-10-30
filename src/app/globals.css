@@ -24,7 +24,7 @@
   --color-eraya-beige: rgb(var(--eraya-beige));
   --color-eraya-black: rgb(var(--eraya-black));
 
-  --font-sans: var(--font-geist-sans), "SF Pro Display", "SF Pro Text", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   --font-serif: var(--font-playfair), "Georgia", "Times New Roman", serif;
   --font-mono: "SFMono-Regular", ui-monospace, "SFMono-Regular", "Menlo", "Monaco", "Consolas", monospace;
 
@@ -34,7 +34,7 @@
   --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.05);
   --shadow-xl: 0 12px 32px rgba(0, 0, 0, 0.06);
 
-  --spacing-section: clamp(4rem, 8vw, 8rem);
+  --spacing-section: clamp(3.5rem, 6vw, 6rem);
   --spacing-inner: clamp(2.5rem, 5vw, 5rem);
   --spacing-component: clamp(1.5rem, 3vw, 3rem);
 
@@ -44,13 +44,14 @@
 body {
   background: #ffffff;
   color: #1d1d1f;
-  font-family: var(--font-sans);
   position: relative;
   min-height: 100%;
 }
 
 :root {
-  --header-height: calc(3.75rem + 1px);
+  --glass-lens: ;
+  --glass-blur-scale: 1;
+  --header-height: calc(4rem + 1px);
   color-scheme: only light;
 }
 
@@ -96,7 +97,6 @@ body {
 
   body {
     @apply font-normal;
-    font-family: var(--font-sans);
     line-height: 1.58;
     letter-spacing: -0.015em;
     overflow-x: hidden;
@@ -200,18 +200,150 @@ html body[data-scroll-locked] {
   to { opacity: 1; transform: none; }
 }
 
+@utility tap {
+  @media (pointer: coarse) {
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+  }
+}
+
+@utility rounded-nest {
+  border-radius: calc(var(--pad) + var(--inner));
+}
+
+@utility glass {
+  --glass-blur: 10px;
+  box-shadow:
+    var(
+      --glass-rim,
+      inset 1px 1px 0 -0.5px rgb(255 255 255 / 0.35),
+      inset -1px -1px 0 -0.5px rgb(255 255 255 / 0.12)
+    ),
+    var(--glass-shadow, 0 0 #0000);
+  -webkit-backdrop-filter: var(--glass-lens) blur(calc(var(--glass-blur) * var(--glass-blur-scale))) saturate(var(--glass-saturate, 170%));
+  backdrop-filter: var(--glass-lens) blur(calc(var(--glass-blur) * var(--glass-blur-scale))) saturate(var(--glass-saturate, 170%));
+}
+
+@utility glass-clear {
+  @apply glass;
+  background-color: rgb(255 255 255 / 0.08);
+}
+
+@utility glass-cream {
+  @apply glass;
+  --glass-blur: 20px;
+  background-color: rgb(var(--background) / var(--glass-tint, 0.6));
+}
+
+@utility text-trim {
+  text-box: trim-both cap alphabetic;
+}
+
+@utility glass-panel {
+  @apply glass-cream;
+  --glass-blur: 16px;
+  --glass-blur-scale: 1;
+  --glass-tint: 0.5;
+}
+
 @utility glass-gold {
-  border: 1px solid rgb(var(--primary) / 0.45);
+  @apply glass;
+  --glass-blur: 12px;
+  border: 1px solid rgb(var(--primary) / 0.2);
   background-image: linear-gradient(135deg, rgb(var(--primary) / 0.4), rgb(var(--primary) / 0.2) 50%, rgb(var(--primary) / 0.05));
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2);
-  -webkit-backdrop-filter: blur(12px) saturate(1.5);
-  backdrop-filter: blur(12px) saturate(1.5);
 }
 
 @utility glass-gold-light {
-  border: 1px solid rgb(var(--primary) / 0.3);
+  @apply glass;
+  --glass-blur: 24px;
+  border: 1px solid rgb(var(--primary) / 0.18);
   background-image: linear-gradient(135deg, rgb(var(--primary) / 0.2), rgb(255 255 255 / 0.62) 55%, rgb(255 255 255 / 0.5));
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7);
-  -webkit-backdrop-filter: blur(24px) saturate(1.5);
-  backdrop-filter: blur(24px) saturate(1.5);
+}
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: grid;
+  place-items: center;
+  animation: intro-done 0s linear 1.6s forwards;
+}
+
+.intro-logo {
+  width: min(64vw, 26rem);
+  overflow: visible;
+}
+
+.intro-hole {
+  fill: rgb(var(--background));
+  transform-box: view-box;
+  transform-origin: 874px 208px;
+  animation: intro-zoom 1.3s linear 0.3s forwards;
+}
+
+@keyframes intro-zoom {
+  0.0% { transform: scale(1.0000); }
+  2.5% { transform: scale(1.0001); }
+  5.0% { transform: scale(1.0006); }
+  7.5% { transform: scale(1.0021); }
+  10.0% { transform: scale(1.0050); }
+  12.5% { transform: scale(1.0097); }
+  15.0% { transform: scale(1.0168); }
+  17.5% { transform: scale(1.0268); }
+  20.0% { transform: scale(1.0403); }
+  22.5% { transform: scale(1.0579); }
+  25.0% { transform: scale(1.0803); }
+  27.5% { transform: scale(1.1082); }
+  30.0% { transform: scale(1.1427); }
+  32.5% { transform: scale(1.1849); }
+  35.0% { transform: scale(1.2360); }
+  37.5% { transform: scale(1.2977); }
+  40.0% { transform: scale(1.3720); }
+  42.5% { transform: scale(1.4613); }
+  45.0% { transform: scale(1.5688); }
+  47.5% { transform: scale(1.6983); }
+  50.0% { transform: scale(1.8547); }
+  52.5% { transform: scale(2.0443); }
+  55.0% { transform: scale(2.2754); }
+  57.5% { transform: scale(2.5586); }
+  60.0% { transform: scale(2.9078); }
+  62.5% { transform: scale(3.3416); }
+  65.0% { transform: scale(3.8849); }
+  67.5% { transform: scale(4.5712); }
+  70.0% { transform: scale(5.4466); }
+  72.5% { transform: scale(6.5742); }
+  75.0% { transform: scale(8.0426); }
+  77.5% { transform: scale(9.9767); }
+  80.0% { transform: scale(12.5550); }
+  82.5% { transform: scale(16.0356); }
+  85.0% { transform: scale(20.7965); }
+  87.5% { transform: scale(27.3992); }
+  90.0% { transform: scale(36.6883); opacity: 1.00; }
+  92.5% { transform: scale(49.9528); opacity: 0.75; }
+  95.0% { transform: scale(69.1889); opacity: 0.50; }
+  97.5% { transform: scale(97.5346); opacity: 0.25; }
+  100.0% { transform: scale(140.0000); opacity: 0.00; }
+}
+
+@keyframes intro-done {
+  to {
+    visibility: hidden;
+  }
+}
+
+.has-liquid-glass {
+  --glass-blur-scale: 0.35;
+}
+
+.has-cursor:not(:has(dialog[open])),
+.has-cursor:not(:has(dialog[open])) * {
+  cursor: none !important;
+}
+
+.has-cursor:not(:has(dialog[open])) :is(input, textarea, [contenteditable="true"]) {
+  cursor: text !important;
+}
+
+:has(dialog[open]) .cursor-layer {
+  display: none;
 }

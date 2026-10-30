@@ -42,6 +42,7 @@ const PressCard = ({
 
   return (
     <motion.article
+      data-cursor="view"
       style={{ y }}
       className={cn("w-[72vw] max-w-xs shrink-0 snap-center max-sm:transform-none! sm:w-auto sm:max-w-none", slot === 1 && "sm:-mt-6 md:-mt-10")}
     >
@@ -103,7 +104,7 @@ const PressCard = ({
             href={item.href}
             target="_blank"
             rel="noopener noreferrer"
-            className="group mt-4 inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-secondary transition-colors hover:text-primary"
+            className="tap group mt-4 inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-secondary transition-colors hover:text-primary"
           >
             Read the feature
             <FiArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -112,7 +113,7 @@ const PressCard = ({
           <button
             type="button"
             onClick={onOpen}
-            className="group mt-4 inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-secondary transition-colors hover:text-primary"
+            className="tap group mt-4 inline-flex cursor-pointer items-center gap-2 text-sm font-semibold text-secondary transition-colors hover:text-primary"
           >
             Read the feature
             <FiArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -155,7 +156,7 @@ const PressSection = () => {
         />
       </div>
 
-      <div className="relative flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[calc((100vw-min(72vw,20rem))/2)] pt-2 pb-6 [scrollbar-width:none] sm:mx-auto sm:grid sm:max-w-7xl sm:grid-cols-3 sm:gap-5 sm:overflow-visible sm:px-8 sm:pt-8 md:gap-10 md:pt-10 lg:gap-14 lg:px-12">
+      <div className="relative flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[calc((100vw-min(72vw,20rem))/2)] pt-2 pb-6 [scrollbar-width:none] sm:mx-auto sm:grid sm:pb-0 sm:max-w-7xl sm:grid-cols-3 sm:gap-5 sm:overflow-visible sm:px-8 sm:pt-8 md:gap-10 md:pt-10 lg:gap-14 lg:px-12">
         {order.map((index, slot) => {
           const item = pressItems[index];
           return (

@@ -98,7 +98,7 @@ const KPIsSection = () => {
     );
 
     return (
-        <section ref={sectionRef} id="kpis" className="relative overflow-hidden bg-background py-section">
+        <section ref={sectionRef} id="kpis" className="relative z-10 overflow-hidden rounded-t-[2rem] bg-background py-section shadow-[0_-30px_60px_-30px_rgba(0,0,0,0.45)] sm:rounded-t-[2.75rem]">
             <div className="pointer-events-none absolute top-1/2 left-1/2 h-240 w-240 -translate-1/2 bg-[radial-gradient(closest-side,rgb(var(--primary)/0.12),transparent)]" />
 
             <div className="container-modern relative grid items-center gap-12 md:gap-16 lg:grid-cols-12 lg:gap-10">

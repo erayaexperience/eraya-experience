@@ -12,7 +12,7 @@ export const faqs: Faq[] = [
   {
     question: "Do you only work with brands in Goa?",
     answer:
-      "No. We're based in Goa and work with brands across India, from beach clubs and restaurants in Goa to conclaves at Mumbai's Royal Opera House and yoga schools in Rishikesh.",
+      "No. We're based in Goa and work with brands across India and worldwide, from beach clubs and restaurants in Goa to conclaves at Mumbai's Royal Opera House and yoga schools in Rishikesh. Strategy, design, content and ads are all delivered remotely for clients anywhere.",
   },
   {
     question: "What kinds of brands do you work with?",

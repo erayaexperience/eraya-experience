@@ -90,7 +90,7 @@ const Slide = ({ item }: { item: Testimonial }) => {
 
   return (
     <div className="grid items-center gap-10 sm:gap-12 lg:grid-cols-12 lg:gap-16">
-      <div className="relative mx-auto aspect-4/5 w-full max-w-xs overflow-hidden rounded-4xl bg-black sm:max-w-sm lg:col-span-4 lg:max-w-none">
+      <div data-cursor="view" className="relative mx-auto aspect-4/5 w-full max-w-xs overflow-hidden rounded-4xl bg-black sm:max-w-sm lg:col-span-4 lg:max-w-none">
         <Image
           src={item.image.src}
           alt={item.image.alt}

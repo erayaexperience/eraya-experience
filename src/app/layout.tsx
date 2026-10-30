@@ -1,8 +1,10 @@
 import 'lenis/dist/lenis.css';
 import './globals.css';
 import type { Metadata, Viewport } from 'next';
-import { GeistSans } from 'geist/font/sans';
 import { SmoothScroll } from '@/components/smooth-scroll';
+import { Cursor } from '@/components/cursor';
+import { LiquidGlassFilter } from '@/components/liquid-glass-filter';
+import { LOGO_PATH, LOGO_VIEWBOX } from '@/constants/logo-path';
 import { Playfair_Display } from 'next/font/google';
 import { SITE_URL, site } from '@/lib/site';
 
@@ -94,8 +96,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en-IN" className="scroll-pt-(--header-height)">
-      <body className={`${GeistSans.variable} ${playfair.variable} font-sans antialiased text-foreground bg-background selection:bg-primary/30 selection:text-foreground`}>
+      <body className={`${playfair.variable} font-sans antialiased text-foreground bg-background selection:bg-primary/30 selection:text-foreground`}>
+        <div aria-hidden className="intro">
+          <svg viewBox={LOGO_VIEWBOX} className="intro-logo">
+            <path className="intro-hole" fillRule="evenodd" d={`M-100000,-100000H100000V100000H-100000Z${LOGO_PATH}`} />
+          </svg>
+        </div>
         <SmoothScroll />
+        <Cursor />
+        <LiquidGlassFilter />
         {children}
       </body>
     </html>

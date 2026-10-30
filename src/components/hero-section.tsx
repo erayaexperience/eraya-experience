@@ -1,10 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { motion, useScroll, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 const HeroSection = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const { scrollY } = useScroll();
+  const covered = useTransform(scrollY, (y) => (typeof window === "undefined" ? 0 : Math.min(y / window.innerHeight, 1)));
+  const dim = useTransform(covered, [0, 1], [0, 0.6]);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -52,7 +56,7 @@ const HeroSection = () => {
   }, []);
 
   return (
-    <section className="relative h-screen w-full overflow-hidden bg-black bg-[url(/images/hero-mobile-frame.webp)] bg-cover bg-center lg:bg-[url(/images/hero-desktop-frame.webp)]">
+    <section className="sticky top-0 h-screen w-full overflow-hidden bg-black bg-[url(/images/hero-mobile-frame.webp)] bg-cover bg-center lg:bg-[url(/images/hero-desktop-frame.webp)]">
       <link rel="preload" as="image" type="image/webp" href="/images/hero-mobile-frame.webp" media="(max-width: 1023px)" fetchPriority="high" />
       <link rel="preload" as="image" type="image/webp" href="/images/hero-desktop-frame.webp" media="(min-width: 1024px)" fetchPriority="high" />
       <h1 className="sr-only">Eraya Experience, a creative and digital marketing agency in Goa, India</h1>
@@ -74,6 +78,7 @@ const HeroSection = () => {
 
       <div className="absolute inset-0 bg-black/20" />
       <div className="absolute inset-0 h-1/4 bg-linear-to-b from-black/40 via-transparent to-transparent" />
+      <motion.div aria-hidden style={{ opacity: dim }} className="pointer-events-none absolute inset-0 bg-black" />
     </section>
   );
 };

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useEffectEvent } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { events, type EventItem } from "@/constants/events";
@@ -44,6 +44,8 @@ function EventBentoCard({
     setCurrentPhoto(0);
   };
 
+  const onVisibility = useEffectEvent((visible: boolean) => (visible ? start() : stop()));
+
   useEffect(() => {
     if (!isActive) return;
     const timer = setInterval(() => {
@@ -57,7 +59,7 @@ function EventBentoCard({
     const card = cardRef.current;
     if (!card || !window.matchMedia("(hover: none)").matches) return () => clearTimeout(intent.current);
 
-    const observer = new IntersectionObserver(([entry]) => (entry.intersectionRatio >= 0.75 ? start() : stop()), {
+    const observer = new IntersectionObserver(([entry]) => onVisibility(entry.intersectionRatio >= 0.75), {
       threshold: [0, 0.75],
     });
     observer.observe(card);
@@ -71,6 +73,7 @@ function EventBentoCard({
   return (
     <motion.article
       ref={cardRef}
+      data-cursor="view"
       custom={index}
       variants={cardReveal}
       onClick={() => onOpenLightbox(currentPhoto)}
@@ -115,7 +118,7 @@ function EventBentoCard({
         <motion.div
           layout
           transition={{ duration: 0.28, ease: EASE_OUT_EXPO }}
-          className="relative flex h-8 sm:h-9 items-center overflow-hidden rounded-full border border-white/25 bg-black/55 px-3.5 sm:px-4 shadow-[0_12px_40px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.35)] backdrop-blur-2xl"
+          className="relative flex h-8 sm:h-9 items-center overflow-hidden rounded-full glass bg-black/45 px-3.5 sm:px-4 [--glass-blur:24px] [--glass-shadow:0_12px_40px_rgba(0,0,0,0.5)]"
         >
           <div className="pointer-events-none absolute -inset-full bg-linear-to-r from-transparent via-primary/15 to-transparent rotate-45" />
 
@@ -233,7 +236,7 @@ export default function EventsSection() {
           layout="center"
         />
 
-        <motion.div {...rowReveal} className="relative -mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[calc((100vw-min(80vw,22rem))/2)] pt-2 pb-6 [scrollbar-width:none] md:mx-auto md:grid md:max-w-7xl md:grid-cols-3 md:gap-6 md:overflow-visible md:px-6 lg:gap-8 lg:px-8">
+        <motion.div {...rowReveal} className="relative -mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[calc((100vw-min(80vw,22rem))/2)] pt-2 pb-6 [scrollbar-width:none] md:mx-auto md:grid md:pb-0 md:max-w-7xl md:grid-cols-3 md:gap-6 md:overflow-visible md:px-6 lg:gap-8 lg:px-8">
           {events.map((event, index) => (
             <EventBentoCard
               key={event.id}
