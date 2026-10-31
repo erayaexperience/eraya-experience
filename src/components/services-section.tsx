@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
+import { useRef, useState, useCallback, useEffect, type CSSProperties } from 'react';
 import Image from 'next/image';
 import type Lenis from 'lenis';
 import { gsap } from 'gsap';
@@ -35,6 +35,7 @@ const cardAt = (trigger: ScrollTrigger, scroll: number) =>
 const SWIPE_SHARE = 0.15;
 const SHORT_SWIPE_MS = 300;
 const SHORT_SWIPE_PX = 30;
+const AXIS_LOCK_PX = 6;
 const EDGE_RESISTANCE = 0.3;
 
 type Drag = { x: number; y: number; t: number; axis: 'x' | 'y' | null };
@@ -49,7 +50,6 @@ const ServicesSection = () => {
   const triggerRef = useRef<ScrollTrigger | null>(null);
   const touchModeRef = useRef(false);
   const activeRef = useRef(0);
-  const dragRef = useRef<Drag | null>(null);
   const swipedRef = useRef(false);
   const [active, setActive] = useState(0);
 
@@ -84,40 +84,64 @@ const ServicesSection = () => {
     lenis.scrollTo(target, { programmatic: false, duration: clampDuration(0.5 + 0.15 * cards), easing: easeOutCubic });
   }, [show, turnTo]);
 
-  const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
-    if (!touchModeRef.current || !event.isPrimary) return;
-    dragRef.current = { x: event.clientX, y: event.clientY, t: event.timeStamp, axis: null };
-  };
+  useEffect(() => {
+    const stage = stageRef.current;
+    if (!stage) return;
+    let drag: Drag | null = null;
+    const point = (event: TouchEvent) => event.touches[0] ?? event.changedTouches[0];
 
-  const onPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
-    const drag = dragRef.current;
-    if (!drag) return;
-    const dx = event.clientX - drag.x;
-    const dy = event.clientY - drag.y;
-    if (!drag.axis && Math.max(Math.abs(dx), Math.abs(dy)) > 8) drag.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
-    if (drag.axis !== 'x') return;
-    const atEdge = (activeRef.current === 0 && dx > 0) || (activeRef.current === LAST && dx < 0);
-    const offset = (dx / event.currentTarget.offsetWidth) * STEP * 1.6 * (atEdge ? EDGE_RESISTANCE : 1);
-    gsap.set(ringRef.current, { rotationY: -activeRef.current * STEP + offset });
-  };
+    const onStart = (event: TouchEvent) => {
+      drag = null;
+      if (!touchModeRef.current || event.touches.length !== 1) return;
+      const { clientX, clientY } = point(event);
+      drag = { x: clientX, y: clientY, t: event.timeStamp, axis: null };
+    };
 
-  const onPointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
-    const drag = dragRef.current;
-    dragRef.current = null;
-    if (!drag || drag.axis !== 'x') return;
-    const dx = event.clientX - drag.x;
-    const quick = event.timeStamp - drag.t < SHORT_SWIPE_MS && Math.abs(dx) > SHORT_SWIPE_PX;
-    const commit = quick || Math.abs(dx) > event.currentTarget.offsetWidth * SWIPE_SHARE;
-    turnTo(activeRef.current + (commit ? -Math.sign(dx) : 0));
-    swipedRef.current = true;
-    window.setTimeout(() => (swipedRef.current = false));
-  };
+    const onMove = (event: TouchEvent) => {
+      if (!drag) return;
+      const { clientX, clientY } = point(event);
+      const dx = clientX - drag.x;
+      const dy = clientY - drag.y;
+      if (!drag.axis) {
+        if (Math.max(Math.abs(dx), Math.abs(dy)) < AXIS_LOCK_PX) return;
+        drag.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+      }
+      if (drag.axis !== 'x') return;
+      if (event.cancelable) event.preventDefault();
+      const atEdge = (activeRef.current === 0 && dx > 0) || (activeRef.current === LAST && dx < 0);
+      const offset = (dx / stage.offsetWidth) * STEP * 1.6 * (atEdge ? EDGE_RESISTANCE : 1);
+      gsap.set(ringRef.current, { rotationY: -activeRef.current * STEP + offset });
+    };
 
-  const onPointerCancel = () => {
-    const drag = dragRef.current;
-    dragRef.current = null;
-    if (drag?.axis === 'x') turnTo(activeRef.current);
-  };
+    const onEnd = (event: TouchEvent) => {
+      const done = drag;
+      drag = null;
+      if (!done || done.axis !== 'x') return;
+      const dx = point(event).clientX - done.x;
+      const quick = event.timeStamp - done.t < SHORT_SWIPE_MS && Math.abs(dx) > SHORT_SWIPE_PX;
+      const commit = quick || Math.abs(dx) > stage.offsetWidth * SWIPE_SHARE;
+      turnTo(activeRef.current + (commit ? -Math.sign(dx) : 0));
+      swipedRef.current = true;
+      window.setTimeout(() => (swipedRef.current = false));
+    };
+
+    const onCancel = () => {
+      const done = drag;
+      drag = null;
+      if (done?.axis === 'x') turnTo(activeRef.current);
+    };
+
+    stage.addEventListener('touchstart', onStart, { passive: true });
+    stage.addEventListener('touchmove', onMove, { passive: false });
+    stage.addEventListener('touchend', onEnd);
+    stage.addEventListener('touchcancel', onCancel);
+    return () => {
+      stage.removeEventListener('touchstart', onStart);
+      stage.removeEventListener('touchmove', onMove);
+      stage.removeEventListener('touchend', onEnd);
+      stage.removeEventListener('touchcancel', onCancel);
+    };
+  }, [turnTo]);
 
   const snapPoints = useCallback(() => {
     const trigger = triggerRef.current;
@@ -204,10 +228,6 @@ const ServicesSection = () => {
 
       <div
         ref={stageRef}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
-        onPointerCancel={onPointerCancel}
         className="sticky top-0 flex h-svh flex-col justify-center overflow-hidden pointer-coarse:touch-pan-y"
       >
         <div className="pointer-events-none absolute top-[60%] left-1/2 h-200 w-200 -translate-1/2 bg-[radial-gradient(closest-side,rgb(var(--primary)/0.16),transparent)] lg:h-288 lg:w-6xl" />
