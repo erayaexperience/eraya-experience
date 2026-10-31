@@ -12,6 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { addScrollInterceptor } from '@/lib/lenis';
 import { cn } from '@/lib/utils';
 import { site } from '@/lib/site';
+import { FIELD_LIMITS, isLikelySpam, markSent } from '@/lib/spam-guard';
 
 import { contactInfo, serviceOptions } from '@/constants/contact';
 import { graphics } from '@/constants/graphics';
@@ -41,6 +42,10 @@ const ContactSection = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [sendFailed, setSendFailed] = useState(false);
   const [botcheck, setBotcheck] = useState(false);
+  const startedAt = useRef<number | null>(null);
+  const noteStart = () => {
+    startedAt.current ??= Date.now();
+  };
 
   const showSuccess = () => {
     setIsSubmitted(true);
@@ -63,7 +68,7 @@ const ContactSection = () => {
     e.preventDefault();
     setSendFailed(false);
 
-    if (botcheck) {
+    if (isLikelySpam({ name: formData.name, message: formData.message, startedAt: startedAt.current, honeypot: botcheck })) {
       showSuccess();
       return;
     }
@@ -81,15 +86,17 @@ const ContactSection = () => {
           access_key: WEB3FORMS_ACCESS_KEY,
           subject: `New website enquiry from ${formData.name}`,
           from_name: 'Eraya Experience website',
-          name: formData.name,
-          email: formData.email,
-          brand: formData.company || 'Not given',
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          brand: formData.company.trim() || 'Not given',
           service: formData.service || 'Not given',
-          message: formData.message,
+          message: formData.message.trim(),
+          botcheck,
         }),
       });
       const result = await response.json();
       if (!response.ok || !result.success) throw new Error(result.message || 'Send failed');
+      markSent();
       showSuccess();
     } catch {
       setSendFailed(true);
@@ -207,6 +214,7 @@ const ContactSection = () => {
                 <motion.form
                   key="form"
                   onSubmit={handleSubmit}
+                  onFocus={noteStart}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
@@ -224,6 +232,8 @@ const ContactSection = () => {
                       id="name"
                       name="name"
                       required
+                      autoComplete="name"
+                      maxLength={FIELD_LIMITS.name}
                       value={formData.name}
                       onChange={handleChange}
                       placeholder="Your name"
@@ -234,6 +244,8 @@ const ContactSection = () => {
                       name="email"
                       type="email"
                       required
+                      autoComplete="email"
+                      maxLength={FIELD_LIMITS.email}
                       value={formData.email}
                       onChange={handleChange}
                       placeholder="you@brand.com"
@@ -245,6 +257,8 @@ const ContactSection = () => {
                     <Input
                       id="company"
                       name="company"
+                      autoComplete="organization"
+                      maxLength={FIELD_LIMITS.company}
                       value={formData.company}
                       onChange={handleChange}
                       placeholder="Your brand or company"
@@ -279,6 +293,8 @@ const ContactSection = () => {
                       name="message"
                       rows={4}
                       required
+                      minLength={FIELD_LIMITS.messageMin}
+                      maxLength={FIELD_LIMITS.message}
                       value={formData.message}
                       onChange={handleChange}
                       placeholder="What are you launching, and what does success look like?"

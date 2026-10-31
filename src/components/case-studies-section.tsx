@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { caseStudies, type CaseStudy } from "@/constants/case-studies";
 import { SectionHeading } from "./ui/section-heading";
 import { ParallaxMedia } from "./ui/parallax-media";
+import { Button } from "./ui/button";
 import { FiChevronDown } from "react-icons/fi";
 import { cn } from "@/lib/utils";
 import { getLenis, scrollToElement } from "@/lib/lenis";
@@ -188,20 +189,21 @@ const CaseStudiesSection = () => {
 
         {caseStudies.length > INITIAL_COUNT && (
           <div className="mt-12 flex justify-center">
-            <button
+            <Button
               type="button"
               onClick={toggle}
               aria-expanded={showAll}
-              className={cn(
-                "tap group inline-flex cursor-pointer items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-semibold transition-colors duration-300",
-                showAll
-                  ? "border border-secondary/15 bg-white text-secondary hover:border-primary hover:text-primary"
-                  : "bg-primary text-secondary hover:bg-secondary hover:text-primary"
-              )}
+              variant={showAll ? "outline" : "secondary"}
+              className="tap group gap-1.5 rounded-full pr-4 font-semibold"
             >
-              {showAll ? "Show less" : "See all"}
-              <FiChevronDown className={cn("h-3.5 w-3.5 transition-transform duration-300", showAll && "rotate-180")} />
-            </button>
+              <span className="text-trim">{showAll ? "Show less" : "See all"}</span>
+              <FiChevronDown
+                className={cn(
+                  "h-4 w-4 transition-transform duration-300",
+                  showAll ? "rotate-180 group-hover:-translate-y-0.5" : "group-hover:translate-y-0.5"
+                )}
+              />
+            </Button>
           </div>
         )}
       </div>

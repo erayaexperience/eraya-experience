@@ -13,10 +13,10 @@ export const navGroups: NavGroup[] = [
     {
         name: "Studio",
         children: [
-            { name: "About", href: "#about", description: "Who we are and how we work", image: "/images/Alizah.PNG" },
+            { name: "About", href: "#about", description: "Who we are and how we work", image: "/images/alizah-alam.png" },
             { name: "Press", href: "#press", description: "Features on our work and founders", image: "/images/press/times-of-india-goa-times.jpg" },
             { name: "Testimonials", href: "#testimonials", description: "Our partners, in their own words", image: "/images/graphics/mission-rabies-pune-team.jpg" },
-            { name: "FAQ", href: "#faq", description: "What brands ask before we begin", image: "/images/Siddharth.PNG" },
+            { name: "FAQ", href: "#faq", description: "What brands ask before we begin", image: "/images/gopal-walawalkar.png" },
         ],
     },
     { name: "Services", href: "#services" },

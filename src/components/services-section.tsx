@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useCallback, type CSSProperties } from 'react';
+import { useRef, useState, useCallback, type CSSProperties, type PointerEvent as ReactPointerEvent } from 'react';
 import Image from 'next/image';
 import type Lenis from 'lenis';
 import { gsap } from 'gsap';
@@ -32,6 +32,13 @@ const cardScroll = (trigger: ScrollTrigger, card: number) =>
 const cardAt = (trigger: ScrollTrigger, scroll: number) =>
   ((scroll - trigger.start) / (trigger.end - trigger.start)) * SPAN - LEAD;
 
+const SWIPE_SHARE = 0.15;
+const SHORT_SWIPE_MS = 300;
+const SHORT_SWIPE_PX = 30;
+const EDGE_RESISTANCE = 0.3;
+
+type Drag = { x: number; y: number; t: number; axis: 'x' | 'y' | null };
+
 const restingScroll = (lenis: Lenis) => (lenis.isScrolling === 'smooth' ? lenis.targetScroll : lenis.animatedScroll);
 
 const ServicesSection = () => {
@@ -40,14 +47,33 @@ const ServicesSection = () => {
   const swingRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<ScrollTrigger | null>(null);
+  const touchModeRef = useRef(false);
+  const activeRef = useRef(0);
+  const dragRef = useRef<Drag | null>(null);
+  const swipedRef = useRef(false);
   const [active, setActive] = useState(0);
 
+  const show = useCallback((card: number) => {
+    activeRef.current = card;
+    setActive((prev) => (prev !== card ? card : prev));
+  }, []);
+
+  const turnTo = useCallback(
+    (index: number) => {
+      const card = clampCard(index);
+      show(card);
+      gsap.to(ringRef.current, { rotationY: -card * STEP, duration: 0.6, ease: 'power3.out', overwrite: true });
+    },
+    [show]
+  );
+
   const goToCard = useCallback((index: number) => {
+    if (touchModeRef.current) return turnTo(index);
     const trigger = triggerRef.current;
     if (!trigger) return;
     const card = clampCard(index);
     const target = cardScroll(trigger, card);
-    setActive(card);
+    show(card);
 
     const lenis = getLenis();
     if (!lenis) {
@@ -56,7 +82,42 @@ const ServicesSection = () => {
     }
     const cards = Math.abs(target - lenis.animatedScroll) / ((trigger.end - trigger.start) / SPAN);
     lenis.scrollTo(target, { programmatic: false, duration: clampDuration(0.5 + 0.15 * cards), easing: easeOutCubic });
-  }, []);
+  }, [show, turnTo]);
+
+  const onPointerDown = (event: ReactPointerEvent<HTMLDivElement>) => {
+    if (!touchModeRef.current || !event.isPrimary) return;
+    dragRef.current = { x: event.clientX, y: event.clientY, t: event.timeStamp, axis: null };
+  };
+
+  const onPointerMove = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const drag = dragRef.current;
+    if (!drag) return;
+    const dx = event.clientX - drag.x;
+    const dy = event.clientY - drag.y;
+    if (!drag.axis && Math.max(Math.abs(dx), Math.abs(dy)) > 8) drag.axis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y';
+    if (drag.axis !== 'x') return;
+    const atEdge = (activeRef.current === 0 && dx > 0) || (activeRef.current === LAST && dx < 0);
+    const offset = (dx / event.currentTarget.offsetWidth) * STEP * 1.6 * (atEdge ? EDGE_RESISTANCE : 1);
+    gsap.set(ringRef.current, { rotationY: -activeRef.current * STEP + offset });
+  };
+
+  const onPointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
+    const drag = dragRef.current;
+    dragRef.current = null;
+    if (!drag || drag.axis !== 'x') return;
+    const dx = event.clientX - drag.x;
+    const quick = event.timeStamp - drag.t < SHORT_SWIPE_MS && Math.abs(dx) > SHORT_SWIPE_PX;
+    const commit = quick || Math.abs(dx) > event.currentTarget.offsetWidth * SWIPE_SHARE;
+    turnTo(activeRef.current + (commit ? -Math.sign(dx) : 0));
+    swipedRef.current = true;
+    window.setTimeout(() => (swipedRef.current = false));
+  };
+
+  const onPointerCancel = () => {
+    const drag = dragRef.current;
+    dragRef.current = null;
+    if (drag?.axis === 'x') turnTo(activeRef.current);
+  };
 
   const snapPoints = useCallback(() => {
     const trigger = triggerRef.current;
@@ -72,29 +133,45 @@ const ServicesSection = () => {
       const ring = ringRef.current;
       if (!section || !stage || !swing || !ring) return;
 
-      const turns = gsap.timeline({
-        defaults: { ease: 'sine.inOut', duration: 1 - 2 * HOLD },
-        scrollTrigger: {
-          trigger: section,
-          start: 'top top',
-          end: () => `+=${section.offsetHeight - stage.offsetHeight}`,
-          scrub: true,
-          invalidateOnRefresh: true,
-          onUpdate: (self) => {
-            const lenis = getLenis();
-            const next = clampCard(Math.round(cardAt(self, lenis ? restingScroll(lenis) : self.scroll())));
-            setActive((prev) => (prev !== next ? next : prev));
-          },
-        },
+      const media = gsap.matchMedia();
+
+      media.add('(pointer: coarse)', () => {
+        touchModeRef.current = true;
+        gsap.set(ring, { rotationY: -activeRef.current * STEP });
+        return () => {
+          touchModeRef.current = false;
+        };
       });
 
-      const trigger = turns.scrollTrigger!;
-      triggerRef.current = trigger;
+      media.add('not (pointer: coarse)', () => {
+        const turns = gsap.timeline({
+          defaults: { ease: 'sine.inOut', duration: 1 - 2 * HOLD },
+          scrollTrigger: {
+            trigger: section,
+            start: 'top top',
+            end: () => `+=${section.offsetHeight - stage.offsetHeight}`,
+            scrub: true,
+            invalidateOnRefresh: true,
+            onUpdate: (self) => {
+              const lenis = getLenis();
+              const next = clampCard(Math.round(cardAt(self, lenis ? restingScroll(lenis) : self.scroll())));
+              show(next);
+            },
+          },
+        });
 
-      for (let card = 1; card <= LAST; card++) {
-        turns.to(ring, { rotationY: -card * STEP }, LEAD + card - 1 + HOLD);
-      }
-      turns.set({}, {}, SPAN);
+        const trigger = turns.scrollTrigger!;
+        triggerRef.current = trigger;
+
+        for (let card = 1; card <= LAST; card++) {
+          turns.to(ring, { rotationY: -card * STEP }, LEAD + card - 1 + HOLD);
+        }
+        turns.set({}, {}, SPAN);
+
+        return () => {
+          triggerRef.current = null;
+        };
+      });
 
       gsap.fromTo(
         swing,
@@ -111,10 +188,6 @@ const ServicesSection = () => {
           scrollTrigger: { trigger: section, start: 'bottom bottom', end: 'bottom top', scrub: 0.5 },
         }
       );
-
-      return () => {
-        triggerRef.current = null;
-      };
     },
     { scope: sectionRef }
   );
@@ -124,27 +197,34 @@ const ServicesSection = () => {
       ref={sectionRef}
       id="services"
       style={{ '--span': SPAN } as CSSProperties}
-      className="relative bg-white py-0 [--card:60svh] sm:[--card:65svh] lg:[--card:70svh] h-[calc(100svh+var(--span)*var(--card))] scroll-mt-[calc(var(--header-height)*-1)]"
+      className="relative bg-white py-0 [--card:60svh] sm:[--card:65svh] lg:[--card:70svh] h-[calc(100svh+var(--span)*var(--card))] scroll-mt-[calc(var(--header-height)*-1)] pointer-coarse:h-svh"
     >
       <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-linear-to-b from-background to-white sm:h-32" />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-background to-white sm:h-32" />
 
-      <div ref={stageRef} className="sticky top-0 h-svh overflow-hidden flex flex-col justify-center">
+      <div
+        ref={stageRef}
+        onPointerDown={onPointerDown}
+        onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
+        onPointerCancel={onPointerCancel}
+        className="sticky top-0 flex h-svh flex-col justify-center overflow-hidden pointer-coarse:touch-pan-y"
+      >
         <div className="pointer-events-none absolute top-[60%] left-1/2 h-200 w-200 -translate-1/2 bg-[radial-gradient(closest-side,rgb(var(--primary)/0.16),transparent)] lg:h-288 lg:w-6xl" />
 
-        <div className="container-modern relative grid h-full content-center items-center gap-4 pt-[calc(var(--header-height)+0.5rem)] pb-6 sm:gap-6 lg:grid-cols-12 lg:gap-10 lg:py-0 max-lg:[@media(max-height:760px)]:gap-2 max-lg:[@media(max-height:760px)]:pb-4">
-          <div className="text-center lg:col-span-5 lg:text-left">
-            <div className="mb-4 inline-flex items-center gap-3 max-lg:[@media(max-height:760px)]:mb-2">
+        <div className="container-modern relative grid h-full content-center items-center gap-4 pt-[calc(var(--header-height)+0.5rem)] pb-6 sm:gap-6 lg:grid-cols-12 lg:gap-10 lg:py-0 compact:gap-2 compact:pb-4 landscape-phone:grid-cols-12 landscape-phone:gap-6 landscape-phone:pt-[calc(var(--header-height)+0.25rem)] landscape-phone:pb-3">
+          <div className="text-center lg:col-span-5 lg:text-left landscape-phone:col-span-6 landscape-phone:text-left">
+            <div className="mb-4 inline-flex items-center gap-3 compact:mb-2 landscape-phone:mb-2">
               <span className="h-px w-8 bg-primary" />
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-foreground/60">Core Expertise</span>
               <span className="h-px w-8 bg-primary" />
             </div>
-            <h2 className="text-3xl font-semibold leading-[1.08] tracking-tight text-secondary sm:text-5xl lg:text-[44px] xl:text-[56px]">
+            <h2 className="text-3xl font-semibold leading-[1.08] tracking-tight text-secondary sm:text-5xl lg:text-[44px] xl:text-[56px] landscape-phone:text-2xl">
               Our Services, <br className="hidden lg:block" />
               <span className="whitespace-nowrap font-serif italic text-primary">Done Right</span>
             </h2>
 
-            <div className="mt-6 grid sm:mt-8 lg:mt-12 max-lg:[@media(max-height:760px)]:mt-3">
+            <div className="mt-6 grid sm:mt-8 lg:mt-12 compact:mt-3 landscape-phone:mt-3">
               {services.map((service, index) => (
                 <div
                   key={service.title}
@@ -157,36 +237,40 @@ const ServicesSection = () => {
                     index > active && 'translate-y-4'
                   )}
                 >
-                  <div className="flex items-baseline justify-center gap-3 lg:justify-start">
-                    <span className="font-serif text-5xl italic leading-none text-primary lg:text-7xl">
+                  <div className="flex items-baseline justify-center gap-3 lg:justify-start landscape-phone:justify-start">
+                    <span className="font-serif text-5xl italic leading-none text-primary lg:text-7xl landscape-phone:text-3xl">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                     <span className="text-sm font-medium text-foreground/35">/ {String(services.length).padStart(2, '0')}</span>
                   </div>
-                  <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-primary">{service.eyebrow}</p>
-                  <h3 className="mt-2 text-2xl font-semibold leading-tight tracking-tight text-secondary sm:text-3xl lg:text-4xl">
+                  <p className="mt-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-primary landscape-phone:mt-2">{service.eyebrow}</p>
+                  <h3 className="mt-2 text-2xl font-semibold leading-tight tracking-tight text-secondary sm:text-3xl lg:text-4xl landscape-phone:mt-1 landscape-phone:text-xl">
                     {service.title}
                   </h3>
-                  <p className="mx-auto mt-3 max-w-md text-sm font-light leading-relaxed text-foreground/65 sm:text-base lg:mx-0 lg:text-lg">
+                  <p className="mx-auto mt-3 max-w-md text-sm font-light leading-relaxed text-foreground/65 sm:text-base lg:mx-0 lg:text-lg landscape-phone:mx-0 landscape-phone:mt-2 landscape-phone:text-sm">
                     {service.description}
                   </p>
                 </div>
               ))}
             </div>
-          </div>
+
+</div>
 
           <div
             aria-hidden
-            className="relative order-first h-[40svh] sm:h-[42svh] perspective-[1600px] [--panel-h:29svh] [--panel-w:min(56vw,14rem)] sm:[--panel-h:31svh] sm:[--panel-w:16rem] lg:order-0 lg:col-span-7 lg:h-[72svh] lg:[--panel-h:54svh] lg:[--panel-w:clamp(14rem,19vw,19rem)] max-lg:[@media(max-height:760px)]:h-[30svh] max-lg:[@media(max-height:760px)]:[--panel-h:22svh]"
+            className="relative order-first h-[40svh] sm:h-[42svh] perspective-[1600px] [--panel-h:29svh] [--panel-w:min(56vw,14rem)] sm:[--panel-h:31svh] sm:[--panel-w:16rem] lg:order-0 lg:col-span-7 lg:h-[72svh] lg:[--panel-h:min(54svh,calc(var(--panel-w)*2))] lg:[--panel-w:clamp(14rem,19vw,17rem)] compact:h-[30svh] compact:[--panel-h:22svh] landscape-phone:order-0 landscape-phone:col-span-6 landscape-phone:h-[76svh] landscape-phone:[--panel-h:60svh] landscape-phone:[--panel-w:min(21vw,10rem)]"
           >
-            <div className="absolute inset-0 transform-3d transform-[rotateX(-6deg)]">
+            <div
+              className="absolute inset-0 transform-3d transform-[rotateX(-6deg)]"
+              style={{ transformOrigin: `50% 50% calc(var(--panel-w) * ${RADIUS.toFixed(4)})` }}
+            >
               <div ref={swingRef} className="absolute inset-0 transform-3d will-change-transform">
                 <div ref={ringRef} className="absolute inset-0 transform-3d will-change-transform">
                   {services.map((service, index) => (
                     <article
                       data-cursor="view"
                       key={service.title}
-                      onClick={() => goToCard(index)}
+                      onClick={() => !swipedRef.current && goToCard(index)}
                       style={{ transform: `rotateY(${index * STEP}deg) translateZ(calc(var(--panel-w) * ${RADIUS.toFixed(4)}))` }}
                       className="absolute inset-0 m-auto h-(--panel-h) w-(--panel-w) cursor-pointer overflow-hidden rounded-2xl bg-secondary ring-1 ring-black/5 backface-hidden lg:rounded-3xl"
                     >

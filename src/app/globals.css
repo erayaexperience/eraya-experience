@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@custom-variant compact (@media (max-width: 1023.98px) and (min-height: 521px) and (max-height: 760px));
+@custom-variant landscape-phone (@media (max-width: 1023.98px) and (max-height: 520px));
+
 @theme inline {
   --color-background: rgb(var(--background));
   --color-foreground: rgb(var(--foreground));

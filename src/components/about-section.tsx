@@ -42,7 +42,7 @@ const FounderCard = ({
             alt={person.name}
             fill
             className="object-cover object-top transition-transform duration-700 group-hover:scale-105"
-            sizes="(max-width: 1279px) 224px, 256px"
+            sizes="(max-width: 639px) 45vw, (max-width: 1279px) 224px, 256px"
           />
           <div className="absolute right-0 bottom-0 left-0 bg-linear-to-t from-black/80 via-black/20 to-transparent p-4 opacity-100 transition-opacity duration-500 xl:opacity-0 xl:group-hover:opacity-100">
             <p className="mb-0.5 text-[11px] font-bold uppercase tracking-[0.2em] text-white/70">{person.role}</p>

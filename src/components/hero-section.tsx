@@ -41,10 +41,26 @@ const HeroSection = () => {
       video.currentTime = 0;
     };
 
-    if (!video.paused && video.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) begin();
-    else {
+    const intro = document.querySelector(".intro");
+    let started = false;
+    const load = () => {
+      if (started) return;
+      started = true;
+      window.removeEventListener("load", load);
+      intro?.removeEventListener("animationstart", onReveal);
       video.addEventListener("playing", begin, { once: true });
       video.play().catch(() => {});
+    };
+    const onReveal = (event: Event) => {
+      if ((event as AnimationEvent).animationName === "intro-zoom") load();
+    };
+    const revealing = intro
+      ?.getAnimations({ subtree: true })
+      .some((animation) => (animation as CSSAnimation).animationName === "intro-zoom" && Number(animation.currentTime ?? 0) > 0);
+    if (document.readyState === "complete" || !intro || revealing || getComputedStyle(intro).visibility === "hidden") load();
+    else {
+      window.addEventListener("load", load);
+      intro.addEventListener("animationstart", onReveal);
     }
 
     const observer = new IntersectionObserver(([entry]) => {
@@ -57,6 +73,8 @@ const HeroSection = () => {
 
     return () => {
       observer.disconnect();
+      window.removeEventListener("load", load);
+      intro?.removeEventListener("animationstart", onReveal);
       video.removeEventListener("playing", begin);
     };
   }, []);

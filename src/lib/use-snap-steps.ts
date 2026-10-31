@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { getLenis } from "./lenis";
+import { getLenis, isTouchFirst } from "./lenis";
 
 type StepEvent = Event & { lenisStopPropagation?: boolean };
 
 const NEW_GESTURE_MS = 160;
-const NOTCH_GAP_MS = 45;
 const NOTCH_SPEED = 40;
+const MIN_NOTCH_GAP_MS = 25;
 const MOVING = 0.05;
 const MAX_SLOPE = 2.5;
 const REST_SLOPE = 2;
@@ -25,11 +25,18 @@ const hermite = (slope: number) => (t: number) => slope * (t * t * t - 2 * t * t
 const isPrevented = (target: EventTarget | null) =>
   target instanceof Element && !!target.closest("dialog, [data-lenis-prevent]");
 
+const isMouseNotch = (event: WheelEvent) => {
+  if (event.deltaMode === 1) return true;
+  const legacy = (event as WheelEvent & { wheelDeltaY?: number }).wheelDeltaY;
+  return !!legacy && legacy % 120 === 0 && Math.abs(event.deltaY) >= NOTCH_SPEED;
+};
+
 const isTyping = (target: EventTarget | null) =>
   target instanceof HTMLElement && (target.isContentEditable || ["INPUT", "TEXTAREA", "SELECT"].includes(target.tagName));
 
 export function useSnapSteps(getPoints: () => number[]) {
   useEffect(() => {
+    if (isTouchFirst()) return;
     let gliding = false;
     let consumed = false;
     let glideTarget: number | null = null;
@@ -47,12 +54,13 @@ export function useSnapSteps(getPoints: () => number[]) {
     let lastScroll = window.scrollY;
     let scrollDirection = 0;
     let velocity = 0;
+    let lastInput: "wheel" | "touch" | "key" = "wheel";
     let sampleY = window.scrollY;
     let sampleT = performance.now();
 
     const points = () => getPoints().sort((a, b) => a - b);
     const destination = () => getLenis()?.targetScroll ?? window.scrollY;
-    const inactive = () => !!getLenis()?.isStopped;
+    const inactive = () => !!getLenis()?.isStopped || document.documentElement.classList.contains("programmatic-scroll");
 
     const swallow = (event: StepEvent) => {
       if (event.cancelable) event.preventDefault();
@@ -126,11 +134,11 @@ export function useSnapSteps(getPoints: () => number[]) {
 
     const onWheel = (event: WheelEvent) => {
       if (event.ctrlKey || inactive() || isPrevented(event.target)) return;
-      const now = performance.now();
+      lastInput = "wheel";
+      const now = event.timeStamp;
       const speed = Math.abs(event.deltaY);
       const gap = now - lastWheel;
-      const fresh =
-        gap > NEW_GESTURE_MS || (speed > lastSpeed * 1.6 && speed > 20) || (gap > NOTCH_GAP_MS && speed >= NOTCH_SPEED);
+      const fresh = gap > NEW_GESTURE_MS || (gap > MIN_NOTCH_GAP_MS && isMouseNotch(event)) || (speed > lastSpeed * 1.6 && speed > 20);
       lastWheel = now;
       lastSpeed = speed;
 
@@ -170,6 +178,7 @@ export function useSnapSteps(getPoints: () => number[]) {
 
     const onTouchStart = (event: TouchEvent) => {
       touching = true;
+      lastInput = "touch";
       touchStart = touchNow = event.touches[0]?.clientY ?? 0;
       samples = [{ y: touchStart, t: event.timeStamp }];
       anchor = anchorAt(window.scrollY);
@@ -224,8 +233,10 @@ export function useSnapSteps(getPoints: () => number[]) {
       anchor = null;
     };
 
+
     const onKey = (event: KeyboardEvent) => {
       if (inactive() || isTyping(event.target)) return;
+      lastInput = "key";
       const down = ["PageDown", "ArrowDown"].includes(event.key) || (event.key === " " && !event.shiftKey);
       const up = ["PageUp", "ArrowUp"].includes(event.key) || (event.key === " " && event.shiftKey);
       if (!down && !up) return;
@@ -242,9 +253,9 @@ export function useSnapSteps(getPoints: () => number[]) {
       lastScroll = position;
       window.clearTimeout(idleTimer);
       const z = zone();
-      if (gliding || touching || !z) return;
+      if (gliding || touching || !z || inactive()) return;
 
-      if (getLenis()?.isScrolling !== "smooth") {
+      if (lastInput === "touch") {
         if (previous < z.first && position >= z.first && position < z.last) return glide(z.first);
         if (previous > z.last && position <= z.last && position > z.first) return glide(z.last);
       }

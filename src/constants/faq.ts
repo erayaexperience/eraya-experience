@@ -1,3 +1,5 @@
+import { site } from "@/lib/site";
+
 export type Faq = {
   question: string;
   answer: string;
@@ -37,6 +39,6 @@ export const faqs: Faq[] = [
   {
     question: "How do I start a project with Eraya Experience?",
     answer:
-      "Fill in the enquiry form on this page, email info.erayaexp@gmail.com, call +91 8208664702, or message @erayaexperience on Instagram. Tell us what you're launching and what success looks like, and we'll come back with a plan.",
+      `Fill in the enquiry form on this page, email ${site.email}, call ${site.phoneLabel}, or message @${site.instagramHandle} on Instagram. Tell us what you're launching and what success looks like, and we'll come back with a plan.`,
   },
 ];

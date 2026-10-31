@@ -12,6 +12,13 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "start", "--", "-p", "3001"],
       "port": 3001
+    },
+    {
+      "name": "eraya-lan",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "start", "--", "-p", "3002", "-H", "0.0.0.0"],
+      "port": 3002,
+      "autoPort": false
     }
   ]
 }

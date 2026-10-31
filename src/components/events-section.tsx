@@ -76,18 +76,8 @@ function EventBentoCard({
       data-cursor="view"
       custom={index}
       variants={cardReveal}
-      onClick={() => onOpenLightbox(currentPhoto)}
       onMouseEnter={start}
       onMouseLeave={stop}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          onOpenLightbox(currentPhoto);
-        }
-      }}
-      aria-label={`Open ${event.title} gallery`}
       className={cn(
         "group relative flex h-130 sm:h-140 lg:h-150 w-[80vw] max-w-[22rem] shrink-0 snap-center flex-col justify-between overflow-hidden rounded-4xl border border-border/80 bg-secondary shadow-[0_20px_50px_rgba(0,0,0,0.14)] cursor-pointer select-none transition-[border-color,box-shadow] duration-500 hover:border-primary/80 hover:shadow-[0_25px_60px_rgba(214,182,133,0.22)] md:w-auto md:max-w-none"
       )}
@@ -181,6 +171,13 @@ function EventBentoCard({
           </div>
         )}
       </div>
+
+      <button
+        type="button"
+        onClick={() => onOpenLightbox(currentPhoto)}
+        aria-label={`Open ${event.title} gallery`}
+        className="absolute inset-0 z-30 cursor-pointer rounded-[inherit] outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
+      />
     </motion.article>
   );
 }

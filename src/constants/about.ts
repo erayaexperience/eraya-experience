@@ -13,11 +13,11 @@ export const aboutContent = {
     founder: {
         name: 'Alizah Alam',
         role: 'Founder',
-        image: '/images/Alizah.PNG'
+        image: '/images/alizah-alam.png'
     },
     coFounder: {
-        name: 'Siddharth Gopal',
+        name: 'Gopal Walawalkar',
         role: 'Co-Founder',
-        image: '/images/Siddharth.PNG'
+        image: '/images/gopal-walawalkar.png'
     }
 };
