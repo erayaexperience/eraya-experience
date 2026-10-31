@@ -1,10 +1,11 @@
 import type { MetadataRoute } from 'next';
+import { site } from '@/lib/site';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Eraya Experience | Digital Marketing Agency',
-    short_name: 'Eraya Experience',
-    description: 'We craft human-first brand experiences that merge strategy, storytelling, and premium execution across Goa and Pan-India.',
+    name: site.name,
+    short_name: site.name,
+    description: site.description,
     start_url: '/',
     display: 'standalone',
     background_color: '#f8f6f2',
@@ -12,12 +13,12 @@ export default function manifest(): MetadataRoute.Manifest {
     icons: [
       {
         src: '/icon.png',
-        sizes: '500x500',
+        sizes: '192x192',
         type: 'image/png',
       },
       {
-        src: '/apple-icon.png',
-        sizes: '500x500',
+        src: '/icon-512.png',
+        sizes: '512x512',
         type: 'image/png',
       },
     ],

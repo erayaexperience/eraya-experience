@@ -53,14 +53,6 @@ export const metadata: Metadata = {
   alternates: {
     canonical: '/',
   },
-  icons: {
-    icon: [
-      { url: '/favicon.ico', sizes: 'any' },
-      { url: '/icon.png', sizes: '500x500', type: 'image/png' },
-    ],
-    shortcut: '/favicon.ico',
-    apple: [{ url: '/apple-icon.png', sizes: '500x500', type: 'image/png' }],
-  },
   manifest: '/manifest.webmanifest',
   openGraph: {
     title: site.title,
