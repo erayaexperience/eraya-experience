@@ -32,13 +32,11 @@ Create `.env.local` in the project root (it is git-ignored):
 
 ```bash
 NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY=your-web3forms-key
-NEXT_PUBLIC_SITE_URL=https://erayaexperience.com
 ```
 
 | Variable | Purpose |
 | --- | --- |
-| `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` | Delivers contact-form submissions by email. Without it the form shows an error instead of sending. |
-| `NEXT_PUBLIC_SITE_URL` | Canonical URL used for metadata, the sitemap, Open Graph images and structured data. Falls back to the Vercel production URL, then to `https://erayaexperience.com`. |
+| `NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY` | Delivers contact-form submissions by email. Without it the form opens a pre-filled email draft instead of sending. |
 
 ## Scripts
 
