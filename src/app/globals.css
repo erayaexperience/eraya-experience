@@ -160,7 +160,7 @@ html {
   scroll-behavior: smooth;
 }
 
-:focus-visible:not(input, textarea, select, [data-slot="select-trigger"]) {
+:focus-visible:not(input, textarea, select, [data-slot="select-trigger"], [data-slot="select-item"]) {
   outline: 2px solid rgb(var(--primary));
   outline-offset: 2px;
 }
