@@ -72,7 +72,7 @@ export function SmoothScroll() {
     if (intro && getComputedStyle(intro).visibility !== "hidden") {
       lenis.stop();
       intro.addEventListener("animationend", onIntroEnd);
-      introTimer = window.setTimeout(release, 2200);
+      introTimer = window.setTimeout(release, 1500);
     } else if (document.readyState === "complete") landOnHash();
     else window.addEventListener("load", landOnHash, { once: true });
 
