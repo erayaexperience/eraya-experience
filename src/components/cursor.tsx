@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useSyncExternalStore } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { m, useMotionValue, useSpring } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 type Mode = "default" | "link" | "view";
@@ -54,12 +54,12 @@ export function Cursor() {
   if (!enabled) return null;
 
   return (
-    <motion.div
+    <m.div
       aria-hidden
       style={{ x: smoothX, y: smoothY }}
       className={cn("cursor-layer pointer-events-none fixed top-0 left-0 z-[400] transition-opacity duration-300", !visible && "opacity-0")}
     >
-      <motion.div
+      <m.div
         initial={false}
         animate={{
           width: ringSize[mode],
@@ -76,12 +76,12 @@ export function Cursor() {
             : "border-[1.5px] border-primary bg-primary/10"
         )}
       />
-      <motion.div
+      <m.div
         initial={false}
         animate={{ scale: mode === "default" ? 1 : 0 }}
         transition={grow}
         className="absolute -top-1 -left-1 h-2 w-2 rounded-full bg-primary shadow-[0_0_0_1px_rgba(255,255,255,0.35)] will-change-transform"
       />
-    </motion.div>
+    </m.div>
   );
 }

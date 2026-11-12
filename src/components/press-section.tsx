@@ -2,7 +2,7 @@
 
 import { useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { m, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { FiArrowRight, FiArrowUpRight } from "react-icons/fi";
 import { pressItems, type PressItem } from "@/constants/press";
 import { SectionHeading } from "./ui/section-heading";
@@ -41,7 +41,7 @@ const PressCard = ({
   const y = useTransform(progress, [0, 1], layout[slot].drift);
 
   return (
-    <motion.article
+    <m.article
       data-cursor="view"
       style={{ y }}
       className={cn("w-[72vw] max-w-xs shrink-0 snap-center max-sm:transform-none! sm:w-auto sm:max-w-none", slot === 1 && "sm:-mt-6 md:-mt-10")}
@@ -120,7 +120,7 @@ const PressCard = ({
           </button>
         )}
       </div>
-    </motion.article>
+    </m.article>
   );
 };
 

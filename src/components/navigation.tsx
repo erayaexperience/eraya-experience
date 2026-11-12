@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FiArrowRight, FiArrowUpRight, FiChevronDown, FiMenu, FiX } from "react-icons/fi";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { Button } from "./ui/button";
 import { navGroups, sectionIds, type NavGroup, type NavLink } from "@/constants/navigation";
@@ -31,7 +31,7 @@ const MegaPanel = ({
 
   return (
     <div className="absolute top-full left-1/2 z-10 -translate-x-1/2 pt-4">
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 10, scale: 0.97 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 6, scale: 0.98, transition: { duration: 0.15 } }}
@@ -80,7 +80,7 @@ const MegaPanel = ({
             ))}
           </ul>
         </div>
-      </motion.div>
+      </m.div>
     </div>
   );
 };
@@ -199,7 +199,7 @@ const Navigation = () => {
 
   return (
     <>
-    <motion.nav
+    <m.nav
       ref={navRef}
       className={cn(
         "fixed top-0 left-0 w-full z-50 border-b transition-colors duration-500 ease-out",
@@ -272,7 +272,7 @@ const Navigation = () => {
                   }}
                 >
                   {groupActive && (
-                    <motion.span
+                    <m.span
                       layoutId="nav-active"
                       transition={{ type: "spring", stiffness: 380, damping: 34 }}
                       className={cn(
@@ -284,7 +284,7 @@ const Navigation = () => {
                     />
                   )}
                   {hovered === group.name && !groupActive && (
-                    <motion.span
+                    <m.span
                       layoutId="nav-hover"
                       transition={{ type: "spring", stiffness: 380, damping: 32 }}
                       className={cn("absolute inset-0 rounded-full", scrolled ? "bg-secondary/5" : "bg-white/10")}
@@ -384,11 +384,11 @@ const Navigation = () => {
           </button>
         </div>
       </div>
-    </motion.nav>
+    </m.nav>
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <m.div
             key="mobile-menu"
             variants={menuVariants}
             initial="closed"
@@ -401,7 +401,7 @@ const Navigation = () => {
               {directLinks.map((group) => {
                 const isActive = activeSection === group.href;
                 return (
-                  <motion.div key={group.name} variants={itemVariants}>
+                  <m.div key={group.name} variants={itemVariants}>
                     <Link
                       href={group.href!}
                       onClick={closeMenu}
@@ -412,16 +412,16 @@ const Navigation = () => {
                     >
                       {group.name}
                     </Link>
-                  </motion.div>
+                  </m.div>
                 );
               })}
             </div>
 
-            <motion.div variants={itemVariants} className="my-8 h-px bg-primary/30" />
+            <m.div variants={itemVariants} className="my-8 h-px bg-primary/30" />
 
             <div className="grid grid-cols-2 gap-6">
               {menuGroups.map((group) => (
-                <motion.div key={group.name} variants={itemVariants}>
+                <m.div key={group.name} variants={itemVariants}>
                   <div className="mb-4 flex items-center gap-2">
                     <span className="h-px w-5 bg-primary" />
                     <span className="text-[10px] font-semibold uppercase tracking-[0.22em] text-foreground/50">{group.name}</span>
@@ -446,11 +446,11 @@ const Navigation = () => {
                       );
                     })}
                   </ul>
-                </motion.div>
+                </m.div>
               ))}
             </div>
 
-            <motion.div variants={itemVariants} className="mt-auto w-full pt-10">
+            <m.div variants={itemVariants} className="mt-auto w-full pt-10">
               <Button asChild variant="secondary" className="group h-14 w-full justify-center rounded-full text-base">
                 <Link
                   href="#contact"
@@ -461,8 +461,8 @@ const Navigation = () => {
                   <FiArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1" />
                 </Link>
               </Button>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         )}
       </AnimatePresence>
     </>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from 'react';
-import { animate, motion, useInView, useMotionValue, useTransform } from 'framer-motion';
+import { animate, m, useInView, useMotionValue, useTransform } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useGSAP } from '@gsap/react';
@@ -36,7 +36,7 @@ const CountUp = ({ to, start }: { to: number; start: boolean }) => {
     return (
         <span className="inline-grid tabular-nums">
             <span className="invisible col-start-1 row-start-1">{to}</span>
-            <motion.span className="col-start-1 row-start-1 text-right">{shown}</motion.span>
+            <m.span className="col-start-1 row-start-1 text-right">{shown}</m.span>
         </span>
     );
 };

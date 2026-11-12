@@ -2,7 +2,7 @@
 
 import { useRef, useState, type CSSProperties, type RefObject } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import { Swiper, SwiperSlide } from "swiper/react";
 import type { Swiper as SwiperInstance } from "swiper";
@@ -178,7 +178,7 @@ export default function TestimonialsSection() {
         <div className="pointer-events-none absolute -right-60 -bottom-60 h-280 w-280 bg-[radial-gradient(closest-side,rgb(var(--primary)/0.1),transparent)]" />
 
         <div className="container-modern relative">
-          <motion.header
+          <m.header
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -211,9 +211,9 @@ export default function TestimonialsSection() {
                 </div>
               )}
             </div>
-          </motion.header>
+          </m.header>
 
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-100px" }}
@@ -239,7 +239,7 @@ export default function TestimonialsSection() {
                 </SwiperSlide>
               ))}
             </Swiper>
-          </motion.div>
+          </m.div>
         </div>
       </div>
     </section>

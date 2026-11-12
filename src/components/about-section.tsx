@@ -2,7 +2,7 @@
 
 import { useRef } from 'react';
 import Image from 'next/image';
-import { motion, useScroll, useTransform, type MotionValue } from 'framer-motion';
+import { m, useScroll, useTransform, type MotionValue } from 'framer-motion';
 import { aboutContent } from '@/constants/about';
 import { SectionHeading } from './ui/section-heading';
 import { EASE_OUT_EXPO } from '@/lib/motion';
@@ -28,14 +28,14 @@ const FounderCard = ({
   const y = useTransform(progress, [0, 1], [depth * 90, depth * -90]);
 
   return (
-    <motion.div
+    <m.div
       className={className}
       initial={{ opacity: 0, scale: 0.95, y: enterY }}
       whileInView={{ opacity: 1, scale: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 1, ease: EASE_OUT_EXPO, delay }}
     >
-      <motion.div style={{ y }}>
+      <m.div style={{ y }}>
         <div data-cursor="view" className="group relative aspect-3/4 overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-50 shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
           <Image
             src={person.image}
@@ -49,8 +49,8 @@ const FounderCard = ({
             <p className="text-xs font-semibold text-white">{person.name}</p>
           </div>
         </div>
-      </motion.div>
-    </motion.div>
+      </m.div>
+    </m.div>
   );
 };
 

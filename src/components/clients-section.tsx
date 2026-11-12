@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 
 const clients = [
     { name: 'Koleso 24/7 Lounge Bar', logo: '/images/clients/koleso.png', width: 465, height: 588 },
@@ -29,14 +29,14 @@ const ClientsSection = () => {
         <section className="bg-white py-(--spacing-section) border-y border-border/20">
             <div className="container-modern">
                 <div className="text-center mb-16">
-                    <motion.h2
+                    <m.h2
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.6 }}
                         className="text-3xl md:text-4xl font-semibold tracking-tight text-secondary"
                     >
                         The Company <span className="text-primary italic font-serif">We Keep</span>
-                    </motion.h2>
+                    </m.h2>
                     <p className="mt-4 text-base font-light text-foreground/60 md:text-lg">
                         30+ brands across F&amp;B, hospitality, wellness, fashion, finance and beyond.
                     </p>
@@ -44,7 +44,7 @@ const ClientsSection = () => {
 
                 <ul className="flex flex-wrap justify-center items-center gap-x-6 gap-y-8 md:gap-x-10 md:gap-y-12 lg:gap-x-12">
                     {clients.map((client, index) => (
-                        <motion.li
+                        <m.li
                             key={client.name}
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -60,7 +60,7 @@ const ClientsSection = () => {
                                 sizes="(min-width: 1024px) 180px, (min-width: 768px) 25vw, 33vw"
                                 className="h-auto w-auto max-h-full max-w-full object-contain transition-transform duration-300 hover:scale-105"
                             />
-                        </motion.li>
+                        </m.li>
                     ))}
                 </ul>
             </div>

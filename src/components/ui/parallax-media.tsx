@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, type ReactNode } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 export function ParallaxMedia({ children, className }: { children: ReactNode; className?: string }) {
@@ -11,9 +11,9 @@ export function ParallaxMedia({ children, className }: { children: ReactNode; cl
 
   return (
     <div ref={ref} className={cn("absolute inset-0 overflow-hidden", className)}>
-      <motion.div style={{ y }} className="absolute inset-x-0 -inset-y-[20%]">
+      <m.div style={{ y }} className="absolute inset-x-0 -inset-y-[20%]">
         {children}
-      </motion.div>
+      </m.div>
     </div>
   );
 }

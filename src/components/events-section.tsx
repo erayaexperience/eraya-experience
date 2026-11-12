@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect, useEffectEvent } from "react";
 import Image from "next/image";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { events, type EventItem } from "@/constants/events";
 import { SectionHeading } from "./ui/section-heading";
 import { Lightbox, type LightboxItem } from "./ui/lightbox";
@@ -71,7 +71,7 @@ function EventBentoCard({
   }, []);
 
   return (
-    <motion.article
+    <m.article
       ref={cardRef}
       data-cursor="view"
       custom={index}
@@ -105,7 +105,7 @@ function EventBentoCard({
       <div className={scrimBottom} />
 
       <div className="absolute top-[15px] right-[15px] sm:top-[13px] sm:right-[13px] z-20 pointer-events-none">
-        <motion.div
+        <m.div
           layout
           transition={{ duration: 0.28, ease: EASE_OUT_EXPO }}
           className="relative flex h-8 sm:h-9 items-center overflow-hidden rounded-full glass bg-black/45 px-3.5 sm:px-4 [--glass-blur:24px] [--glass-shadow:0_12px_40px_rgba(0,0,0,0.5)]"
@@ -124,7 +124,7 @@ function EventBentoCard({
                 <span className="text-primary/70 text-[10px] select-none font-serif leading-none">✦</span>
                 <div className="relative inline-flex items-center overflow-hidden py-0.5">
                   <AnimatePresence mode="popLayout" initial={false}>
-                    <motion.span
+                    <m.span
                       key={activeImage.tag}
                       initial={{ opacity: 0, y: 5 }}
                       animate={{ opacity: 1, y: 0 }}
@@ -133,13 +133,13 @@ function EventBentoCard({
                       className="inline-block font-serif italic text-white text-xs tracking-wide leading-none whitespace-nowrap"
                     >
                       {activeImage.tag}
-                    </motion.span>
+                    </m.span>
                   </AnimatePresence>
                 </div>
               </>
             )}
           </div>
-        </motion.div>
+        </m.div>
       </div>
 
       <div className="relative z-20 mt-auto p-6 sm:p-7 text-white pointer-events-none">
@@ -178,7 +178,7 @@ function EventBentoCard({
         aria-label={`Open ${event.title} gallery`}
         className="absolute inset-0 z-30 cursor-pointer rounded-[inherit] outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
       />
-    </motion.article>
+    </m.article>
   );
 }
 
@@ -233,7 +233,7 @@ export default function EventsSection() {
           layout="center"
         />
 
-        <motion.div {...rowReveal} className="relative -mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[calc((100vw-min(80vw,22rem))/2)] pt-2 pb-6 [scrollbar-width:none] md:mx-auto md:grid md:pb-0 md:max-w-7xl md:grid-cols-3 md:gap-6 md:overflow-visible md:px-6 lg:gap-8 lg:px-8">
+        <m.div {...rowReveal} className="relative -mx-6 flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[calc((100vw-min(80vw,22rem))/2)] pt-2 pb-6 [scrollbar-width:none] md:mx-auto md:grid md:pb-0 md:max-w-7xl md:grid-cols-3 md:gap-6 md:overflow-visible md:px-6 lg:gap-8 lg:px-8">
           {events.map((event, index) => (
             <EventBentoCard
               key={event.id}
@@ -242,7 +242,7 @@ export default function EventsSection() {
               onOpenLightbox={(photoIndex) => openLightbox(index, photoIndex)}
             />
           ))}
-        </motion.div>
+        </m.div>
       </div>
 
       <Lightbox

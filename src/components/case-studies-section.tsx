@@ -2,7 +2,7 @@
 
 import { useRef, useState, type CSSProperties, type ReactNode } from "react";
 import Image from "next/image";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { caseStudies, type CaseStudy } from "@/constants/case-studies";
 import { SectionHeading } from "./ui/section-heading";
 import { ParallaxMedia } from "./ui/parallax-media";
@@ -102,7 +102,7 @@ const CaseStudiesSection = () => {
   return (
     <section ref={sectionRef} id="case-studies" className="relative bg-background py-section overflow-hidden">
       <div className="container-modern relative z-10 px-6 md:px-12">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: -20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -121,14 +121,14 @@ const CaseStudiesSection = () => {
             layout="center"
             className="mb-0 md:mb-0"
           />
-        </motion.div>
+        </m.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {visible.map((study, index) => {
             const config = layoutFor(index, visible.length);
 
             return (
-              <motion.article
+              <m.article
                 key={study.title}
                 data-cursor="view"
                 initial={{ opacity: 0, y: 20 }}
@@ -182,7 +182,7 @@ const CaseStudiesSection = () => {
                     {config.renderMetrics(study)}
                   </div>
                 </div>
-              </motion.article>
+              </m.article>
             );
           })}
         </div>

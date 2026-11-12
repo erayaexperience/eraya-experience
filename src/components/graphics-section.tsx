@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import { FiArrowRight } from "react-icons/fi";
 import { graphics } from "@/constants/graphics";
 import { SectionHeading } from "./ui/section-heading";
@@ -55,7 +55,7 @@ const GraphicsSection = () => {
         ref={stageRef}
         className="relative perspective-[1600px]"
       >
-        <motion.div
+        <m.div
           style={{ rotateX, rotateZ: -5 }}
           className="-mx-[12%] flex origin-top flex-col gap-4 pt-4 pb-10 md:gap-6 md:pt-6 md:pb-16"
         >
@@ -108,7 +108,7 @@ const GraphicsSection = () => {
               </div>
             </div>
           ))}
-        </motion.div>
+        </m.div>
       </div>
 
       <div className="container-modern relative mt-10 flex justify-center md:mt-14">

@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface SectionHeadingProps {
@@ -39,24 +39,24 @@ export function SectionHeading({
     if (layout === "center") {
         return (
             <div className={cn("text-center mb-12 md:mb-16", className)}>
-                <motion.div {...reveal}>
+                <m.div {...reveal}>
                     {subtitle && <Eyebrow className="justify-center mb-6">{subtitle}</Eyebrow>}
                     <h2 className="text-4xl font-semibold text-secondary sm:text-5xl lg:text-[56px] leading-[1.1] tracking-tight">
                         {title}
                     </h2>
                     {description && <Description className="mx-auto max-w-2xl">{description}</Description>}
-                </motion.div>
+                </m.div>
             </div>
         );
     }
 
     return (
-        <motion.div className={cn("mb-12", className)} {...reveal}>
+        <m.div className={cn("mb-12", className)} {...reveal}>
             {subtitle && <Eyebrow className="mb-4">{subtitle}</Eyebrow>}
             <h2 className="text-3xl sm:text-4xl font-semibold text-secondary leading-tight tracking-tight">
                 {title}
             </h2>
             {description && <Description>{description}</Description>}
-        </motion.div>
+        </m.div>
     );
 }

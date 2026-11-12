@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 type NetworkInformation = { saveData?: boolean; effectiveType?: string };
@@ -102,7 +102,7 @@ const HeroSection = () => {
 
       <div className="absolute inset-0 bg-black/20" />
       <div className="absolute inset-0 h-1/4 bg-linear-to-b from-black/40 via-transparent to-transparent" />
-      <motion.div aria-hidden style={{ opacity: dim }} className="pointer-events-none absolute inset-0 bg-black" />
+      <m.div aria-hidden style={{ opacity: dim }} className="pointer-events-none absolute inset-0 bg-black" />
     </section>
   );
 };

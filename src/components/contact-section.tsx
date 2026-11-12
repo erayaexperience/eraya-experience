@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { FiCheckCircle, FiArrowRight, FiArrowUpRight } from 'react-icons/fi';
-import { motion, AnimatePresence, useScroll, useTransform } from 'framer-motion';
+import { m, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
@@ -114,7 +114,7 @@ const ContactSection = () => {
 
   return (
     <section ref={sectionRef} id="contact" className="relative overflow-hidden bg-background py-section">
-      <motion.div
+      <m.div
         aria-hidden
         style={{ y: wallY }}
         className="pointer-events-none absolute inset-0 flex -rotate-6 scale-125 flex-col justify-center gap-6 opacity-70"
@@ -139,12 +139,12 @@ const ContactSection = () => {
             </div>
           </div>
         ))}
-      </motion.div>
+      </m.div>
       <div className="pointer-events-none absolute inset-0 glass bg-linear-to-b from-white/75 via-white/55 to-white/20 [--glass-blur-scale:1] [--glass-blur:8px] lg:bg-linear-to-r lg:from-white/75 lg:via-white/55 lg:via-45% lg:to-white/10 [--glass-rim:0_0_#0000] [--glass-saturate:70%]" />
       <div className="pointer-events-none absolute inset-0 bg-linear-to-b from-background via-transparent to-background" />
 
       <div className="container-modern relative grid items-center gap-14 lg:grid-cols-12 lg:gap-20">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
@@ -183,9 +183,9 @@ const ContactSection = () => {
               </li>
             ))}
           </ul>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
@@ -195,7 +195,7 @@ const ContactSection = () => {
           <div className="relative overflow-hidden rounded-4xl border border-black/5 bg-background p-(--pad) shadow-[0_40px_100px_-30px_rgba(0,0,0,0.25)] [--inner:0.75rem] [--pad:1.25rem] md:[--pad:2rem]">
             <AnimatePresence mode="wait">
               {isSubmitted ? (
-                <motion.div
+                <m.div
                   key="success"
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
@@ -209,9 +209,9 @@ const ContactSection = () => {
                   <p className="mx-auto max-w-xs font-light leading-relaxed text-foreground/60">
                     We&apos;ve got your message and we&apos;ll be in touch shortly.
                   </p>
-                </motion.div>
+                </m.div>
               ) : (
-                <motion.form
+                <m.form
                   key="form"
                   onSubmit={handleSubmit}
                   onFocus={noteStart}
@@ -331,11 +331,11 @@ const ContactSection = () => {
                       </span>
                     )}
                   </Button>
-                </motion.form>
+                </m.form>
               )}
             </AnimatePresence>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </section>
   );

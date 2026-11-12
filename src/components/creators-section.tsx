@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import { motion, useScroll, useTransform, type MotionValue } from "framer-motion";
+import { m, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { FiArrowUpRight } from "react-icons/fi";
 import { creators, instagramUrl, type Creator } from "@/constants/creators";
 import { SectionHeading } from "./ui/section-heading";
@@ -93,14 +93,14 @@ const Cover = ({
   }, []);
 
   return (
-    <motion.article
+    <m.article
       style={{ y }}
       className={cn(
         "w-[78vw] max-w-80 shrink-0 snap-center max-md:transform-none! md:w-auto md:max-w-none",
         index % 3 === 1 && "md:mt-16 lg:mt-24"
       )}
     >
-      <motion.a
+      <m.a
         href={instagramUrl(creator)}
         data-cursor="view"
         target="_blank"
@@ -161,8 +161,8 @@ const Cover = ({
             </p>
           </div>
         </div>
-      </motion.a>
-    </motion.article>
+      </m.a>
+    </m.article>
   );
 };
 
@@ -187,13 +187,13 @@ export default function CreatorsSection() {
         />
       </div>
 
-      <motion.div
+      <m.div
         {...rowReveal}
         className="relative flex snap-x snap-mandatory gap-3 overflow-x-auto overscroll-x-contain px-[calc((100vw-min(78vw,20rem))/2)] pt-2 pb-8 [scrollbar-width:none] md:mx-auto md:grid md:pb-0 md:max-w-7xl md:grid-cols-3 md:gap-6 md:overflow-visible md:px-8 lg:gap-8 lg:px-12">
         {creators.map((creator, index) => (
           <Cover key={creator.id} creator={creator} index={index} progress={scrollYProgress} />
         ))}
-      </motion.div>
+      </m.div>
 
       <div className="container-modern relative mt-8 flex justify-center md:mt-12">
         <a

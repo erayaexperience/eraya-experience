@@ -3,6 +3,7 @@ import './globals.css';
 import type { Metadata, Viewport } from 'next';
 import { SmoothScroll } from '@/components/smooth-scroll';
 import { Cursor } from '@/components/cursor';
+import { MotionProvider } from '@/components/motion-provider';
 import { LiquidGlassFilter } from '@/components/liquid-glass-filter';
 import { LOGO_PATH, LOGO_VIEWBOX } from '@/constants/logo-path';
 import { Playfair_Display } from 'next/font/google';
@@ -104,9 +105,11 @@ export default function RootLayout({
           </svg>
         </div>
         <SmoothScroll />
-        <Cursor />
-        <LiquidGlassFilter />
-        {children}
+        <MotionProvider>
+          <Cursor />
+          <LiquidGlassFilter />
+          {children}
+        </MotionProvider>
       </body>
     </html>
   );
